@@ -761,7 +761,7 @@ function Modal({jogo,onClose,onChange}){
             svcs.length===0
               ?h('div',{style:{color:'#aaa',fontStyle:'italic',padding:'8px 0',fontSize:'13px'}},'Nenhum serviço de campo confirmado.')
               :h('div',{className:'svc-list'},
-                ...svcs.map(({key,svc,qty,status,fully,confirmed_manually,booking_actual})=>{
+                ...svcs.map(({key,svc,qty,status,fully,confirmed_manually,booking_actual,pessoas,obs})=>{
                   const open=exp.has(key);
                   const isReq = status==='REQ' && !confirmed_manually;
                   const labelExtra = fully ? ' (Fully Equipped)' : '';
