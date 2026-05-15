@@ -175,6 +175,74 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans',system-
 .foot-hint{font-size:10px;color:var(--muted)}
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty-ico{font-size:40px;opacity:.3;margin-bottom:12px}
+
+/* ─── v4: Status badges ─── */
+.req-badge{display:inline-flex;align-items:center;gap:3px;font-family:monospace;font-size:8px;font-weight:700;padding:2px 5px;border-radius:2px;background:rgba(217,119,6,.12);color:#B45309;border:1px solid rgba(217,119,6,.4);letter-spacing:.05em;margin-left:5px;vertical-align:middle}
+.req-banner{background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.35);padding:9px 12px;border-radius:4px;margin-bottom:12px;display:flex;gap:10px;align-items:flex-start;font-size:11px;color:#7C2D12;line-height:1.5}
+.req-banner-icon{font-size:14px;flex-shrink:0;margin-top:-1px}
+.req-banner strong{color:#7C2D12;font-weight:700;display:block;margin-bottom:2px;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+
+/* destaque sutil em jogos do Brasil */
+.gcard.bra{border-width:2px;border-color:#FFCC00;box-shadow:0 0 0 1px rgba(255,204,0,.15)}
+.gcard.bra:hover{border-color:#FFB800;box-shadow:0 2px 12px rgba(255,204,0,.2)}
+
+/* Acessos de mídia (agrupados, colapsável) */
+.media-block{margin-top:10px;border:1px dashed var(--border2);border-radius:4px;background:var(--bg);overflow:hidden}
+.media-tog{width:100%;display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:transparent;border:none;font:inherit;cursor:pointer;color:var(--text2);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;-webkit-tap-highlight-color:transparent}
+.media-tog:hover{color:var(--text);background:rgba(0,0,0,.02)}
+.media-tog-arrow{font-family:monospace;color:var(--muted);transition:transform .15s}
+.media-tog.open .media-tog-arrow{transform:rotate(90deg);color:var(--text)}
+.media-list{display:none;padding:4px 12px 10px;flex-direction:column;gap:5px}
+.media-list.open{display:flex}
+.media-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:6px 9px;background:var(--surface);border-radius:3px;font-size:11px}
+.media-item-name{font-weight:600;color:var(--text2)}
+.media-item-name small{display:block;font-family:monospace;font-size:9px;color:var(--muted);margin-top:1px;letter-spacing:.04em}
+.media-item-qty{font-family:monospace;font-size:11px;font-weight:700;color:var(--text)}
+
+/* admin panel */
+.admin-fab{position:fixed;bottom:18px;right:18px;width:42px;height:42px;border-radius:50%;background:var(--text);color:#fff;border:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.18);z-index:30;transition:transform .15s, background .15s}
+.admin-fab:hover{transform:translateY(-2px);background:var(--red)}
+.admin-fab.unlocked{background:var(--lime);color:#fff}
+.admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:flex-start;justify-content:center;padding:60px 20px 20px;z-index:80;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.admin-panel{background:var(--surface);border-radius:6px;max-width:520px;width:100%;max-height:calc(100vh - 80px);overflow-y:auto;border:1px solid var(--border)}
+.admin-head{padding:18px 20px;border-bottom:1px solid var(--border);background:#0A0A0A;color:#fff;border-radius:6px 6px 0 0;display:flex;justify-content:space-between;align-items:center}
+.admin-head h2{font-size:14px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.admin-head .close{background:transparent;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1;padding:0 4px}
+.admin-body{padding:18px 20px}
+.admin-locked-msg{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+.admin-locked-msg strong{color:var(--text)}
+.admin-pass-row{display:flex;gap:8px;margin-bottom:8px}
+.admin-pass-row input{flex:1;background:var(--bg);border:1px solid var(--border2);padding:9px 11px;font-size:13px;font-family:inherit;border-radius:3px;outline:none}
+.admin-pass-row input:focus{border-color:var(--cyan)}
+.admin-pass-row button{padding:9px 16px;background:var(--text);color:#fff;border:none;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:3px;cursor:pointer}
+.admin-pass-row button:hover{background:var(--red)}
+.admin-error{color:var(--red);font-size:11px;margin-top:6px;font-weight:600}
+.admin-section{margin-bottom:18px}
+.admin-section h3{font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.admin-info{font-size:11px;color:var(--text2);margin-bottom:10px;line-height:1.5;padding:9px 11px;background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.25);border-radius:3px}
+.admin-req-list{display:flex;flex-direction:column;gap:4px;max-height:340px;overflow-y:auto;border:1px solid var(--border);border-radius:3px;background:var(--bg)}
+.admin-req-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:9px;align-items:center;padding:8px 11px;border-bottom:1px solid var(--border);background:var(--surface);font-size:11px}
+.admin-req-row:last-child{border-bottom:none}
+.admin-req-row.confirmed{background:rgba(22,163,74,.05)}
+.admin-req-mid{font-family:monospace;font-size:10px;color:var(--muted);font-weight:700;min-width:34px}
+.admin-req-name{font-weight:600;line-height:1.3}
+.admin-req-name small{display:block;font-size:9px;color:var(--muted);font-weight:400;margin-top:1px}
+.admin-req-qty{font-family:monospace;font-size:11px;font-weight:700;color:var(--text)}
+.admin-confirm-btn{padding:4px 9px;background:var(--lime);color:#fff;border:none;font:inherit;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:2px;cursor:pointer}
+.admin-confirm-btn:hover{background:#759400}
+.admin-confirm-btn.undo{background:transparent;color:var(--muted);border:1px solid var(--border2)}
+.admin-confirm-btn.undo:hover{color:var(--red);border-color:var(--red)}
+.admin-confirm-tag{font-family:monospace;font-size:9px;font-weight:700;color:var(--lime);padding:3px 7px;background:rgba(138,168,0,.12);border:1px solid rgba(138,168,0,.35);border-radius:2px;letter-spacing:.06em}
+.admin-foot{padding:12px 20px;border-top:1px solid var(--border);background:var(--bg);font-size:10px;color:var(--muted);text-align:center;line-height:1.5}
+
+
+/* ObsEditor */
+.obs-section{margin-top:10px;border-top:1px solid var(--border);padding-top:10px}
+.obs-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.obs-input{width:100%;padding:8px 10px;border:1px solid var(--border2);border-radius:3px;font-family:inherit;font-size:12px;color:var(--text);background:var(--bg);resize:vertical;outline:none;line-height:1.5}
+.obs-input:focus{border-color:var(--cyan);background:var(--surface)}
+.obs-input::placeholder{color:var(--dim)}
+
 </style>
 </head>
 <body>
@@ -183,9 +251,155 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans',system-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 <script>
-const SHEETS_URL = "";    // URL CSV da aba "Jogos"
-const SERVICES_URL = "";  // URL CSV da aba "Serviços"
-const JOGOS_FALLBACK=[{"numero":1,"grupo":2,"data":"2026-06-11","dia_semana":"QUINTA","hora":"16:00","local":"Cidade do México","selecao_1":"MEX","selecao_2":"RSA","pick":"CazéTV + Globo/SBT","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":5},"pessoal":{"Apresentador":"Fernanda Gentil","Repórter 1":"João Barretto","Repórter de entretenimento":"Defante"},"rodada":"Rodada 1"},{"numero":2,"grupo":2,"data":"2026-06-11","dia_semana":"QUINTA","hora":"23:00","local":"Guadalajara","selecao_1":"KOR","selecao_2":"CZE","pick":"CazéTV","servicos":{},"pessoal":{},"rodada":"Rodada 1"},{"numero":3,"grupo":2,"data":"2026-06-12","dia_semana":"SEXTA","hora":"16:00","local":"Toronto","selecao_1":"CAN","selecao_2":"BIH","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Barbara Coelho"},"rodada":"Rodada 1"},{"numero":4,"grupo":4,"data":"2026-06-12","dia_semana":"SEXTA","hora":"22:00","local":"Los Angeles","selecao_1":"USA","selecao_2":"PAR","pick":"CazéTV + Globo/SBT","servicos":{"guest_arrival":1,"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Repórter 1":"Isa Pagliari"},"rodada":"Rodada 1"},{"numero":8,"grupo":6,"data":"2026-06-13","dia_semana":"SÁBADO","hora":"16:00","local":"San Francisco","selecao_1":"QAT","selecao_2":"SUI","pick":"CazéTV","servicos":{},"pessoal":{},"rodada":"Rodada 1"},{"numero":7,"grupo":1,"data":"2026-06-13","dia_semana":"SÁBADO","hora":"19:00","local":"New York","selecao_1":"BRA","selecao_2":"MOR","pick":"CazéTV + Globo/SBT","servicos":{"dressing_room":1,"guest_arrival":1,"pitch_reporter":2,"pitch_rep_benches":1,"uniflash":1,"uniflash_fully":1,"digital_reporter":1,"centre_circle":1,"teams_onto":1,"tv_studio_internet":1,"presentation":2,"observer_seat":6},"pessoal":{"Apresentador":"Fernanda Gentil","Repórter 1":"Beltrão","Reporter 2 EUA":"Chico Moedas","Repórter de entretenimento":"Defante","Embaixador":"Romário"},"rodada":"Rodada 1"},{"numero":5,"grupo":2,"data":"2026-06-13","dia_semana":"SÁBADO","hora":"22:00","local":"Boston","selecao_1":"HAI","selecao_2":"SCO","pick":"CazéTV","servicos":{"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 1"},{"numero":6,"grupo":5,"data":"2026-06-14","dia_semana":"DOMINGO","hora":"01:00","local":"Vancouver","selecao_1":"AUS","selecao_2":"TUR","pick":"CazéTV + Globo","servicos":{},"pessoal":{},"rodada":"Rodada 1"},{"numero":10,"grupo":2,"data":"2026-06-14","dia_semana":"DOMINGO","hora":"14:00","local":"Houston","selecao_1":"GER","selecao_2":"CUW","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Bruna Dealtry","Repórter 1":"Bruna Dealtry"},"rodada":"Rodada 1"},{"numero":11,"grupo":4,"data":"2026-06-14","dia_semana":"DOMINGO","hora":"17:00","local":"Dallas","selecao_1":"NED","selecao_2":"JPN","pick":"CazéTV + Globo/SBT","servicos":{"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Repórter 1":"Victoria Leite"},"rodada":"Rodada 1"},{"numero":9,"grupo":4,"data":"2026-06-14","dia_semana":"DOMINGO","hora":"20:00","local":"Philadelphia","selecao_1":"CIV","selecao_2":"ECU","pick":"CazéTV + Globo","servicos":{"pitch_reporter":1,"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 1"},{"numero":12,"grupo":6,"data":"2026-06-14","dia_semana":"DOMINGO","hora":"23:00","local":"Monterrey","selecao_1":"SWE","selecao_2":"TUN","pick":"CazéTV + Globo","servicos":{"observer_seat":1},"pessoal":{},"rodada":"Rodada 1"},{"numero":14,"grupo":2,"data":"2026-06-15","dia_semana":"SEGUNDA","hora":"13:00","local":"Atlanta","selecao_1":"ESP","selecao_2":"CPV","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Barbara Coelho","Repórter 1":"Alan Gouveia","Repórter de entretenimento":"Defante"},"rodada":"Rodada 1"},{"numero":16,"grupo":4,"data":"2026-06-15","dia_semana":"SEGUNDA","hora":"16:00","local":"Seattle","selecao_1":"BEL","selecao_2":"EGY","pick":"CazéTV + Globo","servicos":{"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 1"},{"numero":13,"grupo":3,"data":"2026-06-15","dia_semana":"SEGUNDA","hora":"19:00","local":"Miami","selecao_1":"KSA","selecao_2":"URU","pick":"CazéTV + Globo/SBT","servicos":{"guest_arrival":1,"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Day Natale","Repórter 1":"Day Natale"},"rodada":"Rodada 1"},{"numero":15,"grupo":6,"data":"2026-06-15","dia_semana":"SEGUNDA","hora":"22:00","local":"Los Angeles","selecao_1":"IRN","selecao_2":"NZL","pick":"CazéTV","servicos":{},"pessoal":{},"rodada":"Rodada 1"},{"numero":17,"grupo":3,"data":"2026-06-16","dia_semana":"TERÇA","hora":"16:00","local":"New York","selecao_1":"FRA","selecao_2":"SEN","pick":"CazéTV + Globo/SBT","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Isa Pagliari","Repórter 1":"Isa Pagliari"},"rodada":"Rodada 1"},{"numero":18,"grupo":4,"data":"2026-06-16","dia_semana":"TERÇA","hora":"19:00","local":"Boston","selecao_1":"IRQ","selecao_2":"NOR","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"observer_seat":1},"pessoal":{"Repórter 1":"Day Natale"},"rodada":"Rodada 1"},{"numero":19,"grupo":2,"data":"2026-06-16","dia_semana":"TERÇA","hora":"22:00","local":"Kansas City","selecao_1":"ARG","selecao_2":"ALG","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Barbara Coelho","Repórter 1":"Djalminha","Reporter 2 EUA":"Rafa Morientes","Repórter de entretenimento":"Defante"},"rodada":"Rodada 1"},{"numero":20,"grupo":5,"data":"2026-06-17","dia_semana":"QUARTA","hora":"01:00","local":"San Francisco","selecao_1":"AUT","selecao_2":"JOR","pick":"CazéTV + Globo","servicos":{"pitch_reporter":1},"pessoal":{},"rodada":"Rodada 1"},{"numero":23,"grupo":2,"data":"2026-06-17","dia_semana":"QUARTA","hora":"14:00","local":"Houston","selecao_1":"POR","selecao_2":"COD","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"João Barretto","Repórter 1":"João Barretto","Embaixador":"Quaresma"},"rodada":"Rodada 1"},{"numero":22,"grupo":3,"data":"2026-06-17","dia_semana":"QUARTA","hora":"17:00","local":"Dallas","selecao_1":"ENG","selecao_2":"CRO","pick":"CazéTV + Globo/SBT","servicos":{"guest_arrival":1,"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Victoria Leite","Repórter 1":"Victoria Leite"},"rodada":"Rodada 1"},{"numero":21,"grupo":6,"data":"2026-06-17","dia_semana":"QUARTA","hora":"20:00","local":"Toronto","selecao_1":"GHA","selecao_2":"PAN","pick":"CazéTV","servicos":{},"pessoal":{},"rodada":"Rodada 1"},{"numero":24,"grupo":5,"data":"2026-06-17","dia_semana":"QUARTA","hora":"23:00","local":"Cidade do México","selecao_1":"UZB","selecao_2":"COL","pick":"CazéTV + Globo","servicos":{"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 1"},{"numero":25,"grupo":6,"data":"2026-06-18","dia_semana":"QUINTA","hora":"13:00","local":"Atlanta","selecao_1":"CZE","selecao_2":"RSA","pick":"CazéTV","servicos":{"pitch_reporter":1},"pessoal":{"Repórter 1":"Alan Gouveia"},"rodada":"Rodada 2"},{"numero":26,"grupo":3,"data":"2026-06-18","dia_semana":"QUINTA","hora":"16:00","local":"Los Angeles","selecao_1":"SUI","selecao_2":"BIH","pick":"CazéTV + Globo/SBT","servicos":{"guest_arrival":1,"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 2"},{"numero":27,"grupo":6,"data":"2026-06-18","dia_semana":"QUINTA","hora":"19:00","local":"Vancouver","selecao_1":"CAN","selecao_2":"QAT","pick":"CazéTV","servicos":{},"pessoal":{},"rodada":"Rodada 2"},{"numero":28,"grupo":6,"data":"2026-06-18","dia_semana":"QUINTA","hora":"22:00","local":"Guadalajara","selecao_1":"MEX","selecao_2":"KOR","pick":"CazéTV + Globo","servicos":{"observer_seat":1},"pessoal":{},"rodada":"Rodada 2"},{"numero":32,"grupo":6,"data":"2026-06-19","dia_semana":"SEXTA","hora":"16:00","local":"Seattle","selecao_1":"USA","selecao_2":"AUS","pick":"CazéTV","servicos":{"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 2"},{"numero":30,"grupo":2,"data":"2026-06-19","dia_semana":"SEXTA","hora":"19:00","local":"Boston","selecao_1":"SCO","selecao_2":"MOR","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Barbara Coelho","Repórter 1":"Day Natale"},"rodada":"Rodada 2"},{"numero":29,"grupo":1,"data":"2026-06-19","dia_semana":"SEXTA","hora":"21:30","local":"Philadelphia","selecao_1":"BRA","selecao_2":"HAI","pick":"CazéTV + Globo/SBT","servicos":{"dressing_room":1,"guest_arrival":1,"pitch_reporter":2,"pitch_rep_benches":1,"uniflash":1,"uniflash_fully":1,"digital_reporter":2,"centre_circle":1,"teams_onto":1,"tv_studio_internet":1,"presentation":2,"observer_seat":6},"pessoal":{"Apresentador":"Fernanda Gentil","Repórter 1":"Beltrão","Reporter 2 EUA":"Chico Moedas","Repórter de entretenimento":"Defante","Embaixador":"Romário"},"rodada":"Rodada 2"},{"numero":31,"grupo":5,"data":"2026-06-20","dia_semana":"SÁBADO","hora":"01:00","local":"San Francisco","selecao_1":"TUR","selecao_2":"PAR","pick":"CazéTV + Globo","servicos":{"pitch_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 2"},{"numero":35,"grupo":4,"data":"2026-06-20","dia_semana":"SÁBADO","hora":"14:00","local":"Houston","selecao_1":"NED","selecao_2":"SWE","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Victoria Leite","Repórter 1":"Victoria Leite"},"rodada":"Rodada 2"},{"numero":33,"grupo":3,"data":"2026-06-20","dia_semana":"SÁBADO","hora":"17:00","local":"Toronto","selecao_1":"GER","selecao_2":"CIV","pick":"CazéTV + Globo/SBT","servicos":{"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Bruna Dealtry","Repórter 1":"Bruna Dealtry"},"rodada":"Rodada 2"},{"numero":34,"grupo":4,"data":"2026-06-20","dia_semana":"SÁBADO","hora":"21:00","local":"Kansas City","selecao_1":"ECU","selecao_2":"CUW","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"observer_seat":1},"pessoal":{"Repórter 1":"Rafa Morientes"},"rodada":"Rodada 2"},{"numero":36,"grupo":5,"data":"2026-06-21","dia_semana":"DOMINGO","hora":"01:00","local":"Monterrey","selecao_1":"TUN","selecao_2":"JPN","pick":"CazéTV + Globo","servicos":{},"pessoal":{},"rodada":"Rodada 2"},{"numero":38,"grupo":2,"data":"2026-06-21","dia_semana":"DOMINGO","hora":"13:00","local":"Atlanta","selecao_1":"ESP","selecao_2":"KSA","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Barbara Coelho","Repórter 1":"Alan Gouveia"},"rodada":"Rodada 2"},{"numero":39,"grupo":6,"data":"2026-06-21","dia_semana":"DOMINGO","hora":"16:00","local":"Los Angeles","selecao_1":"BEL","selecao_2":"IRN","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 2"},{"numero":37,"grupo":3,"data":"2026-06-21","dia_semana":"DOMINGO","hora":"19:00","local":"Miami","selecao_1":"URU","selecao_2":"CPV","pick":"CazéTV + Globo/SBT","servicos":{"guest_arrival":1,"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Repórter 1":"Day Natale"},"rodada":"Rodada 2"},{"numero":40,"grupo":4,"data":"2026-06-21","dia_semana":"DOMINGO","hora":"22:00","local":"Vancouver","selecao_1":"NZL","selecao_2":"EGY","pick":"CazéTV + Globo","servicos":{"observer_seat":1},"pessoal":{},"rodada":"Rodada 2"},{"numero":43,"grupo":3,"data":"2026-06-22","dia_semana":"SEGUNDA","hora":"14:00","local":"Dallas","selecao_1":"ARG","selecao_2":"AUT","pick":"CazéTV + Globo/SBT","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Barbara Coelho","Repórter 1":"Djalminha","Reporter 2 EUA":"Rafa Morientes"},"rodada":"Rodada 2"},{"numero":42,"grupo":2,"data":"2026-06-22","dia_semana":"SEGUNDA","hora":"18:00","local":"Philadelphia","selecao_1":"FRA","selecao_2":"IRQ","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Isa Pagliari","Repórter 1":"Isa Pagliari","Repórter de entretenimento":"Defante"},"rodada":"Rodada 2"},{"numero":41,"grupo":4,"data":"2026-06-22","dia_semana":"SEGUNDA","hora":"21:00","local":"New York","selecao_1":"NOR","selecao_2":"SEN","pick":"CazéTV + Globo","servicos":{"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"observer_seat":1},"pessoal":{"Repórter 1":"Victoria Leite"},"rodada":"Rodada 2"},{"numero":44,"grupo":5,"data":"2026-06-23","dia_semana":"TERÇA","hora":"00:00","local":"San Francisco","selecao_1":"JOR","selecao_2":"ALG","pick":"CazéTV + Globo","servicos":{},"pessoal":{},"rodada":"Rodada 2"},{"numero":47,"grupo":2,"data":"2026-06-23","dia_semana":"TERÇA","hora":"14:00","local":"Houston","selecao_1":"POR","selecao_2":"UZB","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Barbara Coelho","Repórter 1":"João Barretto","Embaixador":"Quaresma"},"rodada":"Rodada 2"},{"numero":45,"grupo":3,"data":"2026-06-23","dia_semana":"TERÇA","hora":"17:00","local":"Boston","selecao_1":"ENG","selecao_2":"GHA","pick":"CazéTV + Globo/SBT","servicos":{"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Victoria Leite","Repórter 1":"Victoria Leite"},"rodada":"Rodada 2"},{"numero":46,"grupo":6,"data":"2026-06-23","dia_semana":"TERÇA","hora":"20:00","local":"Toronto","selecao_1":"PAN","selecao_2":"CRO","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 2"},{"numero":48,"grupo":5,"data":"2026-06-23","dia_semana":"TERÇA","hora":"23:00","local":"Guadalajara","selecao_1":"COL","selecao_2":"COD","pick":"CazéTV + Globo","servicos":{"pitch_reporter":1,"uniflash":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 2"},{"numero":51,"grupo":6,"data":"2026-06-24","dia_semana":"QUARTA","hora":"16:00","local":"Vancouver","selecao_1":"SUI","selecao_2":"CAN","pick":"CazéTV","servicos":{},"pessoal":{},"rodada":"Rodada 3"},{"numero":52,"grupo":null,"data":"2026-06-24","dia_semana":"QUARTA","hora":"16:00","local":"Seattle","selecao_1":"BIH","selecao_2":"QAT","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":49,"grupo":1,"data":"2026-06-24","dia_semana":"QUARTA","hora":"19:00","local":"Miami","selecao_1":"SCO","selecao_2":"BRA","pick":"CazéTV+Globo/SBT","servicos":{"dressing_room":1,"guest_arrival":1,"pitch_reporter":2,"pitch_rep_benches":1,"uniflash":1,"uniflash_fully":1,"digital_reporter":1,"centre_circle":1,"teams_onto":1,"tv_studio_internet":1,"presentation":2,"observer_seat":6},"pessoal":{"Apresentador":"Fernanda Gentil","Repórter 1":"Beltrão","Reporter 2 EUA":"Chico Moedas","Repórter de entretenimento":"Defante","Embaixador":"Romário"},"rodada":"Rodada 3"},{"numero":50,"grupo":null,"data":"2026-06-24","dia_semana":"QUARTA","hora":"19:00","local":"Atlanta","selecao_1":"MOR","selecao_2":"HAI","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"observer_seat":1},"pessoal":{"Repórter 1":"Alan Gouveia"},"rodada":"Rodada 3"},{"numero":53,"grupo":6,"data":"2026-06-24","dia_semana":"QUARTA","hora":"22:00","local":"Cidade do México","selecao_1":"CZE","selecao_2":"MEX","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":54,"grupo":6,"data":"2026-06-24","dia_semana":"QUARTA","hora":"22:00","local":"Monterrey","selecao_1":"RSA","selecao_2":"KOR","pick":"CazéTV","servicos":{},"pessoal":{},"rodada":"Rodada 3"},{"numero":55,"grupo":6,"data":"2026-06-25","dia_semana":"QUINTA","hora":"17:00","local":"Philadelphia","selecao_1":"CUW","selecao_2":"CIV","pick":"CazéTV","servicos":{"pitch_reporter":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":56,"grupo":null,"data":"2026-06-25","dia_semana":"QUINTA","hora":"17:00","local":"New York","selecao_1":"ECU","selecao_2":"GER","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Bruna Dealtry","Repórter 1":"Bruna Dealtry"},"rodada":"Rodada 3"},{"numero":57,"grupo":6,"data":"2026-06-25","dia_semana":"QUINTA","hora":"20:00","local":"Dallas","selecao_1":"JPN","selecao_2":"UKR/SWE/POL/ALB","pick":"CazéTV","servicos":{"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":58,"grupo":4,"data":"2026-06-25","dia_semana":"QUINTA","hora":"20:00","local":"Kansas City","selecao_1":"TUN","selecao_2":"NED","pick":"CazéTV","servicos":{"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"observer_seat":1},"pessoal":{"Repórter 1":"Victoria Leite"},"rodada":"Rodada 3"},{"numero":59,"grupo":6,"data":"2026-06-25","dia_semana":"QUINTA","hora":"23:00","local":"Los Angeles","selecao_1":"TUR/ROU/SVK/KOS","selecao_2":"USA","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":60,"grupo":4,"data":"2026-06-25","dia_semana":"QUINTA","hora":"23:00","local":"San Francisco","selecao_1":"PAR","selecao_2":"AUS","pick":"CazéTV","servicos":{"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":61,"grupo":null,"data":"2026-06-26","dia_semana":"SEXTA","hora":"16:00","local":"Boston","selecao_1":"NOR","selecao_2":"FRA","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Isa Pagliari","Repórter 1":"Isa Pagliari"},"rodada":"Rodada 3"},{"numero":62,"grupo":6,"data":"2026-06-26","dia_semana":"SEXTA","hora":"16:00","local":"Toronto","selecao_1":"SEN","selecao_2":"IRQ","pick":"CazéTV","servicos":{"pitch_reporter":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":65,"grupo":4,"data":"2026-06-26","dia_semana":"SEXTA","hora":"21:00","local":"Houston","selecao_1":"CPV","selecao_2":"KSA","pick":"CazéTV","servicos":{"pitch_reporter":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":66,"grupo":null,"data":"2026-06-26","dia_semana":"SEXTA","hora":"21:00","local":"Guadalajara","selecao_1":"URU","selecao_2":"ESP","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":2,"observer_seat":1},"pessoal":{"Apresentador":"Barbara Coelho","Repórter 1":"Alan Gouveia","Reporter 2 EUA":"Day Natale"},"rodada":"Rodada 3"},{"numero":63,"grupo":5,"data":"2026-06-27","dia_semana":"SÁBADO","hora":"00:00","local":"Seattle","selecao_1":"EGY","selecao_2":"IRN","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":64,"grupo":5,"data":"2026-06-27","dia_semana":"SÁBADO","hora":"00:00","local":"Vancouver","selecao_1":"NZL","selecao_2":"BEL","pick":"CazéTV","servicos":{"observer_seat":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":67,"grupo":2,"data":"2026-06-27","dia_semana":"SÁBADO","hora":"18:00","local":"New York","selecao_1":"PAN","selecao_2":"ENG","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":1,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Victoria Leite","Repórter 1":"Victoria Leite"},"rodada":"Rodada 3"},{"numero":68,"grupo":6,"data":"2026-06-27","dia_semana":"SÁBADO","hora":"18:00","local":"Philadelphia","selecao_1":"CRO","selecao_2":"GHA","pick":"CazéTV","servicos":{"pitch_reporter":1,"digital_reporter":1,"observer_seat":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":71,"grupo":2,"data":"2026-06-27","dia_semana":"SÁBADO","hora":"20:30","local":"Miami","selecao_1":"COL","selecao_2":"POR","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"João Barretto","Repórter 1":"João Barretto","Repórter de entretenimento":"Defante","Embaixador":"Quaresma"},"rodada":"Rodada 3"},{"numero":72,"grupo":6,"data":"2026-06-27","dia_semana":"SÁBADO","hora":"20:30","local":"Atlanta","selecao_1":"COD/JAM/NCL","selecao_2":"UZB","pick":"CazéTV","servicos":{},"pessoal":{},"rodada":"Rodada 3"},{"numero":69,"grupo":6,"data":"2026-06-27","dia_semana":"SÁBADO","hora":"23:00","local":"Kansas City","selecao_1":"ALG","selecao_2":"AUT","pick":"CazéTV","servicos":{"pitch_reporter":1},"pessoal":{},"rodada":"Rodada 3"},{"numero":70,"grupo":2,"data":"2026-06-27","dia_semana":"SÁBADO","hora":"23:00","local":"Dallas","selecao_1":"JOR","selecao_2":"ARG","pick":"CazéTV","servicos":{"guest_arrival":1,"pitch_reporter":2,"uniflash":1,"digital_reporter":1,"presentation":1,"observer_seat":1},"pessoal":{"Apresentador":"Barbara Coelho","Repórter 1":"Djalminha","Reporter 2 EUA":"Rafa Morientes"},"rodada":"Rodada 3"}];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ─── v5 · CazéTV · FIFA World Cup 2026 ───────────────────────────
+// Configuração: preencha após publicar no Google Sheets
+const SHEETS_URL      = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTMzwIlni2IFVZBJfAVnWTCYXuBQgCIx96r0eg4nsinpe48gwX_z3ETxzNKx7yaMGEDJZMfoTCJIbX3/pub?gid=361113040&single=true&output=csv";
+const SERVICES_URL    = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTMzwIlni2IFVZBJfAVnWTCYXuBQgCIx96r0eg4nsinpe48gwX_z3ETxzNKx7yaMGEDJZMfoTCJIbX3/pub?gid=1435955881&single=true&output=csv";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcDWxDCmeabHiPPD6rOwOmY8LKT4QiU6qDuM4x1_2aGY3z8okiEBF8lxx9uY7lzb8Arw/exec";
+const ADMIN_PASS      = "cazetv2026";  // troque antes de publicar
+const REQUIRE_SHEETS   = true;           // produção: não exibe fallback se Sheets falhar
+const REQUIRE_WRITE_API = true;          // produção: não simula gravação sem Apps Script
+
+// Dados embutidos (fallback sem Sheets)
+const JOGOS_FALLBACK = [{"numero":1,"rodada":"Rodada 1","data":"2026-06-11","dia_semana":"QUINTA","hora":"16:00","local":"Cidade do México","selecao_1":"MEX","selecao_2":"RSA","pick":"CazéTV + Globo/SBT","match_id":"M001","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":7,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"tv_studio_internet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":2,"rodada":"Rodada 1","data":"2026-06-11","dia_semana":"QUINTA","hora":"23:00","local":"Guadalajara","selecao_1":"KOR","selecao_2":"CZE","pick":"CazéTV","match_id":"M002","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_digital":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":3,"rodada":"Rodada 1","data":"2026-06-12","dia_semana":"SEXTA","hora":"16:00","local":"Toronto","selecao_1":"CAN","selecao_2":"BIH","pick":"CazéTV","match_id":"M003","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":4,"rodada":"Rodada 1","data":"2026-06-12","dia_semana":"SEXTA","hora":"22:00","local":"Los Angeles","selecao_1":"USA","selecao_2":"PAR","pick":"CazéTV + Globo/SBT","match_id":"M004","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":8,"rodada":"Rodada 1","data":"2026-06-13","dia_semana":"SÁBADO","hora":"16:00","local":"San Francisco","selecao_1":"QAT","selecao_2":"SUI","pick":"CazéTV","match_id":"M008","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":7,"rodada":"Rodada 1","data":"2026-06-13","dia_semana":"SÁBADO","hora":"19:00","local":"New York","selecao_1":"BRA","selecao_2":"MOR","pick":"CazéTV + Globo/SBT","match_id":"M007","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"tv_studio":{"status":"REQ","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":15,"fully":false,"pessoas":[]},"ml_player_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"ml_coach":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"ml_halftime":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"ml_fulltime":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"dressing_room":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"centre_circle":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"teams_onto":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_rep_benches":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_phone":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_camera":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_digital":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":4,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"tv_studio_internet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"inet_bench_codec":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":5,"rodada":"Rodada 1","data":"2026-06-13","dia_semana":"SÁBADO","hora":"22:00","local":"Boston","selecao_1":"HAI","selecao_2":"SCO","pick":"CazéTV","match_id":"M005","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":6,"rodada":"Rodada 1","data":"2026-06-14","dia_semana":"DOMINGO","hora":"01:00","local":"Vancouver","selecao_1":"AUS","selecao_2":"TUR","pick":"CazéTV + Globo","match_id":"M006","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":10,"rodada":"Rodada 1","data":"2026-06-14","dia_semana":"DOMINGO","hora":"14:00","local":"Houston","selecao_1":"GER","selecao_2":"CUW","pick":"CazéTV","match_id":"M010","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":true,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":11,"rodada":"Rodada 1","data":"2026-06-14","dia_semana":"DOMINGO","hora":"17:00","local":"Dallas","selecao_1":"NED","selecao_2":"JPN","pick":"CazéTV + Globo/SBT","match_id":"M011","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":true,"pessoas":[]},"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":9,"rodada":"Rodada 1","data":"2026-06-14","dia_semana":"DOMINGO","hora":"20:00","local":"Philadelphia","selecao_1":"CIV","selecao_2":"ECU","pick":"CazéTV + Globo","match_id":"M009","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":12,"rodada":"Rodada 1","data":"2026-06-14","dia_semana":"DOMINGO","hora":"23:00","local":"Monterrey","selecao_1":"SWE","selecao_2":"TUN","pick":"CazéTV + Globo","match_id":"M012","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":14,"rodada":"Rodada 1","data":"2026-06-15","dia_semana":"SEGUNDA","hora":"13:00","local":"Atlanta","selecao_1":"ESP","selecao_2":"CPV","pick":"CazéTV","match_id":"M014","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":16,"rodada":"Rodada 1","data":"2026-06-15","dia_semana":"SEGUNDA","hora":"16:00","local":"Seattle","selecao_1":"BEL","selecao_2":"EGY","pick":"CazéTV + Globo","match_id":"M016","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":13,"rodada":"Rodada 1","data":"2026-06-15","dia_semana":"SEGUNDA","hora":"19:00","local":"Miami","selecao_1":"KSA","selecao_2":"URU","pick":"CazéTV + Globo/SBT","match_id":"M013","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":15,"rodada":"Rodada 1","data":"2026-06-15","dia_semana":"SEGUNDA","hora":"22:00","local":"Los Angeles","selecao_1":"IRN","selecao_2":"NZL","pick":"CazéTV","match_id":"M015","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":17,"rodada":"Rodada 1","data":"2026-06-16","dia_semana":"TERÇA","hora":"16:00","local":"New York","selecao_1":"FRA","selecao_2":"SEN","pick":"CazéTV + Globo/SBT","match_id":"M017","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":18,"rodada":"Rodada 1","data":"2026-06-16","dia_semana":"TERÇA","hora":"19:00","local":"Boston","selecao_1":"IRQ","selecao_2":"NOR","pick":"CazéTV","match_id":"M018","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":19,"rodada":"Rodada 1","data":"2026-06-16","dia_semana":"TERÇA","hora":"22:00","local":"Kansas City","selecao_1":"ARG","selecao_2":"ALG","pick":"CazéTV","match_id":"M019","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"tv_studio_internet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":20,"rodada":"Rodada 1","data":"2026-06-17","dia_semana":"QUARTA","hora":"01:00","local":"San Francisco","selecao_1":"AUT","selecao_2":"JOR","pick":"CazéTV + Globo","match_id":"M020","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":23,"rodada":"Rodada 1","data":"2026-06-17","dia_semana":"QUARTA","hora":"14:00","local":"Houston","selecao_1":"POR","selecao_2":"COD","pick":"CazéTV","match_id":"M023","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":22,"rodada":"Rodada 1","data":"2026-06-17","dia_semana":"QUARTA","hora":"17:00","local":"Dallas","selecao_1":"ENG","selecao_2":"CRO","pick":"CazéTV + Globo/SBT","match_id":"M022","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":21,"rodada":"Rodada 1","data":"2026-06-17","dia_semana":"QUARTA","hora":"20:00","local":"Toronto","selecao_1":"GHA","selecao_2":"PAN","pick":"CazéTV","match_id":"M021","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":24,"rodada":"Rodada 1","data":"2026-06-17","dia_semana":"QUARTA","hora":"23:00","local":"Cidade do México","selecao_1":"UZB","selecao_2":"COL","pick":"CazéTV + Globo","match_id":"M024","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":25,"rodada":"Rodada 2","data":"2026-06-18","dia_semana":"QUINTA","hora":"13:00","local":"Atlanta","selecao_1":"CZE","selecao_2":"RSA","pick":"CazéTV","match_id":"M025","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":26,"rodada":"Rodada 2","data":"2026-06-18","dia_semana":"QUINTA","hora":"16:00","local":"Los Angeles","selecao_1":"SUI","selecao_2":"BIH","pick":"CazéTV + Globo/SBT","match_id":"M026","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":1,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":27,"rodada":"Rodada 2","data":"2026-06-18","dia_semana":"QUINTA","hora":"19:00","local":"Vancouver","selecao_1":"CAN","selecao_2":"QAT","pick":"CazéTV","match_id":"M027","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":28,"rodada":"Rodada 2","data":"2026-06-18","dia_semana":"QUINTA","hora":"22:00","local":"Guadalajara","selecao_1":"MEX","selecao_2":"KOR","pick":"CazéTV + Globo","match_id":"M028","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":32,"rodada":"Rodada 2","data":"2026-06-19","dia_semana":"SEXTA","hora":"16:00","local":"Seattle","selecao_1":"USA","selecao_2":"AUS","pick":"CazéTV","match_id":"M032","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":30,"rodada":"Rodada 2","data":"2026-06-19","dia_semana":"SEXTA","hora":"19:00","local":"Boston","selecao_1":"SCO","selecao_2":"MOR","pick":"CazéTV","match_id":"M030","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":29,"rodada":"Rodada 2","data":"2026-06-19","dia_semana":"SEXTA","hora":"21:30","local":"Philadelphia","selecao_1":"BRA","selecao_2":"HAI","pick":"CazéTV + Globo/SBT","match_id":"M029","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"tv_studio":{"status":"REQ","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":15,"fully":false,"pessoas":[]},"dressing_room":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"centre_circle":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_rep_benches":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_camera":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":4,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"tv_studio_internet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"inet_bench_codec":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":31,"rodada":"Rodada 2","data":"2026-06-20","dia_semana":"SÁBADO","hora":"01:00","local":"San Francisco","selecao_1":"TUR","selecao_2":"PAR","pick":"CazéTV + Globo","match_id":"M031","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":35,"rodada":"Rodada 2","data":"2026-06-20","dia_semana":"SÁBADO","hora":"14:00","local":"Houston","selecao_1":"NED","selecao_2":"SWE","pick":"CazéTV","match_id":"M035","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":33,"rodada":"Rodada 2","data":"2026-06-20","dia_semana":"SÁBADO","hora":"17:00","local":"Toronto","selecao_1":"GER","selecao_2":"CIV","pick":"CazéTV + Globo/SBT","match_id":"M033","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":true,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":34,"rodada":"Rodada 2","data":"2026-06-20","dia_semana":"SÁBADO","hora":"21:00","local":"Kansas City","selecao_1":"ECU","selecao_2":"CUW","pick":"CazéTV","match_id":"M034","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":36,"rodada":"Rodada 2","data":"2026-06-21","dia_semana":"DOMINGO","hora":"01:00","local":"Monterrey","selecao_1":"TUN","selecao_2":"JPN","pick":"CazéTV + Globo","match_id":"M036","servicos":{"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":38,"rodada":"Rodada 2","data":"2026-06-21","dia_semana":"DOMINGO","hora":"13:00","local":"Atlanta","selecao_1":"ESP","selecao_2":"KSA","pick":"CazéTV","match_id":"M038","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":39,"rodada":"Rodada 2","data":"2026-06-21","dia_semana":"DOMINGO","hora":"16:00","local":"Los Angeles","selecao_1":"BEL","selecao_2":"IRN","pick":"CazéTV","match_id":"M039","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":37,"rodada":"Rodada 2","data":"2026-06-21","dia_semana":"DOMINGO","hora":"19:00","local":"Miami","selecao_1":"URU","selecao_2":"CPV","pick":"CazéTV + Globo/SBT","match_id":"M037","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_phone":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":40,"rodada":"Rodada 2","data":"2026-06-21","dia_semana":"DOMINGO","hora":"22:00","local":"Vancouver","selecao_1":"NZL","selecao_2":"EGY","pick":"CazéTV + Globo","match_id":"M040","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":43,"rodada":"Rodada 2","data":"2026-06-22","dia_semana":"SEGUNDA","hora":"14:00","local":"Dallas","selecao_1":"ARG","selecao_2":"AUT","pick":"CazéTV + Globo/SBT","match_id":"M043","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":true,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":42,"rodada":"Rodada 2","data":"2026-06-22","dia_semana":"SEGUNDA","hora":"18:00","local":"Philadelphia","selecao_1":"FRA","selecao_2":"IRQ","pick":"CazéTV","match_id":"M042","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":41,"rodada":"Rodada 2","data":"2026-06-22","dia_semana":"SEGUNDA","hora":"21:00","local":"New York","selecao_1":"NOR","selecao_2":"SEN","pick":"CazéTV + Globo","match_id":"M041","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":44,"rodada":"Rodada 2","data":"2026-06-23","dia_semana":"TERÇA","hora":"00:00","local":"San Francisco","selecao_1":"JOR","selecao_2":"ALG","pick":"CazéTV + Globo","match_id":"M044","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":47,"rodada":"Rodada 2","data":"2026-06-23","dia_semana":"TERÇA","hora":"14:00","local":"Houston","selecao_1":"POR","selecao_2":"UZB","pick":"CazéTV","match_id":"M047","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_phone":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":45,"rodada":"Rodada 2","data":"2026-06-23","dia_semana":"TERÇA","hora":"17:00","local":"Boston","selecao_1":"ENG","selecao_2":"GHA","pick":"CazéTV + Globo/SBT","match_id":"M045","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":true,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":46,"rodada":"Rodada 2","data":"2026-06-23","dia_semana":"TERÇA","hora":"20:00","local":"Toronto","selecao_1":"PAN","selecao_2":"CRO","pick":"CazéTV","match_id":"M046","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":48,"rodada":"Rodada 2","data":"2026-06-23","dia_semana":"TERÇA","hora":"23:00","local":"Guadalajara","selecao_1":"COL","selecao_2":"COD","pick":"CazéTV + Globo","match_id":"M048","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":true,"pessoas":[]},"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":51,"rodada":"Rodada 3","data":"2026-06-24","dia_semana":"QUARTA","hora":"16:00","local":"Vancouver","selecao_1":"SUI","selecao_2":"CAN","pick":"CazéTV","match_id":"M051","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":52,"rodada":"Rodada 3","data":"2026-06-24","dia_semana":"QUARTA","hora":"16:00","local":"Seattle","selecao_1":"BIH","selecao_2":"QAT","pick":"CazéTV","match_id":"M052","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":49,"rodada":"Rodada 3","data":"2026-06-24","dia_semana":"QUARTA","hora":"19:00","local":"Miami","selecao_1":"SCO","selecao_2":"BRA","pick":"CazéTV+Globo/SBT","match_id":"M049","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"tv_studio":{"status":"REQ","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":15,"fully":false,"pessoas":[]},"dressing_room":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"centre_circle":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_rep_benches":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_phone":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_camera":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"media_mz_digital":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":4,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"tv_studio_internet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"inet_bench_codec":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":50,"rodada":"Rodada 3","data":"2026-06-24","dia_semana":"QUARTA","hora":"19:00","local":"Atlanta","selecao_1":"MOR","selecao_2":"HAI","pick":"CazéTV","match_id":"M050","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":53,"rodada":"Rodada 3","data":"2026-06-24","dia_semana":"QUARTA","hora":"22:00","local":"Cidade do México","selecao_1":"CZE","selecao_2":"MEX","pick":"CazéTV","match_id":"M053","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":54,"rodada":"Rodada 3","data":"2026-06-24","dia_semana":"QUARTA","hora":"22:00","local":"Monterrey","selecao_1":"RSA","selecao_2":"KOR","pick":"CazéTV","match_id":"M054","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":55,"rodada":"Rodada 3","data":"2026-06-25","dia_semana":"QUINTA","hora":"17:00","local":"Philadelphia","selecao_1":"CUW","selecao_2":"CIV","pick":"CazéTV","match_id":"M055","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":56,"rodada":"Rodada 3","data":"2026-06-25","dia_semana":"QUINTA","hora":"17:00","local":"New York","selecao_1":"ECU","selecao_2":"GER","pick":"CazéTV","match_id":"M056","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":57,"rodada":"Rodada 3","data":"2026-06-25","dia_semana":"QUINTA","hora":"20:00","local":"Dallas","selecao_1":"JPN","selecao_2":"SWE","pick":"CazéTV","match_id":"M057","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":58,"rodada":"Rodada 3","data":"2026-06-25","dia_semana":"QUINTA","hora":"20:00","local":"Kansas City","selecao_1":"TUN","selecao_2":"NED","pick":"CazéTV","match_id":"M058","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":59,"rodada":"Rodada 3","data":"2026-06-25","dia_semana":"QUINTA","hora":"23:00","local":"Los Angeles","selecao_1":"TUR","selecao_2":"USA","pick":"CazéTV","match_id":"M059","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":60,"rodada":"Rodada 3","data":"2026-06-25","dia_semana":"QUINTA","hora":"23:00","local":"San Francisco","selecao_1":"PAR","selecao_2":"AUS","pick":"CazéTV","match_id":"M060","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":61,"rodada":"Rodada 3","data":"2026-06-26","dia_semana":"SEXTA","hora":"16:00","local":"Boston","selecao_1":"NOR","selecao_2":"FRA","pick":"CazéTV","match_id":"M061","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":true,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":62,"rodada":"Rodada 3","data":"2026-06-26","dia_semana":"SEXTA","hora":"16:00","local":"Toronto","selecao_1":"SEN","selecao_2":"IRQ","pick":"CazéTV","match_id":"M062","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":65,"rodada":"Rodada 3","data":"2026-06-26","dia_semana":"SEXTA","hora":"21:00","local":"Houston","selecao_1":"CPV","selecao_2":"KSA","pick":"CazéTV","match_id":"M065","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":66,"rodada":"Rodada 3","data":"2026-06-26","dia_semana":"SEXTA","hora":"21:00","local":"Guadalajara","selecao_1":"URU","selecao_2":"ESP","pick":"CazéTV","match_id":"M066","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":true,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":63,"rodada":"Rodada 3","data":"2026-06-27","dia_semana":"SÁBADO","hora":"00:00","local":"Seattle","selecao_1":"EGY","selecao_2":"IRN","pick":"CazéTV","match_id":"M063","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":64,"rodada":"Rodada 3","data":"2026-06-27","dia_semana":"SÁBADO","hora":"00:00","local":"Vancouver","selecao_1":"NZL","selecao_2":"BEL","pick":"CazéTV","match_id":"M064","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":67,"rodada":"Rodada 3","data":"2026-06-27","dia_semana":"SÁBADO","hora":"18:00","local":"New York","selecao_1":"PAN","selecao_2":"ENG","pick":"CazéTV","match_id":"M067","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":68,"rodada":"Rodada 3","data":"2026-06-27","dia_semana":"SÁBADO","hora":"18:00","local":"Philadelphia","selecao_1":"CRO","selecao_2":"GHA","pick":"CazéTV","match_id":"M068","servicos":{"observer_seat":{"status":"REQ","qty":3,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":71,"rodada":"Rodada 3","data":"2026-06-27","dia_semana":"SÁBADO","hora":"20:30","local":"Miami","selecao_1":"COL","selecao_2":"POR","pick":"CazéTV","match_id":"M071","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":72,"rodada":"Rodada 3","data":"2026-06-27","dia_semana":"SÁBADO","hora":"20:30","local":"Atlanta","selecao_1":"COD","selecao_2":"UZB","pick":"CazéTV","match_id":"M072","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":69,"rodada":"Rodada 3","data":"2026-06-27","dia_semana":"SÁBADO","hora":"23:00","local":"Kansas City","selecao_1":"ALG","selecao_2":"AUT","pick":"CazéTV","match_id":"M069","servicos":{"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}},{"numero":70,"rodada":"Rodada 3","data":"2026-06-27","dia_semana":"SÁBADO","hora":"23:00","local":"Dallas","selecao_1":"JOR","selecao_2":"ARG","pick":"CazéTV","match_id":"M070","servicos":{"uniflash":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"observer_seat":{"status":"REQ","qty":5,"fully":false,"pessoas":[]},"guest_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_arrival":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"presentation_bg":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"pitch_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_pc_journ":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_mz_tv":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"team_departure":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"digital_reporter":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"media_parking":{"status":"CNF","qty":2,"fully":false,"pessoas":[]},"inet_behind_goal":{"status":"CNF","qty":1,"fully":false,"pessoas":[]},"uniflash_inet":{"status":"CNF","qty":1,"fully":false,"pessoas":[]}}}];
+const SVC_META_FALLBACK = {"dressing_room":{"nome":"Dressing Room","cor":"#888888","cat":"Pré-jogo","maxP":1,"booking":"21221","equip":"Equipamento HBS (apenas repórter)","horario":"~2h antes do KO (após preparo dos uniformes)","descr":"Stand-up no vestiário filmado pela HBS. MP entra apenas com 1 repórter. Sinal entregue com DELAY pelo MP Router do IBC.","obs":"Apenas MPs da respectiva seleção. Máx 5 minutos dentro do vestiário. Depende de aprovação da seleção. Repórter deve permanecer estático (standup clássico) e não pode interagir com o equipamento de jogo."},"team_arrival":{"nome":"Team Arrival","cor":"#666666","cat":"Pré-jogo","maxP":2,"booking":"21341","equip":"1 Câmera + TVU / Mojo","horario":"~2h antes do KO (chegada do ônibus)","descr":"Posição de standup / gravação na chegada do ônibus e desembarque das delegações.","obs":"Não pode abordar nenhum membro da delegação para entrevista, selfie ou autógrafo."},"guest_arrival":{"nome":"Guest Arrival","cor":"#777777","cat":"Pré-jogo","maxP":3,"booking":"21331","equip":"1 Câmera + TVU / Mojo","horario":"De 3h a 30 min antes do KO","descr":"Posição na área VVIP para filmar chegada de convidados FIFA.","obs":"Entrevistas ficam a critério dos convidados. Recomenda-se combinar com antecedência - lista de convidados esperados é divulgada pela Fifa. Aberturas de cada país, 4 de julho em Philadelphia e final terão esquema especial de Guest Carpet."},"presentation":{"nome":"Presentation Touchline","cor":"#8AA800","cat":"Campo","maxP":4,"booking":"21352a","equip":"1 Câmera + TVU + Iluminação / HBS entrega ponto de energia e internet 50 Mbps (se bookada)","horario":"A partir de 3h antes do KO até 90' depois do jogo (setup 5h30 antes). Não usa durante o jogo.","descr":"Posição para apresentação na linha lateral - pré-jogo, intervalo e pós. Pode ser usada também no MD-1","obs":"Posição é atrás da placa de publicidade. Equipamentos devem ser retirados da posição antes do protocolo. Convidados precisam ter credenciamento e devem se retirar assim que terminar a entrevista. Uso no intervalo e fim de jogo depois que equipes e arbitragem saírem de campo. Entrevistas são permitidas se combinadas com a confederação. Usos ao vivo no MD-1 ou no horário de setup devem ser informados ao BIO."},"presentation_bg":{"nome":"Presentation Behind Goal","cor":"#A8C800","cat":"Campo","maxP":4,"booking":"21351a","equip":"1 Câmera + TVU + Iluminação / HBS entrega ponto de energia e internet 50 Mbps (se bookada)","horario":"A partir de 3h antes do KO até 90' depois do jogo (setup 5h30 antes). Câmera exclusiva durante  o jogo.","descr":"Posição para apresentação atrás do gol - pré-jogo, intervalo e pós. Câmera permanece em campo durante o jogo como exclusiva (unilateral camera). Pode ser usada também no MD-1","obs":"Posição é atrás da placa de publicidade. Equipamentos devem ser retirados da posição antes do protocolo. Durante o jogo, só fica o cinegrafista. Convidados precisam ter credenciamento e devem se retirar assim que terminar a entrevista. Uso no intervalo e fim de jogo depois que equipes e arbitragem saírem de campo. Entrevistas são permitidas se combinadas com a confederação. Usos ao vivo no MD-1 ou no horário de setup devem ser informados ao BIO."},"pitch_reporter":{"nome":"Pitch Reporter","cor":"#007A99","cat":"Campo","maxP":1,"booking":"21357","equip":"Equipamento de áudio (câmera e/ou TVU para fluxo de áudio em análise) /HBS entrega IP Codec mediante booking","horario":"A partir de 3h antes do KO até 90' depois do jogo (setup 5h30 antes)","descr":"Posição para reportagem de jogo (apenas áudio) atrás do gol e das câmeras unilaterais.","obs":"Entrevistas com técnicos ou jogadores não são permitidas. Apenas repórter fica em campo. Precisa estar na posição 15 minutos antes do jogo e não pode sair durante a partida. Não é permitido gravar o jogo com nenhum tipo de aparelho. Suporte técnico pode entrar apenas em caso de emergência e sair assim que o problema for resolvido."},"pitch_rep_benches":{"nome":"Bench Reporter","cor":"#007A99","cat":"Campo","maxP":1,"booking":"21356","equip":"Equipamento de áudio (câmera e/ou TVU para fluxo de áudio em análise) /HBS entrega IP Codec mediante booking","horario":"A partir do fim do aquecimento até 90' depois do jogo (setup 5h30 antes)","descr":"Posição para reportagem próxima ao banco de reservas.","obs":"Entrevistas com técnicos ou jogadores não são permitidas. Apenas repórter. Precisa estar posicionado 15 minutos antes do jogo e não pode sair durante a partida. Não é permitido gravar o jogo com nenhum tipo de aparelho. Suporte técnico pode entrar apenas em caso de emergência e sair assim que o problema for resolvido."},"centre_circle":{"nome":"Centre Circle","cor":"#006E51","cat":"Campo","maxP":4,"booking":"21354","equip":"1 Câmera + TVU","horario":"Durante o aquecimento","descr":"Entrada no círculo central pra gravação/vivo durante o aquecimento.","obs":"Exclusivo para MPs das seleções em campo. Máximo de 7 minutos em campo, contando entrada e saída. Tempo pode mudar se o serviço for compartilhado com outro detentor. Momento exato a ser alinhado com o BIO. Pode fazer ao vivo ou gravado. Entrevistas não são permitidas. Não pode usar salto alto ou calçado que prejudique o gramado."},"teams_onto":{"nome":"Team Onto Pitch","cor":"#006E51","cat":"Campo","maxP":2,"booking":"21355","equip":"1 Câmera + TVU","horario":"de -12 a -6min para o KO (setup a partir de -30min)","descr":"Posição na saída do túnel para standup durante a entrada das equipes.","obs":"Exclusivo para MPs das seleções em campo. Pode ser feito da Presentation Touchline já bookada para usar internet mais estável. Não são permitidas entrevistas. Parar de gravar antes da execução do primeiro hino. Sair de campo logo em seguida."},"digital_reporter":{"nome":"Digital Reporter","cor":"#7B2D8B","cat":"Campo","maxP":1,"booking":"21531","equip":"Celular / câmera leve - tripé leve permitido","horario":"A partir de 3h antes do KO até 90' depois do jogo (setup 5h30 antes)","descr":"Posição atrás do gol para geração de conteúdo digital.","obs":"Stand-up só pré/intervalo/pós. Durante o jogo: só filmagem. Precisa estar na posição até 30 minutos antes do KO (no show se não estiver). Não é permitido se movimentar pra fora da posição (inclusive gravação de torcida precisa ser da posição marcada). Só é permitido trocar de lado se o MP tiver posições bookadas dos dois lados. Publicações nas plataformas de social media devem seguir o guideline da Fifa."},"uniflash":{"nome":"UniFlash Interview","cor":"#E8002D","cat":"Pós-jogo","maxP":3,"booking":"21361a","equip":"1 Câmera + TVU / HBS entrega luz, ponto de energia e internet 50 Mbps (se bookada)","horario":"FJ+5 min · ~60 min","descr":"Posição de entrevista exclusiva entre o campo e os vestiários.","obs":"No máximo 90 segundos por jogador. Atletas são levados pela equipe de mídia da Fifa. É possível indicar preferências até 10 minutos antes do fim do jogo. Acesso ao local durante o segundo tempo."},"uniflash_fully":{"nome":"UniFlash (Fully Equipped)","cor":"#E8002D","cat":"Pós-jogo","maxP":1,"booking":"21225","equip":"Sinal FIFA + equipe HBS","horario":"FJ+5 min · ~30 min","descr":"Posição de entrevista exclusiva entre o campo e os vestiários via sinal da FIFA.","obs":"Câmera e equipe da HBS. Sinal entregue no IBC pelo MP Router. Posição pode ser compartilhada por até 3 MPs, com entrevistas em 'rodízio'. No máximo 90 segundos por jogador. Atletas são levados pela equipe de mídia da Fifa. É possível indicar preferências até 10 minutos antes do fim do jogo. Acesso ao local durante o segundo tempo."},"team_departure":{"nome":"Team Departure","cor":"#666666","cat":"Pós-jogo","maxP":2,"booking":"21369","equip":"1 Câmera + TVU / Mojo","horario":"Pós-jogo (saída do ônibus)","descr":"Posição de standup / gravação na saída das delegações para o ônibus.","obs":"É possível entrevistar, mas os times não são obrigados a parar."},"observer_seat":{"nome":"Observer Seats","cor":"#CC4400","cat":"Tribuna","maxP":1,"booking":"21621a","equip":"—","horario":"Durante todo o dia do jogo","descr":"Assentos na tribuna para assitir a partida.","obs":"Não é permitido gravar ou participar da transmissão a partir dos observer seats. Entrada apenas para a quantidade aprovada no booking e para o profissional que for designado no sistema."},"ml_player_arrival":{"nome":"Multi · Entrevista Jogador","cor":"#7B2D8B","cat":"Multilateral","maxP":1,"booking":"21211","equip":"Equipamento HBS (apenas repórter)","horario":"~90min antes do jogo (na chegada dos times)","descr":"Entrevista de um jogador na chegada da delegação, em off.","obs":"Exclusiva para MPs do próprio país. Apenas repórter se apresenta. Perguntas em off, sem interação com a transmissão. Até 90 segundos de entrevista. Distribuição pelo sinal da Fifa (WF/CSF + TeamA/TeamB). Nenhuma identificação do canal."},"ml_coach":{"nome":"Multi · Entrevista Técnico","cor":"#7B2D8B","cat":"Multilateral","maxP":1,"booking":"21212","equip":"Equipamento HBS (apenas repórter)","horario":"~60min antes do jogo (antes do aquecimento)","descr":"Entrevista com o treinador antes do aquecimento, em off.","obs":"Exclusiva para MPs do próprio país. Apenas repórter se apresenta. Perguntas em off, sem interação com a transmissão. Até 90 segundos de entrevista. Distribuição pelo sinal da Fifa (WF/CSF + TeamA/TeamB). Nenhuma identificação do canal."},"ml_halftime":{"nome":"Multiflash · Intervalo","cor":"#7B2D8B","cat":"Multilateral","maxP":1,"booking":"21213","equip":"Equipamento HBS (apenas repórter)","horario":"Intervalo","descr":"Entrevista do intervalo no sinal da Fifa, em off.","obs":"Exclusiva para MPs do próprio país. Apenas repórter se apresenta. Perguntas em off, sem interação com a transmissão. Um jogador ou técnico. Até 60 segundos de entrevista. Distribuição pelo sinal da Fifa (ao vivo TeamA/TeamB, ao vivo ou delay no WF/CSF). Nenhuma identificação do canal. Seleção pode decidir não dar entrevista."},"ml_fulltime":{"nome":"Multiflash · Pós-jogo","cor":"#7B2D8B","cat":"Multilateral","maxP":1,"booking":"21215","equip":"Equipamento HBS (apenas repórter)","horario":"Pós-jogo","descr":"Entrevistas de fim de jogo no sinal da Fifa, em off.","obs":"Exclusiva para MPs do próprio país. Apenas repórter se apresenta. Perguntas em off, sem interação com a transmissão. Falam o técnico e um jogador. Até 90 segundos cada entrevista. Distribuição pelo sinal da Fifa (ao vivo TeamA/TeamB, ao vivo ou delay no WF/CSF). Nenhuma identificação do canal."},"tv_studio":{"nome":"TV Interview Studio","cor":"#CC4400","cat":"Studio","maxP":4,"booking":"21363","equip":"Câmeras + TVUs","horario":"Pós-jogo","descr":"Estúdio (5-10m²) próximo ao vestiário para entrevistas exclusivas pós-jogo.","obs":"Regras a serem confirmadas. Equipe Fifa é responsável por alinhar com a CBF e conduzir jogadores até a posição."},"tv_studio_internet":{"nome":"Internet · Touchline","cor":"#007A99","cat":"Internet","maxP":0,"booking":"52621","equip":"Link 50 Mbps","horario":"Durante todo o dia do jogo","descr":"Internet dedicada para Presentation Touchline.","obs":"-","inet":true},"inet_behind_goal":{"nome":"Internet · Behind Goal","cor":"#007A99","cat":"Internet","maxP":0,"booking":"52611","equip":"Link 50 Mbps","horario":"Durante todo o dia do jogo","descr":"Internet dedicada para Presentation Behind Goal.","obs":"-","inet":true},"inet_bench_codec":{"nome":"IP Codec · Bench Reporter","cor":"#007A99","cat":"Internet","maxP":0,"booking":"52631","equip":"Link IP","horario":"Durante todo o dia do jogo","descr":"IP Codec para Bench Reporter.","obs":"-","inet":true},"uniflash_inet":{"nome":"Internet · UniFlash","cor":"#007A99","cat":"Internet","maxP":0,"booking":"52711","equip":"Link 50 Mbps","horario":"FJ+10 min · ~50 min","descr":"Internet dedicada para Uniflash","obs":"-","inet":true},"media_pc_journ":{"nome":"Press Conference","cor":"#555555","cat":"Mídia","maxP":1,"booking":"213653","equip":"Acesso individual","horario":"Pós-jogo (~20min após o jogo)","descr":"Acesso a coletiva para 1 jornalista.","obs":"Não é a posição de câmera. Acesso apenas para o repórter acompanhar coletiva. Sinal da coletiva chega pelos feeds da Fifa e no FifaMax. Não é permitido fazer standups, entrevistas ou qualquer entrada ao vivo/gravada da sala de coletivas.","media":true},"media_mz_tv":{"nome":"Mixed Zone · TV","cor":"#555555","cat":"Mídia","maxP":2,"booking":"213662","equip":"1 Câmera + TVU","horario":"Pós-jogo (~50min após o jogo)","descr":"Acesso à zona mista tradicional para repórter e cinegrafista.","obs":"Posição após o vestiário, na saída para os ônibus. Não tem acesso para produção. Jogadores não têm obrigação de parar pra dar entrevista. Não é permitido fazer standps ou entradas ao vivo/gravadas.","media":true},"media_mz_phone":{"nome":"Mixed Zone Station","cor":"#555555","cat":"Mídia","maxP":1,"booking":"213641","equip":"Celular apenas","horario":"Pós-jogo (~5 min após o jogo)","descr":"Estação de zona mista antes do vestiário, com câmera HBS única.","obs":"Posição ativa logo após as entrevistas de campo. Não é permitido entrar com câmera. Pode ser feita gravação com celular. Atleta se posiciona e responde perguntas diversas como numa coletiva, para câmera e microfone da Fifa - sinal ao vivo nos feeds (Team A/Team B) e no Fifa Max. Dois jogadores até os 16 avps. Três jogadores a partir das oitavas.","media":true},"media_mz_digital":{"nome":"Mixed Zone · Digital","cor":"#555555","cat":"Mídia","maxP":1,"booking":"213661","equip":"1 Celular / câmera leve","horario":"Pós-jogo (~50min após o jogo)","descr":"Acesso à zona mista tradicional para repórter digital.","obs":"Posição após o vestiário, na saída para os ônibus. Jogadores não têm obrigação de parar pra dar entrevista. Não é permitido fazer standps ou entradas ao vivo/gravadas. Acesso para um 'videorrepórter'.","media":true},"media_pc_camera":{"nome":"Press Conf. + Câmera","cor":"#555555","cat":"Mídia","maxP":1,"booking":"213652","equip":"1 Câmera + TVU","horario":"Pós-jogo (~20min após o jogo)","descr":"Acesso a coletiva para 1 câmera ENG.","obs":"Acesso apenas para o cinegrafista com a câmera. Não garante o repórter - outro booking.","media":true},"media_parking":{"nome":"Parking Pass","cor":"#555555","cat":"Mídia","maxP":0,"booking":"21611","equip":"—","horario":"A confirmar - estádio por estádio.","descr":"Vagas de estacionamento no P3.","obs":"Para veículos de até 12 pessoas. Estacionamento pode ser digital ou físico (retirar no MD-1 junto ao BIO).","media":true}};
+const SVC_ORDER = ["dressing_room", "team_arrival", "guest_arrival", "presentation", "presentation_bg", "pitch_reporter", "pitch_rep_benches", "centre_circle", "teams_onto", "digital_reporter", "uniflash", "uniflash_fully", "team_departure", "observer_seat", "ml_player_arrival", "ml_coach", "ml_halftime", "ml_fulltime", "tv_studio", "tv_studio_internet", "inet_behind_goal", "inet_bench_codec", "uniflash_inet", "media_pc_journ", "media_mz_tv", "media_mz_phone", "media_mz_digital", "media_pc_camera", "media_parking"];
+
+// v5: sem localStorage
+let ADMIN_UNLOCKED = false;
+let SVC = Object.fromEntries(Object.entries(SVC_META_FALLBACK).map(([k,s])=>[k,{...s,pending:false}]));
+
+// Grava uma célula no Sheets via Apps Script
+async function gravar(match_id, col_key, value, token) {
+  if (!APPS_SCRIPT_URL) {
+    return { ok:false, error:'Salvamento desativado: APPS_SCRIPT_URL não configurado.' };
+  }
+  try {
+    const r = await fetch(APPS_SCRIPT_URL, {
+      method:"POST", headers:{"Content-Type":"text/plain"},
+      body: JSON.stringify({ match_id, col_key, value, token:token||undefined }),
+    });
+    let data={};
+    try { data = await r.json(); } catch(e) { data = {}; }
+    if(!r.ok) return { ok:false, error:data.error||`Erro HTTP ${r.status} ao gravar no Sheets.` };
+    return data.ok===false ? data : { ok:true, ...data };
+  } catch(e) { return { ok:false, error:e.message||'Erro ao gravar no Sheets.' }; }
+}
+
+// Parser CSV com header dinâmico + validação básica
+function parseCSVRows(csvText) {
+  const text=(csvText||'').replace(/^\uFEFF/,'');
+  const rows=[];let row=[],cur='',inQ=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i],n=text[i+1];
+    if(c==='"'){
+      if(inQ&&n==='"'){cur+='"';i++;}
+      else inQ=!inQ;
+    } else if(c===','&&!inQ){row.push(cur.trim());cur='';}
+    else if((c==='\n'||c==='\r')&&!inQ){
+      if(c==='\r'&&n==='\n')i++;
+      row.push(cur.trim());cur='';
+      if(row.some(v=>v!==''))rows.push(row);
+      row=[];
+    } else cur+=c;
+  }
+  row.push(cur.trim());
+  if(row.some(v=>v!==''))rows.push(row);
+  return rows;
+}
+
+function parseSheetCSV(csvText) {
+  const rows=parseCSVRows(csvText);
+  const hi=rows.findIndex(r=>r.includes('match_id'));
+  if(hi===-1)throw new Error('Cabeçalho inválido: coluna obrigatória match_id não encontrada.');
+  const hdr=rows[hi].map(h=>h.trim());
+  const required=['jogo_num','match_id','rodada','data','hora','local','sel1','sel2','pick'];
+  const missing=required.filter(c=>!hdr.includes(c));
+  if(missing.length)throw new Error(`Colunas obrigatórias ausentes: ${missing.join(', ')}.`);
+  const get=(r,col)=>{const i=hdr.indexOf(col);return i>=0?(r[i]||'').trim():'';};
+  const svcKeys=[...new Set(hdr.filter(h=>h.endsWith('_status')).map(h=>h.replace('_status','')))];
+  const validStatuses=['CNF','REQ','','—','-'];
+  const errors=[];
+  const seen=new Set();
+  const dataRows=rows.slice(hi+1).filter(r=>get(r,'match_id').startsWith('M'));
+  const parsed=[];
+
+  dataRows.forEach((r,idx)=>{
+    const line=hi+2+idx;
+    const mid=get(r,'match_id');
+    if(seen.has(mid))errors.push(`Linha ${line}: match_id duplicado (${mid}).`);
+    seen.add(mid);
+    const num=parseInt(get(r,'jogo_num'),10);
+    if(!Number.isFinite(num))errors.push(`Linha ${line}: jogo_num inválido para ${mid}.`);
+    const data=get(r,'data');
+    if(data&&!/^\d{4}-\d{2}-\d{2}$/.test(data))errors.push(`Linha ${line}: data inválida em ${mid}; use YYYY-MM-DD.`);
+    const servicos={};
+    for(const key of svcKeys){
+      const st=get(r,`${key}_status`);
+      if(!validStatuses.includes(st))errors.push(`Linha ${line}: status inválido em ${key}_status (${st}). Use CNF, REQ ou vazio.`);
+      if(!st||st==='—'||st==='-')continue;
+      const rawQty=get(r,`${key}_qty`);
+      const qty=rawQty===''?0:parseInt(rawQty,10);
+      if(rawQty!==''&&!Number.isFinite(qty))errors.push(`Linha ${line}: quantidade inválida em ${key}_qty (${rawQty}).`);
+      if(!SVC_META_FALLBACK[key])errors.push(`Linha ${line}: serviço desconhecido (${key}). Verifique o nome da coluna ${key}_status.`);
+      const pessoas=[];let pi=1;
+      while(hdr.includes(`${key}_p${pi}`)){pessoas.push(get(r,`${key}_p${pi}`));pi++;}
+      const obs=get(r,`${key}_obs`)||'';
+      const meta=SVC_META_FALLBACK[key]||{};
+      const booking=get(r,`${key}_booking`)||meta.booking||key;
+      servicos[key]={st,qty:qty||0,fully:(key==='uniflash_fully'||booking==='21225')&&st==='CNF',booking,pessoas,obs,status:st};
+    }
+    parsed.push({numero:num||0,match_id:mid,rodada:get(r,'rodada'),
+      data:get(r,'data'),dia_semana:get(r,'dia_semana')||'',hora:get(r,'hora'),local:get(r,'local'),
+      selecao_1:get(r,'sel1'),selecao_2:get(r,'sel2'),pick:get(r,'pick'),servicos});
+  });
+
+  if(!parsed.length)errors.push('Nenhuma linha válida encontrada: match_id deve começar com M.');
+  if(errors.length)throw new Error(errors.slice(0,8).join(' | ')+(errors.length>8?` | +${errors.length-8} erro(s).`:''));
+  return parsed.filter(j=>j.numero>0);
+}
+
+// Helpers de serviço
+function svcsLista(jogo){
+  const out=[];
+  for(const[k,v]of Object.entries(jogo.servicos||{})){
+    const s=SVC[k];if(!s||s.inet||s.media)continue;
+    const displayNome=s.nome+(v.fully&&!/fully/i.test(s.nome)?' (Fully Equipped)':'');
+    out.push({key:k,svc:{...s,nome:displayNome},
+      qty:v.qty,status:v.status,fully:v.fully||false,
+      booking_actual:v.booking||s.booking,pessoas:v.pessoas||[],obs:v.obs||''});
+  }
+  const ORD=["Pré-jogo","Campo","Multilateral","Studio","Pós-jogo","Tribuna","Mídia"];
+  out.sort((a,b)=>{const da=ORD.indexOf(a.svc.cat||''),db=ORD.indexOf(b.svc.cat||'');return da!==db?da-db:a.svc.nome.localeCompare(b.svc.nome);});
+  return out;
+}
+function mediaLista(jogo){
+  return Object.entries(jogo.servicos||{}).filter(([k])=>SVC[k]?.media)
+    .map(([k,v])=>{return{key:k,svc:SVC[k],qty:v.qty,status:v.status,pessoas:v.pessoas||[]}});
+}
+function getInet(jogo){
+  return Object.entries(jogo.servicos||{}).filter(([k])=>SVC[k]?.inet)
+    .map(([k])=>{const s=SVC[k];return{booking:s.booking,nome:s.nome,descr:s.descr}});
+}
+
+// PSK sem uso em v5 — compat
+const PSK="cazetv_v5_copa2026"; let PS={};function savePS(){}
 
 const SELECOES={
   MEX:"México",RSA:"África do Sul",KOR:"Coreia do Sul",CZE:"Tchéquia",
@@ -209,57 +423,6 @@ function nomeSel(s){
   return SELECOES[s]||s;
 }
 
-// ── MAPEAMENTO DE SERVIÇOS (com bookings corretos) ────────────────────────────
-// Cada chave interna tem seu próprio booking FIFA agora
-// "?????" = pendente de confirmação no COS online (obi-fwc26.kosmogo.com)
-const SVC={
-  // Pré-jogo — acesso ônibus
-  dressing_room:    {booking:"21221",nome:"Dressing Room",     maxP:1,equip:"Apenas repórter (câmera e luz = HBS)",   horario:"~2h antes do KO (após preparo dos uniformes)",descr:"Stand-up no vestiário filmado pela HBS. MP entra apenas com 1 repórter — câmera e iluminação são da HBS.",obs:"Apenas MPs cujos times jogam. Máx 5 min por time. Sinal entregue DELAYED. Pode ser cancelado se set-up atrasar.",cor:"#888888",pending:false},
-  guest_arrival:    {booking:"21331",nome:"Guest Arrival",     maxP:3,equip:"LiveU / Mojo",   horario:"-180 a -90 min",descr:"Posição não-equipada na área VVIP para filmar chegada de convidados FIFA. MP traz equipamento.",obs:"Ativação a critério da FIFA por jogo. Guest Arrival Carpet ativado em jogos selecionados. MP traz 1 câmera máx.",cor:"#777777",pending:false},
-  // Pitch Reporter
-  pitch_reporter:   {booking:"21357",nome:"Pitch Reporter",    maxP:1,equip:"LiveU + IP Codec",horario:"A partir de 15 min antes do KO · jogo: só áudio",descr:"TV Pitch Reporter Position Behind Goal. Lives no pré-jogo. ×2 = ambos os gols.",obs:"Disponível a partir de 15 min antes do KO. Entrevistas de jogadores/técnicos NÃO permitidas. Áudio only — requer IP Codec (52641).",cor:"#007A99",pending:false},
-  pitch_rep_benches:{booking:"21356",nome:"Bench Reporter",    maxP:1,equip:"LiveU",           horario:"-15 min até FJ+15",descr:"TV Pitch Reporter Position - Team Benches. Repórter nos bancos de reservas.",obs:"Áudio only durante o jogo. Entrevistas não permitidas.",cor:"#007A99",pending:false},
-  // UniFlash
-  uniflash:         {booking:"21361a",nome:"UniFlash",          maxP:3,equip:"LiveU + 50 Mbps", horario:"FJ+10 min · ~50 min",descr:"Post-Match Unilateral Flash Interview. Entrevistas flash com jogadores das duas seleções.",obs:"Jogadores disponíveis APÓS entrevistas multilaterais obrigatórias. 90 seg/entrevista. First-come first-served. MP traz câmera (1 máx). Requer 52711.",cor:"#E8002D",pending:false},
-  uniflash_fully:   {booking:"21225",nome:"UniFlash Fully",    maxP:1,equip:"Sinal FIFA",      horario:"FJ+10 min · ~50 min",descr:"Post-Match Fully Equipped. Versão completa com produção FIFA inclusa.",obs:"Câmera e equipe são da HBS — MP traz apenas 1 repórter. First-come first-served. 90 seg/entrevista.",cor:"#E8002D",pending:false},
-  // Digital / Social Media
-  digital_reporter: {booking:"21531",nome:"Social Media",     maxP:1,equip:"Celular / mobile",horario:"-15 min até FJ",descr:"Digital Media Reporter Position. Captação vertical para redes sociais. ×2 = L e R.",obs:"Stand-up permitido APENAS pré-jogo, intervalo e pós-jogo. DURANTE o jogo: somente filmagem, sem stand-up, sem movimentação. USD 100.",cor:"#7B2D8B",pending:false},
-  // Câmera / UniCam
-  centre_circle:    {booking:"21354",nome:"Centre Circle",  maxP:4,equip:"LiveU / câmera",  horario:"Durante o aquecimento (stand-up máx 7 min)",descr:"Pre-cabled Uni Cam (Behind Goal L). Câmera atrás do gol esquerdo.",obs:"Sujeito a aprovação por jogo. Entrevistas NÃO permitidas. Contribuição APENAS via bonding/redes móveis — sem câmera cabeada.",cor:"#006E51",pending:false},
-  unicam_goal:      {booking:"21523",nome:"UniCam Goal Left",  maxP:1,equip:"LiveU / câmera ENG", horario:"-90 min até FJ+15",descr:"Camera Position FL: Field Left ENG. Câmera atrás do gol esquerdo, nível do gramado.",obs:"1 câmera + 1 cinegrafista. Posição fixa. Pre-cabled.",cor:"#006E51",pending:false},
-  teams_onto:       {booking:"21355",nome:"Team Onto Pitch",   maxP:2,equip:"LiveU",           horario:"Entrada das equipes em campo (pré-jogo)",descr:"Posição no túnel para captar a entrada das equipes em campo.",obs:"Apenas MPs cujos times jogam. Contribuição APENAS via bonding/redes móveis — sem câmera cabeada.",cor:"#006E51",pending:false},
-  // Internet
-  tv_studio_internet:{booking:"52621",nome:"Internet · Touchline",maxP:0,equip:"Link 50 Mbps",horario:"Cobertura total",descr:"Conectividade dedicada para Touchline Presentation.",obs:"Sempre bookar junto com Touchline.",cor:"#007A99",inet:true,pending:false},
-  // Touchline
-  presentation:     {booking:"21352a",nome:"Touchline",         maxP:4,equip:"LiveU + 50 Mbps", horario:"A partir de 3h antes do KO · intervalo · pós-jogo",descr:"Touchline Presentation Position. Principal ponto de apresentação CazéTV. ×2 = pré e pós.",obs:"Entrevistas de jogadores/técnicos NÃO permitidas. Limpar antes dos jogadores saírem do túnel. MP traz câmera e iluminação. Requer 52621.",cor:"#8AA800",pending:false},
-  // Tribuna
-  observer_seat:    {booking:"21621a",nome:"Observer Seats",    maxP:6,equip:"—",              horario:"Durante todo o jogo",descr:"Assentos na tribuna para observadores, comentaristas e convidados.",obs:"Qtd = assentos contratados. Listar todos os ocupantes.",cor:"#CC4400",pending:false},
-};
-
-function getInet(servicos){
-  const links=[],seen=new Set();
-  const add=(b,n,d)=>{if(!seen.has(b)){seen.add(b);links.push({booking:b,nome:n,descr:d});}};
-  const ks=Object.keys(servicos);
-  if(ks.includes('tv_studio_internet')||ks.includes('presentation'))
-    add('52621','Internet · Touchline','Link dedicado para Touchline Presentation');
-  if(ks.some(k=>['pitch_reporter','pitch_rep_benches'].includes(k)))
-    add('52641','IP Codec · Pitch Reporter','Acesso IP para codec do Pitch Reporter');
-  if(ks.some(k=>['uniflash','uniflash_fully'].includes(k)))
-    add('52711','Internet · UniFlash','Link dedicado para UniFlash');
-  return links;
-}
-
-// Cada chave tem seu próprio booking agora — sem agrupamento
-function svcsLista(servicos){
-  const out=[];
-  for(const[k,v] of Object.entries(servicos)){
-    const s=SVC[k];
-    if(!s||s.inet)continue;
-    out.push({key:k,svc:s,qty:v});
-  }
-  return out;
-}
-
 const RC={'Rodada 1':{cor:'#7B2D8B',ct:'#fff'},'Rodada 2':{cor:'#007A99',ct:'#fff'},'Rodada 3':{cor:'#8AA800',ct:'#fff'}};
 function getRc(r){return RC[r]||{cor:'#555',ct:'#fff'};}
 
@@ -272,167 +435,144 @@ const PERFIS={
   'B':{label:'Sem cobertura',         cor:'#AAAAAA',bg:'rgba(0,0,0,.04)'},
 };
 
-// Filtro por serviço: lista de chaves da planilha com nome e cor para exibir
-const SVC_FILTROS=[
-  {key:'guest_arrival',   nome:'Guest Arrival',   cor:'#777777'},
-  {key:'presentation',    nome:'Touchline',        cor:'#8AA800'},
-  {key:'pitch_reporter',  nome:'Pitch Reporter',   cor:'#007A99'},
-  {key:'pitch_rep_benches',nome:'Bench Reporter',  cor:'#007A99'},
-  {key:'uniflash',        nome:'UniFlash',         cor:'#E8002D'},
-  {key:'uniflash_fully',  nome:'UniFlash Fully',   cor:'#E8002D'},
-  {key:'digital_reporter',nome:'Social Media',     cor:'#7B2D8B'},
-  {key:'centre_circle',   nome:'UniCam Goal',      cor:'#006E51'},
-  {key:'teams_onto',      nome:'Team Onto Pitch',  cor:'#006E51'},
-  {key:'observer_seat',   nome:'Observer Seats',   cor:'#CC4400'},
-  {key:'dressing_room',   nome:'Dressing Room',    cor:'#888888'},
-];
-const SVC_BK={'dressing_room':'DR','guest_arrival':'GA','pitch_reporter':'PR','pitch_rep_benches':'PRB',
-  'uniflash':'UF','uniflash_fully':'UFF','digital_reporter':'DR2','centre_circle':'CC',
-  'teams_onto':'TO','tv_studio_internet':'TVI','presentation':'PRES','observer_seat':'OBS'};
-function getPerfil(servicos){
-  const ks=Object.keys(servicos);
-  if(!ks.length)return'B';
-  if(ks.includes('centre_circle')||ks.includes('teams_onto'))return'D';
-  if(ks.includes('guest_arrival')&&ks.includes('presentation')&&ks.includes('uniflash')&&ks.includes('digital_reporter')&&ks.includes('observer_seat'))return'A';
-  if(ks.includes('pitch_reporter')&&ks.includes('digital_reporter')&&ks.includes('observer_seat')&&!ks.includes('presentation')&&!ks.includes('uniflash'))return'C';
-  if(ks.includes('pitch_reporter')&&ks.length===1)return'F';
-  return'E';
-}
 
-const PSK="cazetv_v5_copa2026";
-let PS={};try{PS=JSON.parse(localStorage.getItem(PSK)||"{}");}catch(e){}
-function savePS(){try{localStorage.setItem(PSK,JSON.stringify(PS));}catch(e){}}
+const SVC_FILTROS=[{"key":"team_arrival","nome":"Team Arrival","cor":"#666666"},{"key":"guest_arrival","nome":"Guest Arrival","cor":"#777777"},{"key":"presentation","nome":"Presentation Touchline","cor":"#8AA800"},{"key":"presentation_bg","nome":"Presentation Behind Goal","cor":"#A8C800"},{"key":"pitch_reporter","nome":"Pitch Reporter","cor":"#007A99"},{"key":"pitch_rep_benches","nome":"Bench Reporter","cor":"#007A99"},{"key":"uniflash","nome":"UniFlash Interview","cor":"#E8002D"},{"key":"uniflash_fully","nome":"UniFlash (Fully Equipped)","cor":"#E8002D"},{"key":"digital_reporter","nome":"Digital Reporter","cor":"#7B2D8B"},{"key":"centre_circle","nome":"Centre Circle","cor":"#006E51"},{"key":"teams_onto","nome":"Team Onto Pitch","cor":"#006E51"},{"key":"observer_seat","nome":"Observer Seats","cor":"#CC4400"},{"key":"dressing_room","nome":"Dressing Room","cor":"#888888"},{"key":"tv_studio","nome":"TV Interview Studio","cor":"#CC4400"},{"key":"media_pc_journ","nome":"Press Conference","cor":"#555555"},{"key":"media_mz_tv","nome":"Mixed Zone · TV","cor":"#555555"}];
 
 function fmtD(iso){if(!iso)return'';const[,m,d]=iso.split('-');return`${d}/${m}`;}
 function fmtDL(iso){if(!iso)return'';const ms=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];const[y,m,d]=iso.split('-');return`${d} ${ms[+m-1]} ${y}`;}
 function isBRA(j){return['BRA','BRASIL'].some(s=>j.selecao_1===s||j.selecao_2===s);}
 
+
+function getPerfil(jogo){
+  const ks=Object.keys(jogo.servicos||{}).filter(k=>{const s=SVC[k];return s&&!s.inet&&!s.media;});
+  if(!ks.length)return'B';
+  const hasUniFlash=ks.includes('uniflash')||ks.includes('uniflash_fully');
+  if(ks.some(k=>k.startsWith('ml_'))||ks.includes('dressing_room'))return'D';
+  if(ks.includes('guest_arrival')&&ks.includes('presentation')&&hasUniFlash&&ks.includes('digital_reporter')&&ks.includes('observer_seat'))return'A';
+  if(ks.includes('pitch_reporter')&&ks.includes('digital_reporter')&&ks.includes('observer_seat')&&!ks.includes('presentation')&&!hasUniFlash)return'C';
+  if(ks.length===1&&ks.includes('pitch_reporter'))return'F';
+  return'E';
+}
+
+const SVC_FREQ={};
+const SVC_INET_PANEL=[{"booking":"52611","nome":"Internet · Behind Goal","descr":"Internet dedicada para Presentation Behind Goal.","horario":"Durante todo o dia do jogo","obs":"-","reqBy":"Presentation Behind Goal","cor":"#007A99"},{"booking":"52621","nome":"Internet · Touchline","descr":"Internet dedicada para Presentation Touchline.","horario":"Durante todo o dia do jogo","obs":"-","reqBy":"Presentation Touchline","cor":"#007A99"},{"booking":"52631","nome":"IP Codec · Bench Reporter","descr":"IP Codec para Bench Reporter.","horario":"Durante todo o dia do jogo","obs":"-","reqBy":"Bench Reporter","cor":"#007A99"},{"booking":"52641","nome":"IP Codec · Pitch Reporter","descr":"IP Codec para Pitch Reporter.","horario":"Cobertura total","obs":"Sempre com Pitch Reporter.","reqBy":"Pitch Reporter","cor":"#007A99"},{"booking":"52711","nome":"Internet · UniFlash","descr":"Internet dedicada para Uniflash","horario":"FJ+10 min · ~50 min","obs":"-","reqBy":"UniFlash Interview","cor":"#007A99"}];
+
 const {useState,useMemo,useEffect,createElement:h}=React;
 
+function SheetErrorPanel({status,error}){
+  const loading=status==='loading';
+  return h('div',{className:'empty',style:{maxWidth:760,margin:'40px auto',background:'var(--surface)',border:'1px solid var(--border)',borderRadius:6,textAlign:'left'}},
+    h('div',{className:'empty-ico',style:{fontSize:34}},loading?'⏳':'⚠️'),
+    h('div',{style:{fontSize:18,fontWeight:900,marginBottom:8,color:loading?'var(--text)':'var(--red)'}},loading?'Carregando dados do Google Sheets':'Dados bloqueados'),
+    h('div',{style:{fontSize:13,color:'var(--text2)',lineHeight:1.6}},
+      loading?'Aguarde a leitura da planilha publicada em CSV.':'O app não exibiu dados embutidos do HTML para evitar operação com informação desatualizada.'),
+    !loading&&h('div',{style:{marginTop:14,padding:12,background:'rgba(232,0,45,.06)',border:'1px solid rgba(232,0,45,.25)',borderRadius:4,fontSize:12,color:'var(--text2)',lineHeight:1.6}},
+      h('strong',null,'Motivo: '),error||'Erro não especificado.',
+      h('br'),
+      'Verifique SHEETS_URL, publicação CSV, cabeçalho match_id e colunas obrigatórias.'
+    )
+  );
+}
+
 function App(){
-  const [jogos,setJogos]=useState(JOGOS_FALLBACK);
-  const [srcStatus,setSrcStatus]=useState(SHEETS_URL?'loading':'local');
+  const [jogos,setJogos]=useState([]);
+  const [srcStatus,setSrcStatus]=useState(SHEETS_URL?'loading':'err');
+  const [sheetError,setSheetError]=useState(SHEETS_URL?'':'SHEETS_URL não configurado.');
   const [q,setQ]=useState('');
   const [fR,setFR]=useState('todas');
   const [fP,setFP]=useState('todos');
   const [fSvc,setFSvc]=useState('todos');
   const [sel,setSel]=useState(null);
   const [tick,setTick]=useState(0);
-  const [aba,setAba]=useState('jogos'); // 'jogos' | 'servicos'
+  const [aba,setAba]=useState('jogos');
+  const [adminOpen,setAdminOpen]=useState(false);
 
   useEffect(()=>{
-    if(!SHEETS_URL){setSrcStatus('local');return;}
-    setSrcStatus('loading');
-    fetch(SHEETS_URL).then(r=>r.text()).then(csv=>{
+    if(!SHEETS_URL){setJogos([]);setSheetError('SHEETS_URL não configurado.');setSrcStatus('err');return;}
+    setSrcStatus('loading');setSheetError('');
+    fetch(SHEETS_URL).then(r=>{
+      if(!r.ok)throw new Error(`Erro HTTP ${r.status} ao carregar Sheets.`);
+      return r.text();
+    }).then(csv=>{
       try{
-        const lines=csv.trim().split('\n').map(l=>l.split(',').map(c=>c.trim().replace(/^"|"$/g,'')));
-        if(lines.length<2){setSrcStatus('err');return;}
-        const hdr=lines[0];
-        const ALL_BK=['?????','21356','41214','41223','41312'];
-        const KEY_MAP={'dressing_room':null,'guest_arrival':null,'pitch_reporter':null,
-          'pitch_rep_benches':'21356','uniflash':null,'uniflash_fully':null,
-          'digital_reporter':null,'centre_circle':null,'teams_onto':null,
-          'tv_studio_internet':'41214','presentation':null,'observer_seat':null};
-        // Parse simples: procura colunas pelo código booking no header
-        const parsed=[];
-        for(let i=1;i<lines.length;i++){
-          const r=lines[i];
-          const get=col=>r[hdr.indexOf(col)]||'';
-          if(!get('Jogo #'))continue;
-          const servicos={};
-          // Mapear colunas pelo código ou nome
-          const colMap={
-            'dressing_room':'Dressing Room','guest_arrival':'Guest Arrival',
-            'pitch_reporter':'Pitch Reporter','pitch_rep_benches':'21356',
-            'uniflash':'UniFlash','uniflash_fully':'UniFlash Fully',
-            'digital_reporter':'Social Media','centre_circle':'Centre Circle',
-            'teams_onto':'Teams Onto','tv_studio_internet':'41214',
-            'presentation':'Presentation','observer_seat':'Observer Seat',
-          };
-          for(const[key,colName] of Object.entries(colMap)){
-            const hIdx=hdr.findIndex(h=>h.includes(colName)||h.startsWith(colName));
-            if(hIdx>=0){const v=parseInt(r[hIdx])||0;if(v>0)servicos[key]=v;}
-          }
-          parsed.push({
-            numero:parseInt(get('Jogo #'))||0,
-            rodada:get('Rodada')||'Rodada 1',
-            data:get('Data')||'',dia_semana:get('Dia')||'',
-            hora:get('Hora')||'',local:get('Local')||'',
-            selecao_1:get('Seleção 1\n(sigla)')||get('Seleção 1')||'',
-            selecao_2:get('Seleção 2\n(sigla)')||get('Seleção 2')||'',
-            pick:get('Pick')||'',servicos,pessoal:{},
-          });
-        }
-        if(parsed.filter(j=>j.numero>0).length>0){setJogos(parsed.filter(j=>j.numero>0));setSrcStatus('ok');}
-        else setSrcStatus('err');
-      }catch(e){setSrcStatus('err');}
-    }).catch(()=>setSrcStatus('err'));
+        const p=parseSheetCSV(csv);
+        if(p&&p.length>0){setJogos(p);setSrcStatus('ok');}
+        else{setJogos([]);setSheetError('A planilha não retornou jogos válidos.');setSrcStatus('err');}
+      }
+      catch(e){setJogos([]);setSheetError(e.message||'Erro ao validar planilha.');setSrcStatus('err');}
+    }).catch(e=>{setJogos([]);setSheetError(e.message||'Erro ao carregar Sheets.');setSrcStatus('err');});
   },[]);
 
-  useEffect(()=>{const fn=e=>{if(e.key==='Escape')setSel(null);};document.addEventListener('keydown',fn);return()=>document.removeEventListener('keydown',fn);},[]);
-  // Carregar descrições/regras da aba Serviços se URL configurada
   useEffect(()=>{
     if(!SERVICES_URL)return;
     fetch(SERVICES_URL).then(r=>r.text()).then(csv=>{
       try{
-        const lines=csv.trim().split('\n').map(l=>l.split(',').map(c=>c.trim().replace(/^"|"$/g,'')));
+        const lines=parseCSVRows(csv);
         if(lines.length<2)return;
-        const hdr=lines[0];
-        const get=(r,col)=>r[hdr.indexOf(col)]||'';
+        const hdr=lines[0].map(h=>h.trim());
+        const get=(r,col)=>{const i=hdr.indexOf(col);return i>=0?(r[i]||'').trim():'';};
+        const truthy=v=>['true','sim','1','yes','y'].includes(String(v||'').trim().toLowerCase());
         for(let i=1;i<lines.length;i++){
-          const r=lines[i];
-          const key=get(r,'Chave interna');
-          if(!key||!SVC[key])continue;
-          if(get(r,'Nome abreviado'))SVC[key].nome=get(r,'Nome abreviado');
-          if(get(r,'Booking COS 2.1'))SVC[key].booking=get(r,'Booking COS 2.1');
-          if(get(r,'Máx. pessoas\n(COS)')){const v=parseInt(get(r,'Máx. pessoas\n(COS)'));if(!isNaN(v))SVC[key].maxP=v;}
-          if(get(r,'Horário operacional'))SVC[key].horario=get(r,'Horário operacional');
-          if(get(r,'Descrição'))SVC[key].descr=get(r,'Descrição');
-          if(get(r,'Regras operacionais (COS)'))SVC[key].obs=get(r,'Regras operacionais (COS)');
-          if(get(r,'Equipamento'))SVC[key].equip=get(r,'Equipamento');
-          if(get(r,'Cor (hex)'))SVC[key].cor=get(r,'Cor (hex)');
-          SVC[key].pending=false;
+          const r=lines[i];const key=get(r,'chave');if(!key)continue;
+          if(!SVC[key])SVC[key]={nome:key,cor:'#555555',cat:'Outros',maxP:0,booking:key,equip:'',horario:'',descr:'',obs:'',pending:false};
+          if(get(r,'nome'))SVC[key].nome=get(r,'nome');
+          if(get(r,'booking'))SVC[key].booking=get(r,'booking');
+          if(get(r,'categoria'))SVC[key].cat=get(r,'categoria');
+          if(get(r,'max_pessoas')){const v=parseInt(get(r,'max_pessoas'));if(!isNaN(v))SVC[key].maxP=v;}
+          if(get(r,'equipamento'))SVC[key].equip=get(r,'equipamento');
+          if(get(r,'horario'))SVC[key].horario=get(r,'horario');
+          if(get(r,'descricao'))SVC[key].descr=get(r,'descricao');
+          if(get(r,'observacoes'))SVC[key].obs=get(r,'observacoes');
+          if(get(r,'cor'))SVC[key].cor=get(r,'cor');
+          const cat=(SVC[key].cat||'').toLowerCase();
+          SVC[key].inet=truthy(get(r,'inet'))||cat==='internet';
+          SVC[key].media=truthy(get(r,'media'))||cat==='mídia'||cat==='midia';
         }
         setTick(t=>t+1);
-      }catch(e){console.warn('Erro ao carregar Serviços:',e);}
-    }).catch(e=>console.warn('Serviços URL erro:',e));
+      }catch(e){console.warn('Falha ao carregar catálogo de serviços',e);}
+    }).catch(()=>{});
   },[]);
 
+  useEffect(()=>{const fn=e=>{if(e.key==='Escape')setSel(null);};document.addEventListener('keydown',fn);return()=>document.removeEventListener('keydown',fn);},[]);
+
   const rodadasPresentes=useMemo(()=>[...new Set(jogos.map(j=>j.rodada))].sort(),[jogos]);
-  const perfisPresentes=useMemo(()=>[...new Set(jogos.map(j=>getPerfil(j.servicos)))].sort((a,b)=>['D','A','E','C','F','B'].indexOf(a)-['D','A','E','C','F','B'].indexOf(b)),[jogos]);
+  const perfisPresentes=useMemo(()=>[...new Set(jogos.map(j=>getPerfil(j)))].sort((a,b)=>['D','A','E','C','F','B'].indexOf(a)-['D','A','E','C','F','B'].indexOf(b)),[jogos,tick]);
 
   const lista=useMemo(()=>{
     const lq=q.trim().toLowerCase();
     return jogos.filter(j=>{
       if(fR!=='todas'&&j.rodada!==fR)return false;
-      if(fP!=='todos'&&getPerfil(j.servicos)!==fP)return false;
-      if(fSvc!=='todos'&&!j.servicos[fSvc])return false;
+      if(fP!=='todos'&&getPerfil(j)!==fP)return false;
+      if(fSvc!=='todos'&&!(j.servicos&&j.servicos[fSvc]))return false;
       if(lq){const hay=[j.selecao_1,j.selecao_2,j.local,j.dia_semana,nomeSel(j.selecao_1),nomeSel(j.selecao_2)].join(' ').toLowerCase();if(!hay.includes(lq))return false;}
       return true;
     });
-  },[jogos,q,fR,fP,fSvc]);
+  },[jogos,q,fR,fP,fSvc,tick]);
 
-  const porRodada=useMemo(()=>{const g={};for(const j of lista){if(!g[j.rodada])g[j.rodada]=[];g[j.rodada].push(j);}return rodadasPresentes.filter(r=>g[r]).map(r=>({rodada:r,jogos:g[r]}));},[lista,rodadasPresentes]);
+  const porRodada=useMemo(()=>{
+    const g={};for(const j of lista){if(!g[j.rodada])g[j.rodada]=[];g[j.rodada].push(j);}
+    return rodadasPresentes.filter(r=>g[r]).map(r=>{return{rodada:r,jogos:g[r]}});
+  },[lista,rodadasPresentes]);
 
-  const comSvc=jogos.filter(j=>Object.keys(j.servicos).length>0).length;
-  const statusInfo={local:{dot:'local',txt:'Dados locais · Cole URL do Sheets para sincronizar'},loading:{dot:'loading',txt:'Carregando do Google Sheets…'},ok:{dot:'ok',txt:'Sincronizado com Google Sheets'},err:{dot:'err',txt:'Erro ao carregar Sheets — usando dados locais'}}[srcStatus]||{dot:'err',txt:''};
+  const comSvc=jogos.filter(j=>Object.keys(j.servicos||{}).length>0).length;
+  const statusInfo={loading:{dot:'loading',txt:'Carregando do Google Sheets…'},ok:{dot:'ok',txt:'Sincronizado com Google Sheets'},err:{dot:'err',txt:'Erro ao carregar Google Sheets — dados bloqueados'}}[srcStatus]||{dot:'err',txt:''};
 
   return h('div',null,
     h('header',{className:'hdr'},
       h('div',{className:'hdr-brand'},
         h('div',{className:'hdr-logo'},'C'),
-        h('div',null,h('div',{className:'hdr-title'},'CazéTV · Copa 2026'),h('div',{className:'hdr-sub'},'Guia de Serviços FIFA · Fase de Grupos'))
+        h('div',null,h('div',{className:'hdr-title'},'CazéTV · Copa 2026'),h('div',{className:'hdr-sub'},'Guia de Serviços FIFA · v5'))
       ),
       h('div',{className:'hdr-pills'},
-        h('div',{className:'hdr-pill',style:{background:'rgba(232,0,45,.08)',color:'#E8002D',borderColor:'rgba(232,0,45,.2)'}},`${jogos.length} jogos`),
-        h('div',{className:'hdr-pill',style:{background:'rgba(0,122,153,.08)',color:'#007A99',borderColor:'rgba(0,122,153,.2)'}},`${comSvc} com serviços`)
+        h('div',{className:'hdr-pill',style:{background:'rgba(232,0,45,.08)',color:'#E8002D',borderColor:'rgba(232,0,45,.2)'}},[`${jogos.length} jogos`]),
+        h('div',{className:'hdr-pill',style:{background:'rgba(0,122,153,.08)',color:'#007A99',borderColor:'rgba(0,122,153,.2)'}},[`${comSvc} com serviços`])
       ),
       h('div',{className:'hdr-tabs'},
         h('div',{className:`hdr-tab${aba==='jogos'?' on':''}`,onClick:()=>setAba('jogos')},'Jogos'),
         h('div',{className:`hdr-tab${aba==='servicos'?' on':''}`,onClick:()=>setAba('servicos')},'Serviços')
       )
     ),
-    aba==='servicos'?h(PainelServicos,null):h('div',{className:'layout'},
+    aba==='servicos'?h(PainelServicos,null):(srcStatus==='ok'?h(React.Fragment,null,h('div',{className:'layout'},
       h('aside',{className:'sidebar'},
         h('div',{className:'fsec'},h('div',{className:'status-bar'},h('div',{className:`status-dot ${statusInfo.dot}`}),statusInfo.txt)),
         h('div',{className:'fsec'},h('div',{className:'flbl'},'Busca'),h('input',{className:'finput',placeholder:'Seleção, cidade…',value:q,onChange:e=>setQ(e.target.value)})),
@@ -454,12 +594,7 @@ function App(){
           h('div',{className:'flbl'},'Serviço'),
           h('div',{className:'chips',style:{gap:'4px'}},
             h('div',{className:`chip${fSvc==='todos'?' on':''}`,onClick:()=>setFSvc('todos')},'Todos'),
-            ...SVC_FILTROS.map(s=>{
-              const on=fSvc===s.key;
-              return h('div',{key:s.key,className:'perfil-chip',
-                style:{borderColor:s.cor,color:on?'#fff':s.cor,background:on?s.cor:'rgba(0,0,0,.03)',fontSize:'9px',padding:'3px 7px'},
-                onClick:()=>setFSvc(on?'todos':s.key)},s.nome);
-            })
+            ...SVC_FILTROS.map(s=>{const on=fSvc===s.key;return h('div',{key:s.key,className:'perfil-chip',style:{borderColor:s.cor,color:on?'#fff':s.cor,background:on?s.cor:'rgba(0,0,0,.03)',fontSize:'9px',padding:'3px 7px'},onClick:()=>setFSvc(on?'todos':s.key)},s.nome);})
           )
         ),
         h('button',{className:'btn-clear',onClick:()=>{setQ('');setFR('todas');setFP('todos');setFSvc('todos');}},'Limpar')
@@ -470,27 +605,21 @@ function App(){
           :h('div',null,
             h('div',{className:'ctop'},h('div',{className:'ccount'},'Mostrando ',h('strong',null,lista.length),' de ',jogos.length,' jogos')),
             ...porRodada.map(({rodada,jogos:rj})=>{
-              const rc=getRc(rodada);
+              const rc2=getRc(rodada);
               return h('div',{key:rodada},
-                h('div',{className:'rodada-header'},h('div',{className:'rodada-badge',style:{background:rc.cor,color:rc.ct}},rodada),h('div',{className:'rodada-line'})),
+                h('div',{className:'rodada-header'},h('div',{className:'rodada-badge',style:{background:rc2.cor,color:rc2.ct}},rodada),h('div',{className:'rodada-line'})),
                 h('div',{className:'grid'},...rj.map(j=>h(Card,{key:j.numero,jogo:j,onClick:()=>setSel(j)})))
               );
             })
           )
       )
     ),
-    sel&&h(Modal,{jogo:sel,onClose:()=>setSel(null),onChange:()=>setTick(t=>t+1)})
+    sel&&h(Modal,{jogo:sel,onClose:()=>setSel(null),onChange:()=>setTick(t=>t+1)}),
+    h('button',{className:'admin-fab',onClick:()=>setAdminOpen(true),title:'Serviços REQ'},'⏳'),
+    adminOpen&&h(AdminPanel,{jogos,onClose:()=>setAdminOpen(false),onChange:()=>setTick(t=>t+1)})
+    ):h(SheetErrorPanel,{status:srcStatus,error:sheetError}))
   );
 }
-
-const SVC_FREQ={'dressing_room': 3, 'guest_arrival': 26, 'pitch_reporter': 54, 'pitch_rep_benches': 3, 'uniflash': 35, 'uniflash_fully': 3, 'digital_reporter': 49, 'centre_circle': 3, 'teams_onto': 3, 'tv_studio_internet': 3, 'presentation': 31, 'observer_seat': 55};
-
-// Serviços de internet standalone para o painel
-const SVC_INET_PANEL=[
-  {booking:'52621',nome:'Internet · Touchline',   descr:'Conectividade 50 Mbps dedicada para Touchline Presentation (11342). Sem acesso a pessoas.',horario:'Cobertura total do período',obs:'Sempre bookar junto com Touchline Presentation.',reqBy:'Touchline Presentation',cor:'#007A99',inet:true},
-  {booking:'52641',nome:'IP Codec · Pitch Reporter',descr:'Acesso IP para codec de áudio do Pitch Reporter. Sem acesso a pessoas.',horario:'Cobertura total do período',obs:'Sempre bookar junto com Pitch Reporter.',reqBy:'Pitch Reporter',cor:'#007A99',inet:true},
-  {booking:'52711',nome:'Internet · UniFlash',    descr:'Conectividade 50 Mbps dedicada para UniFlash. Sem acesso a pessoas.',horario:'FJ+10 min · ~50 min',obs:'Sempre bookar junto com UniFlash.',reqBy:'UniFlash',cor:'#007A99',inet:true},
-];
 
 function PainelServicos(){
   const svcsCampo=Object.entries(SVC).filter(([k,s])=>!s.inet);
@@ -548,41 +677,55 @@ function PainelServicos(){
 }
 
 function Card({jogo,onClick}){
-  const svcs=svcsLista(jogo.servicos);
-  const inet=getInet(jogo.servicos);
-  const pf=PERFIS[getPerfil(jogo.servicos)];
-  const n1=nomeSel(jogo.selecao_1),n2=nomeSel(jogo.selecao_2);
+  const svcs = svcsLista(jogo);
+  const inet = getInet(jogo);
+  const media = mediaLista(jogo);
+  const pf = PERFIS[getPerfil(jogo)];
+  const n1 = nomeSel(jogo.selecao_1), n2 = nomeSel(jogo.selecao_2);
   return h('div',{className:`gcard${isBRA(jogo)?' bra':''}`,onClick},
-    h('div',{className:'gtop'},h('div',{className:'gnum'},`#${jogo.numero}`),h('div',{className:'gpick'},jogo.pick)),
-    h('div',{className:'gmatch'},n1,h('span',{className:'gvs'},'×'),n2),
-    h('div',{className:'gmeta'},`${fmtD(jogo.data)} · ${jogo.hora} BRT · ${jogo.local}`),
-    h('div',{className:'gperfil',style:{borderColor:pf.cor,color:pf.cor,background:pf.bg}},pf.label),
+    h('div',{className:'gtop'}, h('div',{className:'gnum'},`#${jogo.numero}`), h('div',{className:'gpick'},jogo.pick)),
+    h('div',{className:'gmatch'}, n1, h('span',{className:'gvs'},'×'), n2),
+    h('div',{className:'gmeta'}, `${fmtD(jogo.data)} · ${jogo.hora} BRT · ${jogo.local}`),
+    h('div',{className:'gperfil',style:{borderColor:pf.cor,color:pf.cor,background:pf.bg}}, pf.label),
     h('div',{className:'gpills'},
-      svcs.length===0&&inet.length===0
-        ?h('div',{className:'nosvc'},'Nenhum serviço contratado')
-        :h('div',null,
-          svcs.length>0&&h('div',null,
-            h('div',{style:{fontSize:'8px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--dim)',marginBottom:'3px'}},'Serviços HBS'),
-            h('div',{className:'gpills-row'},
-              ...svcs.map(({key,svc,qty})=>h('div',{key,className:'svc-tag',style:{borderColor:svc.cor+'55',color:svc.cor,background:svc.cor+'12'}},qty>1?`${svc.nome} ×${qty}`:svc.nome))
+      (svcs.length===0 && inet.length===0 && media.length===0)
+        ? h('div',{className:'nosvc'},'Nenhum serviço contratado')
+        : h('div',null,
+            svcs.length>0 && h('div',null,
+              h('div',{style:{fontSize:'8px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--dim)',marginBottom:'3px'}},'Serviços HBS'),
+              h('div',{className:'gpills-row'},
+                ...svcs.map(({key,svc,qty,status,fully,confirmed_manually,pessoas,obs})=>{
+                  const isReq = status==='REQ' && !confirmed_manually;
+                  let label = svc.nome;
+                  if (fully) label += ' (Fully)';
+                  if (qty>1) label += ` ×${qty}`;
+                  return h('div',{key,className:'svc-tag',
+                    style:{borderColor:svc.cor+'55',color:svc.cor,background:svc.cor+'12'}},
+                    label,
+                    isReq && h('span',{className:'req-badge',title:'Aguardando confirmação FIFA'},'REQ')
+                  );
+                })
+              )
+            ),
+            inet.length>0 && h('div',{style:{marginTop:'4px'}},
+              h('div',{style:{fontSize:'8px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--dim)',marginBottom:'3px'}},'Internet'),
+              h('div',{className:'inet-row'}, ...inet.map(i=>h('div',{key:i.booking,className:'inet-tag'},i.nome)))
             )
-          ),
-          inet.length>0&&h('div',{style:{marginTop:'4px'}},
-            h('div',{style:{fontSize:'8px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--dim)',marginBottom:'3px'}},'Internet'),
-            h('div',{className:'inet-row'},...inet.map(i=>h('div',{key:i.booking,className:'inet-tag'},i.nome)))
           )
-        )
     )
   );
 }
 
 function Modal({jogo,onClose,onChange}){
   const [exp,setExp]=useState(new Set());
-  const svcs=svcsLista(jogo.servicos);
-  const inet=getInet(jogo.servicos);
+  const [mediaOpen,setMediaOpen]=useState(false);
+  const svcs=svcsLista(jogo);
+  const inet=getInet(jogo);
+  const media=mediaLista(jogo);
   const rc=getRc(jogo.rodada);
   const n1=nomeSel(jogo.selecao_1),n2=nomeSel(jogo.selecao_2);
-  const pf=PERFIS[getPerfil(jogo.servicos)];
+  const pf=PERFIS[getPerfil(jogo)];
+  const reqCount = svcs.filter(s=>s.status==='REQ' && !s.confirmed_manually).length;
 
   return h('div',{className:'overlay',onClick:onClose},
     h('div',{className:'modal',onClick:e=>e.stopPropagation()},
@@ -593,7 +736,7 @@ function Modal({jogo,onClose,onChange}){
           h('button',{className:'mclose',onClick:onClose},'×'),
           h('div',{className:'mrodada',style:{color:rc.cor}},`${jogo.rodada} · Jogo #${jogo.numero}`),
           h('div',{className:'mmatch'},n1,h('span',{className:'vs'},'×'),n2),
-          h('div',{className:'mnames',style:{color:'#666',fontStyle:'normal',fontSize:'11px',marginBottom:'8px'}},`${jogo.selecao_1}  ×  ${jogo.selecao_2}`),
+          h('div',{className:'mnames',style:{color:'#666',fontStyle:'normal',fontSize:'11px',marginBottom:'8px'}},`${jogo.selecao_1}  ×  ${jogo.selecao_2}${jogo.match_id?'   ·   '+jogo.match_id:''}`),
 
           h('div',{className:'mmeta'},
             h('div',{className:'mm-item'},h('span',{className:'lbl'},'DATA'),h('span',{className:'val'},`${jogo.dia_semana}, ${fmtDL(jogo.data)}`)),
@@ -606,19 +749,30 @@ function Modal({jogo,onClose,onChange}){
           h('div',{style:{marginBottom:'14px',padding:'9px 12px',borderRadius:'4px',border:`1px solid ${pf.cor}40`,background:pf.bg}},
             h('div',{style:{fontSize:'10px',fontWeight:700,color:pf.cor,letterSpacing:'.06em',textTransform:'uppercase'}},pf.label)
           ),
+          reqCount>0 && h('div',{className:'req-banner'},
+            h('div',{className:'req-banner-icon'},'⏳'),
+            h('div',null,
+              h('strong',null,`${reqCount} serviço${reqCount>1?'s':''} aguardando confirmação FIFA`),
+              h('div',null,'Posição solicitada (REQ) no COS. Quando a FIFA confirmar, o status muda para CNF. Você pode atualizar manualmente via painel admin (canto inferior direito).')
+            )
+          ),
           h('div',{className:'sec'},
             h('div',{className:'sec-hdr'},h('div',{className:'sec-title'},'Serviços HBS'),h('div',{className:'sec-ct'},svcs.length===0?'nenhum':`${svcs.length} serviço${svcs.length>1?'s':''}`)),
             svcs.length===0
-              ?h('div',{style:{color:'#aaa',fontStyle:'italic',padding:'8px 0',fontSize:'13px'}},'Nenhum serviço de campo.')
+              ?h('div',{style:{color:'#aaa',fontStyle:'italic',padding:'8px 0',fontSize:'13px'}},'Nenhum serviço de campo confirmado.')
               :h('div',{className:'svc-list'},
-                ...svcs.map(({key,svc,qty})=>{
+                ...svcs.map(({key,svc,qty,status,fully,confirmed_manually,booking_actual})=>{
                   const open=exp.has(key);
+                  const isReq = status==='REQ' && !confirmed_manually;
+                  const labelExtra = fully ? ' (Fully Equipped)' : '';
                   return h('div',{key,className:'svc-item',style:{borderColor:open?svc.cor+'60':undefined}},
                     h('div',{className:'svc-row',onClick:()=>setExp(prev=>{const s=new Set(prev);s.has(key)?s.delete(key):s.add(key);return s;}),style:{background:open?svc.cor+'0a':undefined}},
                       h('div',{className:'svc-left'},
-                        h('div',{className:`svc-booking${svc.pending?' pending':''}`,style:{borderColor:svc.cor+'60',color:svc.pending?'#999':svc.cor,background:svc.cor+(svc.pending?'08':'10')}},
-                          svc.pending?'⏳ ?????':svc.booking),
-                        h('div',{className:'svc-name'},svc.nome,qty>1&&h('span',{className:'svc-qty'},` ×${qty}`))
+                        h('div',{className:'svc-booking',style:{borderColor:svc.cor+'60',color:svc.cor,background:svc.cor+'10'}}, booking_actual),
+                        h('div',{className:'svc-name'}, svc.nome + labelExtra, qty>1 && h('span',{className:'svc-qty'},` ×${qty}`),
+                          isReq && h('span',{className:'req-badge',title:'Aguardando confirmação FIFA'},'REQ'),
+                          confirmed_manually && h('span',{className:'req-badge',style:{background:'rgba(138,168,0,.15)',color:'#759400',borderColor:'rgba(138,168,0,.4)'},title:'Confirmado manualmente'},'CNF ✓')
+                        )
                       ),
                       h('div',{className:'svc-right'},h('div',{className:'svc-equip'},svc.equip),h('div',{className:'svc-tog'},open?'−':'+'))
                     ),
@@ -626,22 +780,34 @@ function Modal({jogo,onClose,onChange}){
                       h('div',{className:'detail-grid'},
                         h('div',{className:'dr dr-full'},h('div',{className:'dr-lbl'},'Descrição'),h('div',{className:'dr-val'},svc.descr)),
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Booking'),h('div',{className:'dr-val'},
-                          svc.pending
-                            ?h('span',null,h('span',{style:{fontFamily:'monospace',fontWeight:700,color:'#aaa'}},'?????'),h('span',{className:'booking-pending'},'— pendente confirmação no COS online'))
-                            :h('span',{className:'booking-hl',style:{color:svc.cor}},svc.booking)
+                          h('span',{className:'booking-hl',style:{color:svc.cor}},booking_actual)
                         )),
+                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Status FIFA'),h('div',{className:'dr-val'},h(StatusEditor,{jogo,svcKey:key,booking:booking_actual,status,qty,onChange}))),
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Horário'),h('div',{className:'dr-val'},svc.horario)),
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Equipamento'),h('div',{className:'dr-val'},svc.equip)),
-                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Máx. pessoas'),h('div',{className:'dr-val'},svc.maxP>0?String(svc.maxP):'—')),
+                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Máx. pessoas'),h('div',{className:'dr-val'},svc.maxP>0?String(Math.max(qty, svc.maxP)):'—')),
                         h('div',{className:'dr dr-full'},h('div',{className:'dr-lbl'},'Observações'),h('div',{className:'dr-val'},svc.obs))
                       ),
-                      svc.maxP>0&&h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP:qty>svc.maxP?qty:svc.maxP,cor:svc.cor,onChange})
+                      svc.maxP>0 && h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP:Math.max(qty,svc.maxP),cor:svc.cor,onChange,matchId:jogo.match_id,pessoas}),
+                    h(ObsEditor,{jogo,svcKey:key,cor:svc.cor,obs:obs||'',onChange})
                     )
                   );
                 })
               )
           ),
-          inet.length>0&&h('div',{className:'sec'},
+          media.length>0 && h('div',{className:'media-block'},
+            h('button',{className:`media-tog${mediaOpen?' open':''}`,onClick:()=>setMediaOpen(!mediaOpen)},
+              h('span',null,`Acessos de mídia · ${media.length} item${media.length>1?'s':''}`),
+              h('span',{className:'media-tog-arrow'},'▶')
+            ),
+            h('div',{className:`media-list${mediaOpen?' open':''}`},
+              ...media.map(({key,svc,qty})=>h('div',{key,className:'media-item'},
+                h('div',{className:'media-item-name'},svc.nome,h('small',null,`${svc.booking}  ·  ${svc.descr}`)),
+                h('div',{className:'media-item-qty'},`×${qty}`)
+              ))
+            )
+          ),
+          inet.length>0&&h('div',{className:'sec',style:{marginTop:'18px'}},
             h('div',{className:'sec-hdr'},h('div',{className:'sec-title',style:{color:'#007A99'}},'⚡ Internet'),h('div',{className:'sec-ct'},`${inet.length} link${inet.length>1?'s':''}`)),
             h('div',{style:{display:'flex',flexDirection:'column',gap:'6px'}},
               ...inet.map(i=>h('div',{key:i.booking,className:'internet-banner'},
@@ -654,115 +820,479 @@ function Modal({jogo,onClose,onChange}){
         )
       ),
       h('div',{className:'mfoot'},
-        h('div',{className:'foot-hint'},'Nomes salvos neste navegador'),
+        h('div',{className:'foot-hint'},APPS_SCRIPT_URL?'Alterações sincronizadas com Google Sheets.':'Modo somente leitura: Apps Script não configurado.'),
         h('button',{className:'btn-pdf',onClick:()=>gerarPDF(jogo,n1,n2)},'↓ Baixar PDF')
       )
     )
   );
 }
 
-function PessoasEditor({jogoNum,svcKey,maxP,cor,onChange}){
+
+function PessoasEditor({jogoNum,svcKey,maxP,cor,onChange,matchId,pessoas}){
   const slots=Array.from({length:maxP},(_,i)=>i);
-  const get=i=>PS[`${jogoNum}-${svcKey}-${i}`]||'';
-  const set=(i,v)=>{PS[`${jogoNum}-${svcKey}-${i}`]=v;savePS();onChange();};
+  const [vals,setVals]=useState(pessoas||[]);
+  const [saving,setSaving]=useState(false);
+  async function handleChange(i,v){
+    if(!APPS_SCRIPT_URL)return;
+    const nv=[...vals];nv[i]=v;setVals(nv);
+    clearTimeout(window._st);
+    window._st=setTimeout(async()=>{setSaving(true);const r=await gravar(matchId,`${svcKey}_p${i+1}`,v);setSaving(false);if(r.ok)onChange&&onChange();},800);
+  }
   return h('div',{className:'pessoas-section'},
-    h('div',{className:'pessoas-title',style:{color:cor}},'Pessoas neste serviço'),
+    h('div',{className:'pessoas-title',style:{color:cor}},
+      'Pessoas neste serviço',
+      saving&&h('span',{style:{marginLeft:8,fontSize:9,color:'#007A99',fontWeight:700}},'salvando…'),
+      !APPS_SCRIPT_URL&&h('span',{style:{marginLeft:8,fontSize:9,color:'#aaa'}},'(somente leitura: Apps Script não configurado)')
+    ),
     h('div',{className:'pessoas-grid'},
       ...slots.map(i=>h('div',{key:i,className:'pessoa-row'},
         h('div',{className:'pessoa-num'},i+1),
-        h('input',{className:'pessoa-input',placeholder:`Pessoa ${i+1}…`,value:get(i),onChange:e=>set(i,e.target.value),onClick:e=>e.stopPropagation()})
+        h('input',{className:'pessoa-input',placeholder:`Pessoa ${i+1}…`,
+          value:vals[i]||'',onChange:e=>handleChange(i,e.target.value),disabled:!APPS_SCRIPT_URL,
+          onClick:e=>e.stopPropagation()})
       ))
     )
   );
 }
 
+function ObsEditor({jogo,svcKey,cor,obs,onChange}){
+  const [val,setVal]=useState(obs||'');
+  const [saving,setSaving]=useState(false);
+  function handleChange(v){
+    if(!APPS_SCRIPT_URL)return;
+    setVal(v);
+    clearTimeout(window._obsTimer);
+    window._obsTimer=setTimeout(async()=>{
+      setSaving(true);
+      const r=await gravar(jogo.match_id,`${svcKey}_obs`,v);
+      setSaving(false);
+      if(r.ok){if(jogo.servicos[svcKey]) jogo.servicos[svcKey].obs=v;onChange&&onChange();}
+    },800);
+  }
+  return h('div',{className:'obs-section'},
+    h('div',{className:'obs-label',style:{color:cor}},
+      'Observações operacionais',
+      saving&&h('span',{style:{marginLeft:8,fontSize:9,color:'#007A99',fontWeight:700}},'salvando…'),
+      !APPS_SCRIPT_URL&&h('span',{style:{marginLeft:8,fontSize:9,color:'#bbb'}},'(somente leitura: Apps Script não configurado)')
+    ),
+    h('textarea',{
+      className:'obs-input',
+      placeholder:'Adicione observações específicas para este serviço neste jogo…',
+      value:val,
+      onChange:e=>handleChange(e.target.value),
+      disabled:!APPS_SCRIPT_URL,
+      onClick:e=>e.stopPropagation(),
+      rows:3,
+    })
+  );
+}
+
+
+function StatusEditor({jogo,svcKey,booking,status,qty,onChange}){
+  const [ed,setEd]=useState(false);
+  const [pw,setPw]=useState('');
+  const [ns,setNs]=useState(status);
+  const [nq,setNq]=useState(qty);
+  const [saving,setSaving]=useState(false);
+  const [err,setErr]=useState('');
+  async function save(){
+    if(pw!==ADMIN_PASS){setErr('Senha incorreta');return;}
+    setSaving(true);setErr('');
+    const r1=await gravar(jogo.match_id,`${svcKey}_status`,ns,pw);
+    const r2=await gravar(jogo.match_id,`${svcKey}_qty`,nq,pw);
+    setSaving(false);
+    if(r1.ok&&r2.ok){
+      setEd(false);
+      if(jogo.servicos[svcKey]){jogo.servicos[svcKey].status=ns;jogo.servicos[svcKey].qty=nq;}
+      onChange&&onChange();
+    }else setErr(r1.error||r2.error||'Erro ao gravar');
+  }
+  if(!ed)return h('div',{style:{display:'flex',alignItems:'center',gap:8}},
+    h('span',{style:{color:status==='REQ'?'#B45309':'#16A34A',fontWeight:700}},
+      status==='REQ'?'REQ · aguardando confirmação':'CNF · confirmado'),
+    h('span',{style:{color:'#aaa',fontSize:11}},`×${qty}`),
+    APPS_SCRIPT_URL?h('button',{onClick:e=>{e.stopPropagation();setEd(true);},
+      style:{marginLeft:6,fontSize:9,padding:'2px 7px',border:'1px solid #ddd',borderRadius:2,background:'transparent',cursor:'pointer',color:'#777'}
+    },'✎ editar'):h('span',{style:{marginLeft:6,fontSize:9,color:'#aaa'}},'somente leitura')
+  );
+  return h('div',{style:{display:'flex',flexDirection:'column',gap:6},onClick:e=>e.stopPropagation()},
+    h('div',{style:{display:'flex',gap:6,alignItems:'center'}},
+      h('select',{value:ns,onChange:e=>setNs(e.target.value),
+        style:{padding:'4px 8px',border:'1px solid #ddd',borderRadius:2,fontFamily:'inherit',fontSize:12}},
+        h('option',{value:'CNF'},'CNF'),h('option',{value:'REQ'},'REQ')
+      ),
+      h('input',{type:'number',min:0,max:99,value:nq,onChange:e=>setNq(parseInt(e.target.value)||0),
+        style:{width:60,padding:'4px 8px',border:'1px solid #ddd',borderRadius:2,fontFamily:'inherit',fontSize:12}}),
+      h('span',{style:{fontSize:10,color:'#aaa'}},booking)
+    ),
+    h('div',{style:{display:'flex',gap:6,alignItems:'center'}},
+      h('input',{type:'password',placeholder:'Senha admin',value:pw,
+        onChange:e=>{setPw(e.target.value);setErr('');},
+        onKeyDown:e=>{if(e.key==='Enter')save();},
+        style:{flex:1,padding:'5px 8px',border:'1px solid #ddd',borderRadius:2,fontFamily:'inherit',fontSize:12}},),
+      h('button',{onClick:save,disabled:saving,
+        style:{padding:'5px 12px',background:'#0A0A0A',color:'#fff',border:'none',borderRadius:2,fontFamily:'inherit',fontSize:11,fontWeight:700,cursor:'pointer'}},
+        saving?'…':'Confirmar'),
+      h('button',{onClick:()=>{setEd(false);setErr('');},
+        style:{padding:'5px 8px',background:'transparent',color:'#aaa',border:'1px solid #ddd',borderRadius:2,fontFamily:'inherit',fontSize:11,cursor:'pointer'}},'Cancelar')
+    ),
+    err&&h('div',{style:{color:'var(--red)',fontSize:11,fontWeight:600}},err)
+  );
+}
+
+function AdminPanel({jogos,onClose,onChange}){
+  const [pw,setPw]=useState('');
+  const [unlocked,setUnlocked]=useState(ADMIN_UNLOCKED);
+  const [err,setErr]=useState(false);
+  function tryUnlock(){if(pw===ADMIN_PASS){setUnlocked(true);ADMIN_UNLOCKED=true;setErr(false);}else{setErr(true);setPw('');}}
+  const reqItems=[];
+  for(const j of jogos){for(const[k,v]of Object.entries(j.servicos||{})){if(v.status==='REQ')reqItems.push({match_id:j.match_id,numero:j.numero,key:k,nome:SVC[k]?.nome||k,qty:v.qty,teams:`${j.selecao_1}/${j.selecao_2}`,rodada:j.rodada,jogo:j});}}
+  reqItems.sort((a,b)=>a.numero-b.numero);
+  return h('div',{className:'admin-overlay',onClick:onClose},
+    h('div',{className:'admin-panel',onClick:e=>e.stopPropagation()},
+      h('div',{className:'admin-head'},
+        h('h2',null,unlocked?'Confirmar REQ → CNF':'Acesso protegido'),
+        h('button',{className:'close',onClick:onClose},'×')
+      ),
+      h('div',{className:'admin-body'},
+        !unlocked?h('div',null,
+          h('div',{className:'admin-locked-msg'},APPS_SCRIPT_URL?'Editar status e quantidade requer senha. Você também pode editar diretamente na planilha do Sheets.':'Edição desativada: APPS_SCRIPT_URL não configurado.'),
+          h('div',{className:'admin-pass-row'},
+            h('input',{type:'password',placeholder:'Senha',value:pw,onChange:e=>{setPw(e.target.value);setErr(false);},onKeyDown:e=>{if(e.key==='Enter')tryUnlock();},autoFocus:true}),
+            h('button',{onClick:tryUnlock,disabled:!APPS_SCRIPT_URL},'Entrar')
+          ),
+          err&&h('div',{className:'admin-error'},'Senha incorreta.')
+        ):h('div',null,
+          h('div',{className:'admin-section'},
+            h('h3',null,'Serviços REQ'),
+            h('div',{className:'admin-info'},`${reqItems.length} serviço${reqItems.length!==1?'s':''} aguardando. Confirmar aqui grava no Sheets.`),
+            h('div',{className:'admin-req-list'},
+              reqItems.length===0
+                ?h('div',{style:{padding:'14px',textAlign:'center',color:'var(--muted)',fontSize:'11px'}},'Nenhum REQ.')
+                :reqItems.map(it=>h(AdminReqRow,{key:`${it.match_id}|${it.key}`,it,onChange}))
+            )
+          )
+        )
+      ),
+      h('div',{className:'admin-foot'},APPS_SCRIPT_URL?'Alterações gravam no Sheets em tempo real':'Modo somente leitura: Apps Script não configurado.')
+    )
+  );
+}
+
+function AdminReqRow({it,onChange}){
+  const [saving,setSaving]=useState(false);
+  const [done,setDone]=useState(false);
+  async function confirm(){
+    if(!APPS_SCRIPT_URL)return;
+    setSaving(true);
+    const r=await gravar(it.match_id,`${it.key}_status`,'CNF',ADMIN_PASS);
+    setSaving(false);
+    if(r.ok){setDone(true);if(it.jogo.servicos[it.key])it.jogo.servicos[it.key].status='CNF';onChange&&onChange();}
+  }
+  return h('div',{className:`admin-req-row${done?' confirmed':''}`},
+    h('div',{className:'admin-req-mid'},it.match_id),
+    h('div',{className:'admin-req-name'},it.nome,h('small',null,`${it.teams} · ${it.rodada}`)),
+    h('div',{className:'admin-req-qty'},`×${it.qty}`),
+    done?h('span',{className:'admin-confirm-tag'},'CNF ✓'):h('button',{className:'admin-confirm-btn',onClick:confirm,disabled:saving},saving?'…':'Confirmar')
+  );
+}
 function gerarPDF(jogo,n1,n2){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({unit:'pt',format:'a4'});
-  const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight(),M=40;
-  let y=M;
-  function rod(){doc.setDrawColor(210,210,210);doc.setLineWidth(.4);doc.line(M,H-28,W-M,H-28);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(140,140,140);doc.text('CazéTV · Guia de Serviços · FIFA World Cup 2026 · '+jogo.rodada,M,H-16);doc.text(`Pág. ${doc.internal.getCurrentPageInfo().pageNumber}`,W-M-28,H-16);}
-  function np(){rod();doc.addPage();y=M;}
-  function ck(n){if(y+n>H-50)np();}
-  function h2r(hx){const m=hx.replace('#','').match(/.{2}/g);return[parseInt(m[0],16),parseInt(m[1],16),parseInt(m[2],16)];}
-  function cardH(svc,qty){let h=24;for(const t of[svc.descr,svc.horario,svc.obs])h+=Math.max(doc.splitTextToSize(String(t),W-2*M-88).length*10,11);if(svc.maxP>0)h+=13;return h+10;}
-  const rc=getRc(jogo.rodada);const[rr,rg,rb]=h2r(rc.cor);
-  // Header
-  doc.setFillColor(10,10,10);doc.rect(0,0,W,106,'F');
-  doc.setFillColor(rr,rg,rb);doc.rect(0,0,W,4,'F');
-  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(rr,rg,rb);
-  doc.text(`CAZÉTV  ·  FIFA WORLD CUP 2026  ·  ${jogo.rodada.toUpperCase()}`,M,20);
-  doc.setFontSize(22);doc.setTextColor(240,240,240);doc.text(`${jogo.selecao_1}  ×  ${jogo.selecao_2}`,M,50);
-  if(n1!==jogo.selecao_1||n2!==jogo.selecao_2){doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(150,150,150);doc.text(`${n1}  ×  ${n2}`,M,66);}
-  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text(`Jogo #${jogo.numero}   ·   ${jogo.pick}`,M,82);
-  const mx=W-M-190,mses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  const[yy,mm,dd]=(jogo.data||'--').split('-');
-  const dataL=dd&&mm?`${dd} ${mses[+mm-1]} ${yy}`:jogo.data;
-  for(const[lb,vl,xx,yo] of[['DATA',dataL,mx,22],['HORA',jogo.hora,mx+90,22],['LOCAL',jogo.local,mx,60],['DIA',jogo.dia_semana,mx+90,60]]){
-    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,100,100);doc.text(lb,xx,yo);
-    doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(220,220,220);doc.text(vl||'—',xx,yo+14);
+  const W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight();
+  const ML=40, MR=40, TW=W-ML-MR;
+  let y=0;
+
+  // ── Utilitários ────────────────────────────────────────────────
+  function h2r(hx){
+    const m=(hx||'#888888').replace('#','').match(/.{2}/g);
+    return[parseInt(m[0],16),parseInt(m[1],16),parseInt(m[2],16)];
   }
-  y=114;
-  // Perfil
-  const pf=PERFIS[getPerfil(jogo.servicos)];const[pr,pg,pb]=h2r(pf.cor);
-  ck(26);doc.setFillColor(240,245,248);doc.rect(M,y,W-2*M,18,'F');
-  doc.setFillColor(pr,pg,pb);doc.rect(M,y,3,18,'F');
-  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(pr,pg,pb);
-  doc.text(pf.label.toUpperCase(),M+10,y+12);y+=26;
-  // Internet
-  const inet=getInet(jogo.servicos);
-  if(inet.length>0){
-    const ih=inet.length*22+20;ck(ih);
-    doc.setFillColor(235,248,252);doc.rect(M,y,W-2*M,ih,'F');
-    doc.setFillColor(0,122,153);doc.rect(M,y,3,ih,'F');
-    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(0,90,115);
-    doc.text('INTERNET',M+10,y+13);let iy=y+22;
-    for(const i of inet){
-      doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(0,90,115);doc.text(i.nome,M+10,iy);doc.text(i.booking,W-M-12-doc.getTextWidth(i.booking),iy);
-      doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(80,120,135);doc.text(i.descr,M+10,iy+10);iy+=22;
-    }y+=ih+10;
+  function setF(style,size,r,g,b){
+    doc.setFont('helvetica',style);doc.setFontSize(size);doc.setTextColor(r,g,b);
   }
-  // Serviços
-  const svcs=svcsLista(jogo.servicos);
-  if(svcs.length>0){
-    ck(28);doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(15,15,15);
-    doc.text('SERVIÇOS DE CAMPO',M,y);doc.setDrawColor(rr,rg,rb);doc.setLineWidth(2);doc.line(M,y+4,M+62,y+4);y+=22;
-    for(const{key,svc,qty} of svcs){
-      const need=cardH(svc,qty);ck(need);const top=y;
-      const[sr,sg,sb]=h2r(svc.cor);
-      doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(15,15,15);doc.text(svc.nome,M+14,y+16);
-      if(qty>1){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(150,150,150);doc.text(` ×${qty}`,M+14+doc.getTextWidth(svc.nome)+2,y+16);}
-      // Booking — mostrar ????? se pendente
-      const bkText=svc.pending?'?????(pendente)':svc.booking;
-      doc.setFont('helvetica','bold');doc.setFontSize(svc.pending?8:10);doc.setTextColor(svc.pending?180:sr,svc.pending?180:sg,svc.pending?180:sb);
-      doc.text(bkText,W-M-12-doc.getTextWidth(bkText),y+16);
-      doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(170,170,170);
-      const ew=doc.getTextWidth(svc.equip)+doc.getTextWidth(bkText)+16;doc.text(svc.equip,W-M-12-ew,y+16);y+=24;
-      doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(50,50,50);
-      const dl=doc.splitTextToSize(svc.descr,W-2*M-28);doc.text(dl,M+14,y);y+=dl.length*10+4;
-      for(const[lb,vl] of[['HORÁRIO',svc.horario],['OBS.',svc.obs]]){
-        doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(190,190,190);doc.text(lb,M+14,y);
-        doc.setFont('helvetica','normal');doc.setTextColor(30,30,30);
-        const vls=doc.splitTextToSize(String(vl),W-2*M-88);doc.text(vls,M+74,y);y+=Math.max(vls.length*10,11);
-      }
-      if(svc.maxP>0){
-        doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(190,190,190);doc.text('PESSOAS',M+14,y);
-        const ps=Array.from({length:svc.maxP},(_,i)=>PS[`${jogo.numero}-${key}-${i}`]||'').filter(Boolean);
-        if(ps.length){doc.setFont('helvetica','normal');doc.setTextColor(15,15,15);doc.text(ps.join('   ·   '),M+74,y);}
-        else{doc.setFont('helvetica','italic');doc.setTextColor(180,180,180);doc.text('a preencher',M+74,y);}
-        y+=13;
-      }
-      const ch=top-y+4;doc.setDrawColor(224,224,224);doc.setLineWidth(.5);doc.rect(M,y,W-2*M,Math.abs(ch),'S');
-      doc.setFillColor(sr,sg,sb);doc.rect(M,y,3,Math.abs(ch),'F');y-=8;
+  function rodape(){
+    const pn=doc.internal.getCurrentPageInfo().pageNumber;
+    doc.setDrawColor(220,220,220);doc.setLineWidth(.4);
+    doc.line(ML,H-28,W-MR,H-28);
+    setF('normal',7,160,160,160);
+    doc.text(`CazéTV · FIFA World Cup 2026 · ${jogo.rodada} · Jogo #${jogo.numero}`,ML,H-16);
+    doc.text(`Pág. ${pn}`,W-MR,H-16,'right');
+  }
+  const HDR_H=82; // altura reservada pro cabeçalho em todas as páginas
+  function newPage(){rodape();doc.addPage();drawHeader();y=HDR_H+10;}
+  function ck(n){if(y+n>H-46)newPage();}
+
+  // ── Ordem e metadados ──────────────────────────────────────────
+  const PDF_ORDER=[
+    "presentation", "presentation_bg", "team_arrival", "guest_arrival", "dressing_room", "ml_player_arrival", "ml_coach", "centre_circle", "teams_onto", "pitch_reporter", "pitch_rep_benches", "digital_reporter", "ml_halftime", "ml_fulltime", "uniflash", "uniflash_fully", "tv_studio", "team_departure", "observer_seat", "media_pc_journ", "media_mz_tv", "media_mz_phone", "media_mz_digital", "media_pc_camera", "media_parking", "tv_studio_internet", "inet_behind_goal", "inet_bench_codec", "uniflash_inet"
+  ];
+  const PDF_NAMES={"presentation":"Presentation Touchline","presentation_bg":"Presentation Behind Goal","team_arrival":"Team Arrival","guest_arrival":"Guest Arrival","dressing_room":"Dressing Room","ml_player_arrival":"Multi · Entrevista Jogador","ml_coach":"Multi · Entrevista Técnico","centre_circle":"Centre Circle","teams_onto":"Team Onto Pitch","pitch_reporter":"Pitch Reporter","pitch_rep_benches":"Bench Reporter","digital_reporter":"Digital Reporter","ml_halftime":"Multiflash · Intervalo","ml_fulltime":"Multiflash · Pós-jogo","uniflash":"UniFlash Interview","uniflash_fully":"UniFlash (Fully Equipped)","tv_studio":"TV Interview Studio","team_departure":"Team Departure","observer_seat":"Observer Seats","media_pc_journ":"Press Conference","media_mz_tv":"Mixed Zone · TV","media_mz_phone":"Mixed Zone Station","media_mz_digital":"Mixed Zone · Digital","media_pc_camera":"Press Conf. + Câmera","media_parking":"Parking Pass","tv_studio_internet":"Internet · Touchline","inet_behind_goal":"Internet · Behind Goal","inet_bench_codec":"IP Codec · Bench Reporter","uniflash_inet":"Internet · UniFlash"};
+
+  const rc=getRc(jogo.rodada);
+  const[rr,rg,rb]=h2r(rc.cor);
+  const mses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const[,mm,dd]=(jogo.data||'--').split('-');
+  const dataL=dd&&mm?`${dd} ${mses[+mm-1]}`:jogo.data;
+
+  const allSvcs=PDF_ORDER.map(k=>{
+    const v=jogo.servicos[k];if(!v)return null;
+    const meta=SVC[k]||{};
+    const maxP=meta.maxP||0;
+    // Acessos: Observer Seats = qty; outros = qty × maxP (se maxP>0)
+    const acessos = k==='observer_seat' ? v.qty
+                  : (maxP>0 ? v.qty*maxP : null); // null = não exibir (inet/infra)
+    return{
+      key:k, nome:PDF_NAMES[k]||meta.nome||k,
+      booking:v.booking||meta.booking||k,
+      status:v.status, qty:v.qty, acessos,
+      fully:v.fully||false, cor:meta.cor||'#888888',
+      isInet:!!meta.inet, isMedia:!!meta.media,
+      horario:meta.horario||'', obs:meta.obs||'',
+      descr:meta.descr||'', equip:meta.equip||'',
+      pessoas:(v.pessoas||[]).filter(Boolean),
+      nota:v.obs||'',  // obs do produtor por jogo
+    };
+  }).filter(Boolean);
+  const mainSvcs =allSvcs.filter(s=>!s.isInet&&!s.isMedia);
+  const mediaSvcs=allSvcs.filter(s=>s.isMedia);
+  const inetSvcs =allSvcs.filter(s=>s.isInet);
+
+  // ── Cabeçalho (repetido em todas as páginas) ───────────────────
+  function drawHeader(){
+    // Barra fina de cor da rodada no topo
+    doc.setFillColor(rr,rg,rb);doc.rect(0,0,W,4,'F');
+    // Fundo branco
+    doc.setFillColor(255,255,255);doc.rect(0,4,W,HDR_H-4,'F');
+
+    // Linha 1: rodada · jogo# · pick — cor da rodada
+    setF('bold',7.5,rr,rg,rb);
+    doc.text(`${jogo.rodada.toUpperCase()}  ·  JOGO #${jogo.numero}  ·  ${jogo.pick}`,ML,20);
+
+    // Linha 2: times em destaque
+    setF('bold',22,15,15,15);
+    doc.text(n1,ML,42);
+    const vsX=ML+doc.getTextWidth(n1)+10;
+    setF('bold',14,rr,rg,rb);
+    doc.text('×',vsX,42);
+    const n2X=vsX+doc.getTextWidth('×')+10;
+    setF('bold',22,15,15,15);
+    doc.text(n2,n2X,42);
+
+    // Linha 3: siglas · data · hora
+    setF('normal',8,120,120,120);
+    doc.text(`${jogo.selecao_1} × ${jogo.selecao_2}   ·   ${dataL}   ·   ${jogo.hora} BRT`,ML,58);
+
+    // Linha 4: local
+    setF('normal',8,160,160,160);
+    doc.text(jogo.local,ML,70);
+
+    // Linha divisória embaixo do cabeçalho
+    doc.setDrawColor(220,220,220);doc.setLineWidth(.5);doc.line(0,HDR_H,W,HDR_H);
+  }
+
+  // Desenha cabeçalho da pág 1
+  drawHeader();
+  y=HDR_H+12;
+
+  // ══════════════════════════════════════════════════════════════
+  // PAINEL — tabela: Status | QTD/Acessos | Serviço | Pessoas
+  // ══════════════════════════════════════════════════════════════
+
+  // Totais
+  const cntCNF=allSvcs.filter(s=>s.status==='CNF').length;
+  const cntREQ=allSvcs.filter(s=>s.status==='REQ').length;
+  setF('normal',7.5,130,130,130);
+  doc.text(`${allSvcs.length} serviços`,ML,y);
+  doc.setTextColor(22,163,74);
+  doc.text(`${cntCNF} confirmados`,ML+58,y);
+  if(cntREQ>0){doc.setTextColor(180,100,0);doc.text(`${cntREQ} aguardando`,ML+58+68,y);}
+  y+=8;
+
+  // Colunas: Status(36) | QTD(30) | Nome(160) | Acessos(40) | Pessoas(resto)
+  const C_STATUS=36, C_QTD=30, C_NOME=160, C_ACESSOS=44;
+  const C_PESSOAS=TW-C_STATUS-C_QTD-C_NOME-C_ACESSOS;
+  const x_status =ML;
+  const x_qtd    =ML+C_STATUS;
+  const x_nome   =ML+C_STATUS+C_QTD;
+  const x_acessos=ML+C_STATUS+C_QTD+C_NOME;
+  const x_pess   =ML+C_STATUS+C_QTD+C_NOME+C_ACESSOS;
+
+  // Header da tabela
+  const TH=16;
+  doc.setFillColor(240,240,240);doc.rect(ML,y,TW,TH,'F');
+  doc.setDrawColor(210,210,210);doc.setLineWidth(.3);doc.rect(ML,y,TW,TH,'S');
+  setF('bold',6.5,120,120,120);
+  doc.text('STATUS',   x_status+C_STATUS/2,   y+10,'center');
+  doc.text('QTD',      x_qtd+C_QTD/2,         y+10,'center');
+  doc.text('SERVIÇO',  x_nome+4,               y+10);
+  doc.text('ACESSOS',  x_acessos+C_ACESSOS/2, y+10,'center');
+  doc.text('PESSOAS',  x_pess+4,               y+10);
+  y+=TH;
+
+  const LH_BASE=16;
+
+  function tableRow(s,shade){
+    const[sr,sg,sb]=h2r(s.cor);
+    const isReq=s.status==='REQ';
+    const pessoas=s.pessoas||[];
+    const pessoasTxt=pessoas.length?pessoas.join('  ·  '):'—';
+    const pessoasLines=doc.splitTextToSize(pessoasTxt,C_PESSOAS-8);
+    const rowH=Math.max(LH_BASE,pessoasLines.length*10+10);
+    ck(rowH);
+
+    if(shade){doc.setFillColor(250,250,250);doc.rect(ML,y,TW,rowH,'F');}
+    doc.setDrawColor(228,228,228);doc.setLineWidth(.25);
+    doc.line(ML,y+rowH,ML+TW,y+rowH);
+    // Barra colorida esquerda
+    doc.setFillColor(sr,sg,sb);doc.rect(ML,y,2,rowH,'F');
+
+    const midY=y+rowH/2;
+
+    // Status badge — centrado verticalmente
+    const bw=30,bh=11,bx=x_status+(C_STATUS-bw)/2,by=midY-bh/2;
+    if(isReq){
+      doc.setFillColor(254,243,199);doc.rect(bx,by,bw,bh,'F');
+      setF('bold',6.5,180,100,0);doc.text('REQ',bx+bw/2,by+7.5,'center');
+    } else {
+      doc.setFillColor(236,253,245);doc.rect(bx,by,bw,bh,'F');
+      setF('bold',6.5,22,163,74);doc.text('CNF',bx+bw/2,by+7.5,'center');
     }
+
+    // QTD confirmada
+    setF('bold',9,15,15,15);
+    doc.text(String(s.qty),x_qtd+C_QTD/2,midY+3,'center');
+
+    // Nome do serviço
+    const nome=s.nome+(s.fully?' (Fully)':'');
+    setF('bold',8.5,15,15,15);
+    doc.text(nome,x_nome+4,midY+3);
+
+    // Acessos totais
+    if(s.acessos!==null&&s.acessos!==undefined){
+      setF('bold',9,15,15,15);
+      doc.text(String(s.acessos),x_acessos+C_ACESSOS/2,midY+3,'center');
+    }
+
+    // Pessoas
+    if(pessoas.length){setF('normal',8,50,50,50);}
+    else{setF('normal',8,185,185,185);}
+    doc.text(pessoasLines,x_pess+4,y+11);
+
+    y+=rowH;
   }
-  rod();
+
+  function tableGroup(label,items){
+    if(!items.length)return;
+    ck(20+items.length*LH_BASE);
+    y+=12;
+    setF('bold',6.5,170,170,170);
+    doc.text(label,ML,y);
+    doc.setDrawColor(230,230,230);doc.setLineWidth(.35);
+    doc.line(ML+doc.getTextWidth(label)+5,y-2,W-MR,y-2);
+    y+=7;
+    items.forEach((s,i)=>tableRow(s,i%2===1));
+    y+=4;
+  }
+
+  tableGroup('SERVIÇOS',mainSvcs);
+  tableGroup('ACESSOS DE MÍDIA',mediaSvcs);
+  tableGroup('INTERNET',inetSvcs);
+
+  // ══════════════════════════════════════════════════════════════
+  // DETALHE — continua na mesma página
+  // ══════════════════════════════════════════════════════════════
+  ck(32);
+  y+=10;
+  doc.setDrawColor(210,210,210);doc.setLineWidth(.4);doc.line(ML,y,W-MR,y);
+  y+=13;
+  setF('bold',10,15,15,15);
+  doc.text('DETALHAMENTO DOS SERVIÇOS',ML,y);
+  doc.setDrawColor(rr,rg,rb);doc.setLineWidth(1.5);
+  doc.line(ML,y+3,ML+doc.getTextWidth('DETALHAMENTO DOS SERVIÇOS'),y+3);
+  y+=16;
+
+  function drawDetail(s){
+    const[sr,sg,sb]=h2r(s.cor);
+    const isReq=s.status==='REQ';
+    const LH=10;
+    const obsLines=s.obs?doc.splitTextToSize(s.obs,TW-80).length:0;
+    const blockH=14+LH+(s.horario?LH:0)+(s.equip?LH:0)+(s.descr?LH:0)+Math.max(obsLines,1)*LH+10;
+    ck(blockH);
+    doc.setFillColor(sr,sg,sb);doc.rect(ML,y,2,blockH,'F');
+    doc.setDrawColor(232,232,232);doc.setLineWidth(.3);doc.rect(ML,y,TW,blockH,'S');
+    const tx=ML+10,ty=y+13;
+    setF('bold',10,15,15,15);
+    const nome=s.nome+(s.fully?' (Fully Equipped)':'');
+    doc.text(nome,tx,ty);
+    setF('normal',8.5,150,150,150);
+    doc.text(`×${s.qty}`,tx+doc.getTextWidth(nome)+5,ty);
+    const bwb=28,bhb=10,bxb=ML+TW-bwb-5,byb=ty-9;
+    if(isReq){
+      doc.setFillColor(254,243,199);doc.rect(bxb,byb,bwb,bhb,'F');
+      setF('bold',6.5,180,100,0);doc.text('REQ',bxb+bwb/2,byb+7,'center');
+    } else {
+      doc.setFillColor(236,253,245);doc.rect(bxb,byb,bwb,bhb,'F');
+      setF('bold',6.5,22,163,74);doc.text('CNF',bxb+bwb/2,byb+7,'center');
+    }
+    let fy=ty+LH+2;
+    function field(lbl,val,wrap){
+      if(!val)return;
+      setF('bold',6.5,175,175,175);doc.text(lbl,tx,fy);
+      setF('normal',8,40,40,40);
+      if(wrap){const vls=doc.splitTextToSize(val,TW-80);doc.text(vls,tx+72,fy);fy+=Math.max(vls.length*LH,LH);}
+      else{doc.text(val,tx+72,fy);fy+=LH;}
+    }
+    field('HORÁRIO',s.horario,false);
+    field('EQUIPAMENTO',s.equip,false);
+    field('DESCRIÇÃO',s.descr,false);
+    field('OBSERVAÇÕES COS',s.obs,true);
+    field('NOTA',s.nota,true);  // obs do produtor por jogo
+    y+=blockH+6;
+  }
+
+  function detailGroup(label,items){
+    if(!items.length)return;
+    ck(18);
+    setF('bold',6.5,170,170,170);doc.text(label,ML,y);
+    doc.setDrawColor(232,232,232);doc.setLineWidth(.35);
+    doc.line(ML+doc.getTextWidth(label)+5,y-2,W-MR,y-2);
+    y+=9;
+    items.forEach(s=>drawDetail(s));
+    y+=4;
+  }
+
+  detailGroup('SERVIÇOS',mainSvcs);
+  detailGroup('ACESSOS DE MÍDIA',mediaSvcs);
+  detailGroup('INTERNET',inetSvcs);
+  rodape();
+
   const s1=(jogo.selecao_1||'').replace(/[^A-Za-z0-9]/g,'').toUpperCase();
   const s2=(jogo.selecao_2||'').replace(/[^A-Za-z0-9]/g,'').toUpperCase();
   doc.save(`CazeTV_J${String(jogo.numero).padStart(2,'0')}_${s1}x${s2}.pdf`);
 }
 
+
+
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
