@@ -457,7 +457,7 @@ function getPerfil(jogo){
 const SVC_FREQ={};
 const SVC_INET_PANEL=[{"booking":"52611","nome":"Internet · Behind Goal","descr":"Internet dedicada para Presentation Behind Goal.","horario":"Durante todo o dia do jogo","obs":"-","reqBy":"Presentation Behind Goal","cor":"#007A99"},{"booking":"52621","nome":"Internet · Touchline","descr":"Internet dedicada para Presentation Touchline.","horario":"Durante todo o dia do jogo","obs":"-","reqBy":"Presentation Touchline","cor":"#007A99"},{"booking":"52631","nome":"IP Codec · Bench Reporter","descr":"IP Codec para Bench Reporter.","horario":"Durante todo o dia do jogo","obs":"-","reqBy":"Bench Reporter","cor":"#007A99"},{"booking":"52641","nome":"IP Codec · Pitch Reporter","descr":"IP Codec para Pitch Reporter.","horario":"Cobertura total","obs":"Sempre com Pitch Reporter.","reqBy":"Pitch Reporter","cor":"#007A99"},{"booking":"52711","nome":"Internet · UniFlash","descr":"Internet dedicada para Uniflash","horario":"FJ+10 min · ~50 min","obs":"-","reqBy":"UniFlash Interview","cor":"#007A99"}];
 
-const {useState,useMemo,useEffect,createElement:h}=React;
+const {useState,useMemo,useEffect,useRef,createElement:h}=React;
 
 function SheetErrorPanel({status,error}){
   const loading=status==='loading';
@@ -788,7 +788,7 @@ function Modal({jogo,onClose,onChange}){
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Máx. pessoas'),h('div',{className:'dr-val'},svc.maxP>0?String(Math.max(qty, svc.maxP)):'—')),
                         h('div',{className:'dr dr-full'},h('div',{className:'dr-lbl'},'Observações'),h('div',{className:'dr-val'},svc.obs))
                       ),
-                      svc.maxP>0 && h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP:Math.max(qty,svc.maxP),cor:svc.cor,onChange,matchId:jogo.match_id,pessoas}),
+                      svc.maxP>0 && h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP:Math.max(qty,svc.maxP),cor:svc.cor,onChange,matchId:jogo.match_id,pessoas,jogo}),
                     h(ObsEditor,{jogo,svcKey:key,cor:svc.cor,obs:obs||'',onChange})
                     )
                   );
@@ -828,15 +828,36 @@ function Modal({jogo,onClose,onChange}){
 }
 
 
-function PessoasEditor({jogoNum,svcKey,maxP,cor,onChange,matchId,pessoas}){
+function PessoasEditor({jogoNum,svcKey,maxP,cor,onChange,matchId,pessoas,jogo}){
   const slots=Array.from({length:maxP},(_,i)=>i);
   const [vals,setVals]=useState(pessoas||[]);
   const [saving,setSaving]=useState(false);
-  async function handleChange(i,v){
-    if(!APPS_SCRIPT_URL)return;
+  const [err,setErr]=useState('');
+  const timers=useRef({});
+
+  useEffect(()=>{ setVals(pessoas||[]); },[svcKey,matchId,JSON.stringify(pessoas||[])]);
+
+  async function savePessoa(i,v){
+    setSaving(true);setErr('');
+    const r=await gravar(matchId,`${svcKey}_p${i+1}`,v);
+    setSaving(false);
+    if(r.ok){
+      if(jogo&&jogo.servicos&&jogo.servicos[svcKey]){
+        const arr=[...(jogo.servicos[svcKey].pessoas||[])];
+        arr[i]=v;
+        jogo.servicos[svcKey].pessoas=arr;
+      }
+      onChange&&onChange();
+    }else{
+      setErr(r.error||'Erro ao salvar nome.');
+    }
+  }
+
+  function handleChange(i,v){
+    if(!APPS_SCRIPT_URL){setErr('Modo somente leitura: Apps Script não configurado.');return;}
     const nv=[...vals];nv[i]=v;setVals(nv);
-    clearTimeout(window._st);
-    window._st=setTimeout(async()=>{setSaving(true);const r=await gravar(matchId,`${svcKey}_p${i+1}`,v);setSaving(false);if(r.ok)onChange&&onChange();},800);
+    if(timers.current[i])clearTimeout(timers.current[i]);
+    timers.current[i]=setTimeout(()=>savePessoa(i,v),800);
   }
   return h('div',{className:'pessoas-section'},
     h('div',{className:'pessoas-title',style:{color:cor}},
@@ -844,6 +865,7 @@ function PessoasEditor({jogoNum,svcKey,maxP,cor,onChange,matchId,pessoas}){
       saving&&h('span',{style:{marginLeft:8,fontSize:9,color:'#007A99',fontWeight:700}},'salvando…'),
       !APPS_SCRIPT_URL&&h('span',{style:{marginLeft:8,fontSize:9,color:'#aaa'}},'(somente leitura: Apps Script não configurado)')
     ),
+    err&&h('div',{style:{fontSize:10,color:'#E8002D',fontWeight:700,marginBottom:6}},err),
     h('div',{className:'pessoas-grid'},
       ...slots.map(i=>h('div',{key:i,className:'pessoa-row'},
         h('div',{className:'pessoa-num'},i+1),
