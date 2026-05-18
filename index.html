@@ -801,10 +801,28 @@ function Modal({jogo,onClose,onChange}){
               h('span',{className:'media-tog-arrow'},'▶')
             ),
             h('div',{className:`media-list${mediaOpen?' open':''}`},
-              ...media.map(({key,svc,qty})=>h('div',{key,className:'media-item'},
-                h('div',{className:'media-item-name'},svc.nome,h('small',null,`${svc.booking}  ·  ${svc.descr}`)),
-                h('div',{className:'media-item-qty'},`×${qty}`)
-              ))
+              ...media.map(({key,svc,qty,status,pessoas})=>{
+                const open=exp.has(key);
+                const maxP=Math.max(qty||0, svc.maxP||0);
+                return h('div',{key,className:'media-item',style:{gridTemplateColumns:'1fr auto',alignItems:'start',border:open?`1px solid ${svc.cor||'#555'}60`:undefined}},
+                  h('div',{className:'media-item-name'},
+                    h('div',{style:{cursor:'pointer'},onClick:()=>setExp(prev=>{const s=new Set(prev);s.has(key)?s.delete(key):s.add(key);return s;})},
+                      svc.nome,
+                      h('small',null,`${svc.booking}  ·  ${svc.descr}`)
+                    ),
+                    open && h('div',{style:{gridColumn:'1/-1',marginTop:'8px'}},
+                      h('div',{className:'detail-grid'},
+                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Booking'),h('div',{className:'dr-val'},h('span',{className:'booking-hl',style:{color:svc.cor||'#555'}},svc.booking))),
+                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Status FIFA'),h('div',{className:'dr-val'},status||'CNF')),
+                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Máx. pessoas'),h('div',{className:'dr-val'},maxP>0?String(maxP):'—')),
+                        h('div',{className:'dr dr-full'},h('div',{className:'dr-lbl'},'Observações'),h('div',{className:'dr-val'},svc.obs||'—'))
+                      ),
+                      maxP>0 && h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP,cor:svc.cor||'#555',onChange,matchId:jogo.match_id,pessoas,jogo})
+                    )
+                  ),
+                  h('div',{className:'media-item-qty',style:{cursor:'pointer'},onClick:()=>setExp(prev=>{const s=new Set(prev);s.has(key)?s.delete(key):s.add(key);return s;})},open?'−':`×${qty}`)
+                );
+              })
             )
           ),
           inet.length>0&&h('div',{className:'sec',style:{marginTop:'18px'}},
