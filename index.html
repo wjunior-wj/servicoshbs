@@ -505,8 +505,33 @@ function nomeSel(s){
   return SELECOES[s]||s;
 }
 
-const RC={'Rodada 1':{cor:'#7B2D8B',ct:'#fff'},'Rodada 2':{cor:'#007A99',ct:'#fff'},'Rodada 3':{cor:'#8AA800',ct:'#fff'}};
-function getRc(r){return RC[r]||{cor:'#555',ct:'#fff'};}
+const FASE_ORDER=['Rodada 1','Rodada 2','Rodada 3','16 avos','Oitavas','Quartas','Semifinais','3º Lugar','Final'];
+const RC={
+  'Rodada 1':{cor:'#7B2D8B',ct:'#fff'},
+  'Rodada 2':{cor:'#007A99',ct:'#fff'},
+  'Rodada 3':{cor:'#8AA800',ct:'#fff'},
+  '16 avos':{cor:'#E8002D',ct:'#fff'},
+  'Oitavas':{cor:'#CC4400',ct:'#fff'},
+  'Quartas':{cor:'#1A5FA8',ct:'#fff'},
+  'Semifinais':{cor:'#006E51',ct:'#fff'},
+  '3º Lugar':{cor:'#666666',ct:'#fff'},
+  'Final':{cor:'#111111',ct:'#fff'}
+};
+function normTxt(v){return String(v||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');}
+function faseLabel(r){
+  const raw=String(r||'').trim();
+  const n=normTxt(raw);
+  if(['1/16','1/16 avos','16 avos','16avos','dezesseis avos'].includes(n))return '16 avos';
+  if(n==='oitavas'||n==='oitavas de final')return 'Oitavas';
+  if(n==='quartas'||n==='quartas de final')return 'Quartas';
+  if(n==='semifinal'||n==='semifinais')return 'Semifinais';
+  if(['3 lugar','3º lugar','terceiro lugar','3o lugar'].includes(n))return '3º Lugar';
+  if(n==='final')return 'Final';
+  const exact=FASE_ORDER.find(f=>normTxt(f)===n);
+  return exact||raw||'Sem fase';
+}
+function faseIndex(r){const i=FASE_ORDER.indexOf(faseLabel(r));return i>=0?i:999;}
+function getRc(r){return RC[faseLabel(r)]||{cor:'#555',ct:'#fff'};}
 
 const PERFIS={
   'D':{label:'Brasil (pacote total)', cor:'#8AA800',bg:'rgba(138,168,0,.1)'},
@@ -647,13 +672,13 @@ function App(){
 
   useEffect(()=>{const fn=e=>{if(e.key==='Escape')setSel(null);};document.addEventListener('keydown',fn);return()=>document.removeEventListener('keydown',fn);},[]);
 
-  const rodadasPresentes=useMemo(()=>[...new Set(jogos.map(j=>j.rodada))].sort(),[jogos]);
+  const rodadasPresentes=useMemo(()=>[...new Set(jogos.map(j=>faseLabel(j.rodada)))].sort((a,b)=>faseIndex(a)-faseIndex(b)||a.localeCompare(b)),[jogos]);
   const perfisPresentes=useMemo(()=>[...new Set(jogos.map(j=>getPerfil(j)))].sort((a,b)=>['D','A','E','C','F','B'].indexOf(a)-['D','A','E','C','F','B'].indexOf(b)),[jogos,tick]);
 
   const lista=useMemo(()=>{
     const lq=q.trim().toLowerCase();
     return jogos.filter(j=>{
-      if(fR!=='todas'&&j.rodada!==fR)return false;
+      if(fR!=='todas'&&faseLabel(j.rodada)!==fR)return false;
       if(fP!=='todos'&&getPerfil(j)!==fP)return false;
       if(fSvc!=='todos'&&!(j.servicos&&j.servicos[fSvc]))return false;
       if(lq){const hay=[j.selecao_1,j.selecao_2,j.local,j.dia_semana,nomeSel(j.selecao_1),nomeSel(j.selecao_2)].join(' ').toLowerCase();if(!hay.includes(lq))return false;}
@@ -662,8 +687,8 @@ function App(){
   },[jogos,q,fR,fP,fSvc,tick]);
 
   const porRodada=useMemo(()=>{
-    const g={};for(const j of lista){if(!g[j.rodada])g[j.rodada]=[];g[j.rodada].push(j);}
-    return rodadasPresentes.filter(r=>g[r]).map(r=>{return{rodada:r,jogos:g[r]}});
+    const g={};for(const j of lista){const fr=faseLabel(j.rodada);if(!g[fr])g[fr]=[];g[fr].push(j);}
+    return rodadasPresentes.filter(r=>g[r]).map(r=>{return{rodada:r,jogos:g[r].slice().sort((a,b)=>(a.numero||0)-(b.numero||0))}});
   },[lista,rodadasPresentes]);
 
   const comSvc=jogos.filter(j=>Object.keys(j.servicos||{}).length>0).length;
@@ -699,7 +724,7 @@ function App(){
           h('div',{className:'flbl'},'Fase'),
           h('div',{className:'chips'},
             h('div',{className:`chip${fR==='todas'?' on':''}`,onClick:()=>setFR('todas')},'Todas'),
-            ...rodadasPresentes.map(r=>h('div',{key:r,className:`chip ${r.replace(' ','').toLowerCase()}${fR===r?' on':''}`,onClick:()=>setFR(fR===r?'todas':r)},r))
+            ...rodadasPresentes.map(r=>h('div',{key:r,className:`chip ${normTxt(r).replace(/[^a-z0-9]+/g,'')}${fR===r?' on':''}`,onClick:()=>setFR(fR===r?'todas':r)},r))
           )
         ),
         h('div',{className:'fsec'},
@@ -841,7 +866,8 @@ function Modal({jogo,tz,onClose,onChange}){
   const svcs=svcsLista(jogo);
   const inet=getInet(jogo);
   const media=mediaLista(jogo);
-  const rc=getRc(jogo.rodada);
+  const fase=faseLabel(jogo.rodada);
+  const rc=getRc(fase);
   const n1=nomeSel(jogo.selecao_1),n2=nomeSel(jogo.selecao_2);
   const pf=PERFIS[getPerfil(jogo)];
   const tzTime=shiftGameTime(jogo.data,jogo.hora,tz);
@@ -855,7 +881,7 @@ function Modal({jogo,tz,onClose,onChange}){
         h('div',{className:'mhero'},
           h('div',{className:'mhero-stripe'}),
           h('button',{className:'mclose',onClick:onClose},'×'),
-          h('div',{className:'mrodada',style:{color:rc.cor}},`${jogo.rodada} · Jogo #${jogo.numero}`),
+          h('div',{className:'mrodada',style:{color:rc.cor}},`${fase} · Jogo #${jogo.numero}`),
           h('div',{className:'mmatch'},n1,h('span',{className:'vs'},'×'),n2),
           h('div',{className:'mnames',style:{color:'#666',fontStyle:'normal',fontSize:'11px',marginBottom:'8px'}},`${jogo.selecao_1}  ×  ${jogo.selecao_2}${jogo.match_id?'   ·   '+jogo.match_id:''}`),
 
@@ -1195,7 +1221,7 @@ function AdminPanel({jogos,onClose,onChange}){
   const [err,setErr]=useState(false);
   function tryUnlock(){if(pw===ADMIN_PASS){setUnlocked(true);ADMIN_UNLOCKED=true;setErr(false);}else{setErr(true);setPw('');}}
   const reqItems=[];
-  for(const j of jogos){for(const[k,v]of Object.entries(j.servicos||{})){if(v.status==='REQ')reqItems.push({match_id:j.match_id,numero:j.numero,key:k,nome:SVC[k]?.nome||k,qty:v.qty,teams:`${j.selecao_1}/${j.selecao_2}`,rodada:j.rodada,jogo:j});}}
+  for(const j of jogos){for(const[k,v]of Object.entries(j.servicos||{})){if(v.status==='REQ')reqItems.push({match_id:j.match_id,numero:j.numero,key:k,nome:SVC[k]?.nome||k,qty:v.qty,teams:`${j.selecao_1}/${j.selecao_2}`,rodada:faseLabel(j.rodada),jogo:j});}}
   reqItems.sort((a,b)=>a.numero-b.numero);
   return h('div',{className:'admin-overlay',onClick:onClose},
     h('div',{className:'admin-panel',onClick:e=>e.stopPropagation()},
@@ -1321,7 +1347,7 @@ function gerarPDF(jogo,n1,n2,tzKey='BRT'){
     doc.setDrawColor(220,220,220);doc.setLineWidth(.4);
     doc.line(ML,H-28,W-MR,H-28);
     setF('normal',7,160,160,160);
-    doc.text(`CazéTV · FIFA World Cup 2026 · ${jogo.rodada} · Jogo #${jogo.numero}`,ML,H-16);
+    doc.text(`CazéTV · FIFA World Cup 2026 · ${faseLabel(jogo.rodada)} · Jogo #${jogo.numero}`,ML,H-16);
     doc.text(`Pág. ${pn}`,W-MR,H-16,'right');
   }
   const HDR_H=82; // altura reservada pro cabeçalho em todas as páginas
@@ -1334,7 +1360,8 @@ function gerarPDF(jogo,n1,n2,tzKey='BRT'){
   ];
   const PDF_NAMES={"presentation":"Presentation Touchline","presentation_bg":"Presentation Behind Goal","team_arrival":"Team Arrival","guest_arrival":"Guest Arrival","dressing_room":"Dressing Room","ml_player_arrival":"Multi · Entrevista Jogador","ml_coach":"Multi · Entrevista Técnico","centre_circle":"Centre Circle","teams_onto":"Team Onto Pitch","pitch_reporter":"Pitch Reporter","pitch_rep_benches":"Bench Reporter","digital_reporter":"Digital Reporter","ml_halftime":"Multiflash · Intervalo","ml_fulltime":"Multiflash · Pós-jogo","uniflash":"UniFlash Interview","uniflash_fully":"UniFlash (Fully Equipped)","tv_studio":"TV Interview Studio","team_departure":"Team Departure","observer_seat":"Observer Seats","media_pc_journ":"Press Conference","media_mz_tv":"Mixed Zone · TV","media_mz_phone":"Mixed Zone Station","media_mz_digital":"Mixed Zone · Digital","media_pc_camera":"Press Conf. + Câmera","media_parking":"Parking Pass","tv_studio_internet":"Internet · Touchline","inet_behind_goal":"Internet · Behind Goal","inet_bench_codec":"IP Codec · Bench Reporter","uniflash_inet":"Internet · UniFlash"};
 
-  const rc=getRc(jogo.rodada);
+  const fase=faseLabel(jogo.rodada);
+  const rc=getRc(fase);
   const[rr,rg,rb]=h2r(rc.cor);
   const mses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
   const pdfTime=shiftGameTime(jogo.data,jogo.hora,tzKey);
@@ -1373,7 +1400,7 @@ function gerarPDF(jogo,n1,n2,tzKey='BRT'){
 
     // Linha 1: rodada · jogo# · pick — cor da rodada
     setF('bold',7.5,rr,rg,rb);
-    doc.text(`${jogo.rodada.toUpperCase()}  ·  JOGO #${jogo.numero}  ·  ${jogo.pick}`,ML,20);
+    doc.text(`${fase.toUpperCase()}  ·  JOGO #${jogo.numero}  ·  ${jogo.pick}`,ML,20);
 
     // Linha 2: times em destaque
     setF('bold',22,15,15,15);
