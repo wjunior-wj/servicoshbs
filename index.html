@@ -258,6 +258,22 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans',system-
 .app-channel-lmtv .btn-pdf,.app-channel-lmtv .admin-pass-row button,.app-channel-lmtv .admin-confirm-btn{background:#E8002D;color:#fff}.app-channel-lmtv .btn-pdf:hover,.app-channel-lmtv .admin-pass-row button:hover{background:#c0001f}
 .app-channel-lmtv .admin-fab{background:#050505;border:2px solid #00D12F}.app-channel-lmtv .admin-fab.unlocked{background:#00D12F;color:#050505}
 .app-channel-lmtv .mhero{background:#050505}.app-channel-lmtv .mhero-stripe{background:linear-gradient(90deg,#00D12F 0%,#00D12F 45%,#E8002D 45%,#E8002D 75%,#111 75%,#111 100%)}
+
+/* LiveModePT: cards com cabeçalho preto e destaque para Portugal */
+.app-channel-lmtv .gcard{padding:0;border-color:#D8DDD8;background:#fff}
+.app-channel-lmtv .gcard-head{background:#050505;color:#fff;padding:11px 14px 10px;border-bottom:3px solid #00D12F}
+.app-channel-lmtv .gcard .gnum{color:#00D12F;font-weight:900}
+.app-channel-lmtv .gcard .gpick{color:#cfcfcf}
+.app-channel-lmtv .gcard .gmatch{color:#fff;margin-bottom:3px}
+.app-channel-lmtv .gcard .gvs{color:#00D12F}
+.app-channel-lmtv .gcard .gmeta{color:#d9d9d9;margin-bottom:0}
+.app-channel-lmtv .gcard-body{padding:10px 14px 12px;background:#fff}
+.app-channel-lmtv .gcard.por{border-width:2px;border-color:#E8002D;box-shadow:0 0 0 1px rgba(0,209,47,.35)}
+.app-channel-lmtv .gcard.por::after{content:'POR';position:absolute;top:0;right:0;background:linear-gradient(90deg,#00D12F 0%,#00D12F 50%,#E8002D 50%,#E8002D 100%);color:#fff;font-size:8px;font-weight:900;letter-spacing:.08em;padding:2px 7px;border-bottom-left-radius:3px;z-index:2}
+.app-channel-lmtv .gcard.por:hover{border-color:#00D12F;box-shadow:0 3px 14px rgba(0,209,47,.25)}
+.app-channel-lmtv .gcard.bra{border-left:1px solid #D8DDD8;border-width:1px;border-color:#D8DDD8;box-shadow:none}
+.app-channel-lmtv .gcard.bra::after{content:none}
+
 @media(max-width:760px){.channel-switch{order:3;width:100%;justify-content:center}.hdr{height:auto;min-height:56px;padding-top:8px;padding-bottom:8px;flex-wrap:wrap}}
 
 </style>
@@ -615,6 +631,8 @@ function diaSemanaISO(iso){
 }
 function fmtHoraJogo(jogo,tzKey){const t=shiftGameTime(jogo.data,jogo.hora,tzKey);return`${fmtD(t.date)} · ${t.hora} ${t.label}`;}
 function isBRA(j){return['BRA','BRASIL'].some(s=>j.selecao_1===s||j.selecao_2===s);}
+function isPOR(j){return['POR','PORTUGAL'].some(s=>j.selecao_1===s||j.selecao_2===s);}
+function isFeaturedGame(j,channelKey){return channelKey==='lmtv'?isPOR(j):isBRA(j);}
 
 
 function getPerfil(jogo){
@@ -749,7 +767,7 @@ function App(){
         h('div',{className:'hdr-pill',style:{background:activeChannel==='lmtv'?'rgba(232,0,45,.12)':'rgba(0,122,153,.08)',color:activeChannel==='lmtv'?'#E8002D':'#007A99',borderColor:activeChannel==='lmtv'?'rgba(232,0,45,.35)':'rgba(0,122,153,.2)'}},[`${comSvc} com serviços`])
       ),
       h('div',{className:'channel-switch'},
-        ...Object.values(CHANNELS).map(ch=>h('button',{key:ch.key,className:`channel-btn${activeChannel===ch.key?' on':''}`,onClick:()=>{CURRENT_CHANNEL_KEY=ch.key;setActiveChannel(ch.key);}},ch.label))
+        ...Object.values(CHANNELS).map(ch=>h('button',{key:ch.key,className:`channel-btn${activeChannel===ch.key?' on':''}`,onClick:()=>{CURRENT_CHANNEL_KEY=ch.key;setActiveChannel(ch.key);setTz(ch.key==='lmtv'?'POR':'BRT');}},ch.label))
       ),
       h('div',{className:'hdr-tabs'},
         h('div',{className:`hdr-tab${aba==='jogos'?' on':''}`,onClick:()=>setAba('jogos')},'Jogos'),
@@ -799,7 +817,7 @@ function App(){
               const rc2=getRc(rodada);
               return h('div',{key:rodada},
                 h('div',{className:'rodada-header'},h('div',{className:'rodada-badge',style:{background:rc2.cor,color:rc2.ct}},rodada),h('div',{className:'rodada-line'})),
-                h('div',{className:'grid'},...rj.map(j=>h(Card,{key:j.numero,jogo:j,tz,onClick:()=>setSel(j)})))
+                h('div',{className:'grid'},...rj.map(j=>h(Card,{key:j.numero,jogo:j,tz,activeChannel,onClick:()=>setSel(j)})))
               );
             })
           )
@@ -867,42 +885,48 @@ function PainelServicos(){
   );
 }
 
-function Card({jogo,tz,onClick}){
+function Card({jogo,tz,activeChannel,onClick}){
   const svcs = svcsLista(jogo);
   const inet = getInet(jogo);
   const media = mediaLista(jogo);
   const pf = PERFIS[getPerfil(jogo)];
   const n1 = nomeSel(jogo.selecao_1), n2 = nomeSel(jogo.selecao_2);
-  return h('div',{className:`gcard${isBRA(jogo)?' bra':''}`,onClick},
-    h('div',{className:'gtop'}, h('div',{className:'gnum'},`#${jogo.numero}`), h('div',{className:'gpick'},jogo.pick)),
-    h('div',{className:'gmatch'}, n1, h('span',{className:'gvs'},'×'), n2),
-    h('div',{className:'gmeta'}, `${fmtHoraJogo(jogo,tz)} · ${jogo.local}`),
-    h('div',{className:'gperfil',style:{borderColor:pf.cor,color:pf.cor,background:pf.bg}}, pf.label),
-    h('div',{className:'gpills'},
-      (svcs.length===0 && inet.length===0 && media.length===0)
-        ? h('div',{className:'nosvc'},'Nenhum serviço contratado')
-        : h('div',null,
-            svcs.length>0 && h('div',null,
-              h('div',{style:{fontSize:'8px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--dim)',marginBottom:'3px'}},'Serviços HBS'),
-              h('div',{className:'gpills-row'},
-                ...svcs.map(({key,svc,qty,status,fully,confirmed_manually,pessoas,obs})=>{
-                  const isReq = status==='REQ' && !confirmed_manually;
-                  let label = svc.nome;
-                  if (fully) label += ' (Fully)';
-                  if (qty>1) label += ` ×${qty}`;
-                  return h('div',{key,className:'svc-tag',
-                    style:{borderColor:svc.cor+'55',color:svc.cor,background:svc.cor+'12'}},
-                    label,
-                    isReq && h('span',{className:'req-badge',title:'Aguardando confirmação FIFA'},'REQ')
-                  );
-                })
+  const featured = isFeaturedGame(jogo,activeChannel);
+  const featureClass = activeChannel==='lmtv' ? ' por' : ' bra';
+  return h('div',{className:`gcard${featured?featureClass:''}`,onClick},
+    h('div',{className:'gcard-head'},
+      h('div',{className:'gtop'}, h('div',{className:'gnum'},`#${jogo.numero}`), h('div',{className:'gpick'},jogo.pick)),
+      h('div',{className:'gmatch'}, n1, h('span',{className:'gvs'},'×'), n2),
+      h('div',{className:'gmeta'}, `${fmtHoraJogo(jogo,tz)} · ${jogo.local}`)
+    ),
+    h('div',{className:'gcard-body'},
+      h('div',{className:'gperfil',style:{borderColor:pf.cor,color:pf.cor,background:pf.bg}}, pf.label),
+      h('div',{className:'gpills'},
+        (svcs.length===0 && inet.length===0 && media.length===0)
+          ? h('div',{className:'nosvc'},'Nenhum serviço contratado')
+          : h('div',null,
+              svcs.length>0 && h('div',null,
+                h('div',{style:{fontSize:'8px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--dim)',marginBottom:'3px'}},'Serviços HBS'),
+                h('div',{className:'gpills-row'},
+                  ...svcs.map(({key,svc,qty,status,fully,confirmed_manually,pessoas,obs})=>{
+                    const isReq = status==='REQ' && !confirmed_manually;
+                    let label = svc.nome;
+                    if (fully) label += ' (Fully)';
+                    if (qty>1) label += ` ×${qty}`;
+                    return h('div',{key,className:'svc-tag',
+                      style:{borderColor:svc.cor+'55',color:svc.cor,background:svc.cor+'12'}},
+                      label,
+                      isReq && h('span',{className:'req-badge',title:'Aguardando confirmação FIFA'},'REQ')
+                    );
+                  })
+                )
+              ),
+              inet.length>0 && h('div',{style:{marginTop:'4px'}},
+                h('div',{style:{fontSize:'8px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--dim)',marginBottom:'3px'}},'Internet'),
+                h('div',{className:'inet-row'}, ...inet.map(i=>h('div',{key:i.booking,className:'inet-tag'},i.nome)))
               )
-            ),
-            inet.length>0 && h('div',{style:{marginTop:'4px'}},
-              h('div',{style:{fontSize:'8px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--dim)',marginBottom:'3px'}},'Internet'),
-              h('div',{className:'inet-row'}, ...inet.map(i=>h('div',{key:i.booking,className:'inet-tag'},i.nome)))
             )
-          )
+      )
     )
   );
 }
