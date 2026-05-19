@@ -302,6 +302,88 @@ async function gravar(match_id, col_key, value, token) {
   } catch(e) { return { ok:false, error:e.message||'Erro ao gravar no Sheets.' }; }
 }
 
+
+// Chamada genérica para ações administrativas no Apps Script
+async function apiPost(payload) {
+  if (!APPS_SCRIPT_URL) return { ok:false, error:'Salvamento desativado: APPS_SCRIPT_URL não configurado.' };
+  try {
+    const r = await fetch(APPS_SCRIPT_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify(payload||{}),
+    });
+    let data={};
+    try { data = await r.json(); } catch(e) { data = {}; }
+    if(!r.ok) return { ok:false, error:data.error||`Erro HTTP ${r.status} ao gravar no Sheets.` };
+    return data.ok===false ? data : { ok:true, ...data };
+  } catch(e) { return { ok:false, error:e.message||'Erro ao gravar no Sheets.' }; }
+}
+
+function serviceOptionsFor(jogo){
+  const active=jogo?.servicos||{};
+  return Object.keys(SVC).filter(k=>!active[k]).sort((a,b)=>{
+    const ia=SVC_ORDER.indexOf(a), ib=SVC_ORDER.indexOf(b);
+    if(ia!==-1||ib!==-1) return (ia===-1?999:ia)-(ib===-1?999:ib);
+    return (SVC[a]?.nome||a).localeCompare(SVC[b]?.nome||b);
+  });
+}
+
+function bookingToServiceKeyMap(){
+  const m={};
+  for(const [k,s] of Object.entries(SVC)){
+    const b=String(s.booking||'').trim();
+    if(b) m[b]=k;
+  }
+  return m;
+}
+
+function parseImportPayload(text){
+  const raw=(text||'').trim();
+  if(!raw) return {updates:[],errors:['Arquivo ou texto vazio.']};
+  let rows=[];
+  try{
+    const parsed=JSON.parse(raw);
+    rows=Array.isArray(parsed)?parsed:(Array.isArray(parsed.updates)?parsed.updates:[]);
+    if(!rows.length) return {updates:[],errors:['JSON não contém uma lista de updates.']};
+  }catch(e){
+    const csv=parseCSVRows(raw);
+    if(csv.length<2) return {updates:[],errors:['CSV sem linhas de dados.']};
+    const hdr=csv[0].map(h=>String(h||'').trim());
+    const idx=c=>hdr.indexOf(c);
+    rows=csv.slice(1).map(r=>({
+      match_id: r[idx('match_id')]||'',
+      booking: r[idx('booking')]||'',
+      service_key: r[idx('service_key')]||'',
+      status: r[idx('status')]||'',
+      qty: r[idx('qty')]||'',
+      obs: idx('obs')>=0 ? (r[idx('obs')]||'') : ''
+    }));
+  }
+  const bmap=bookingToServiceKeyMap();
+  const errors=[];
+  const grouped={};
+  for(const [i,row] of rows.entries()){
+    const match_id=String(row.match_id||row.matchId||'').trim();
+    const booking=String(row.booking||'').trim();
+    const service_key=String(row.service_key||row.serviceKey||bmap[booking]||'').trim();
+    let status=String(row.status||'CNF').trim().toUpperCase();
+    const qtyRaw=row.qty==null||row.qty===''?1:row.qty;
+    const qty=Number(qtyRaw);
+    const obs=String(row.obs||row.observacao||row.observacao_operacional||'').trim();
+    if(!match_id){errors.push(`Linha ${i+2}: match_id ausente.`);continue;}
+    if(!/^M\d{3}$/.test(match_id)){errors.push(`Linha ${i+2}: match_id inválido (${match_id}).`);continue;}
+    if(!service_key){errors.push(`Linha ${i+2}: service_key ausente e booking não mapeado (${booking||'sem booking'}).`);continue;}
+    if(!SVC[service_key]){errors.push(`Linha ${i+2}: service_key desconhecido (${service_key}).`);continue;}
+    if(!['CNF','REQ'].includes(status)){errors.push(`Linha ${i+2}: status inválido (${status}).`);continue;}
+    if(!Number.isFinite(qty)||qty<0){errors.push(`Linha ${i+2}: qty inválido (${qtyRaw}).`);continue;}
+    const key=`${match_id}|${service_key}`;
+    if(!grouped[key]) grouped[key]={match_id,service_key,booking:booking||SVC[service_key].booking,status,qty:0,obs};
+    grouped[key].qty += qty;
+    if(status==='CNF') grouped[key].status='CNF';
+    if(obs) grouped[key].obs=obs;
+  }
+  return {updates:Object.values(grouped),errors};
+}
+
 // Parser CSV com header dinâmico + validação básica
 function parseCSVRows(csvText) {
   const text=(csvText||'').replace(/^\uFEFF/,'');
@@ -440,6 +522,35 @@ const SVC_FILTROS=[{"key":"team_arrival","nome":"Team Arrival","cor":"#666666"},
 
 function fmtD(iso){if(!iso)return'';const[,m,d]=iso.split('-');return`${d}/${m}`;}
 function fmtDL(iso){if(!iso)return'';const ms=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];const[y,m,d]=iso.split('-');return`${d} ${ms[+m-1]} ${y}`;}
+const TZ_OPTIONS=[
+  {key:'BRT',label:'BRT',offset:0},
+  {key:'BRT-1',label:'BRT -1',offset:-1},
+  {key:'BRT-2',label:'BRT -2',offset:-2},
+  {key:'BRT-3',label:'BRT -3',offset:-3},
+  {key:'BRT-4',label:'BRT -4',offset:-4},
+  {key:'POR',label:'POR',offset:3}
+];
+function getTz(key){return TZ_OPTIONS.find(t=>t.key===key)||TZ_OPTIONS[0];}
+function pad2(n){return String(n).padStart(2,'0');}
+function shiftGameTime(data,hora,tzKey){
+  const tz=getTz(tzKey);
+  if(!data||!hora)return{date:data,hora:hora||'',label:tz.label,offset:tz.offset,changed:false};
+  const m=String(hora).match(/^(\d{1,2}):(\d{2})$/);
+  const d=String(data).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m||!d)return{date:data,hora:hora,label:tz.label,offset:tz.offset,changed:false};
+  const base=Date.UTC(+d[1],+d[2]-1,+d[3],+m[1],+m[2]);
+  const dt=new Date(base+tz.offset*60*60*1000);
+  const iso=`${dt.getUTCFullYear()}-${pad2(dt.getUTCMonth()+1)}-${pad2(dt.getUTCDate())}`;
+  return{date:iso,hora:`${pad2(dt.getUTCHours())}:${pad2(dt.getUTCMinutes())}`,label:tz.label,offset:tz.offset,changed:iso!==data};
+}
+function diaSemanaISO(iso){
+  const dias=['DOMINGO','SEGUNDA','TERÇA','QUARTA','QUINTA','SEXTA','SÁBADO'];
+  if(!iso)return'';
+  const d=iso.split('-').map(Number);
+  if(d.length!==3||d.some(n=>!n))return'';
+  return dias[new Date(Date.UTC(d[0],d[1]-1,d[2])).getUTCDay()]||'';
+}
+function fmtHoraJogo(jogo,tzKey){const t=shiftGameTime(jogo.data,jogo.hora,tzKey);return`${fmtD(t.date)} · ${t.hora} ${t.label}`;}
 function isBRA(j){return['BRA','BRASIL'].some(s=>j.selecao_1===s||j.selecao_2===s);}
 
 
@@ -486,6 +597,7 @@ function App(){
   const [tick,setTick]=useState(0);
   const [aba,setAba]=useState('jogos');
   const [adminOpen,setAdminOpen]=useState(false);
+  const [tz,setTz]=useState('BRT');
 
   useEffect(()=>{
     if(!SHEETS_URL){setJogos([]);setSheetError('SHEETS_URL não configurado.');setSrcStatus('err');return;}
@@ -577,6 +689,13 @@ function App(){
         h('div',{className:'fsec'},h('div',{className:'status-bar'},h('div',{className:`status-dot ${statusInfo.dot}`}),statusInfo.txt)),
         h('div',{className:'fsec'},h('div',{className:'flbl'},'Busca'),h('input',{className:'finput',placeholder:'Seleção, cidade…',value:q,onChange:e=>setQ(e.target.value)})),
         h('div',{className:'fsec'},
+          h('div',{className:'flbl'},'Fuso horário'),
+          h('div',{className:'chips'},
+            ...TZ_OPTIONS.map(opt=>h('div',{key:opt.key,className:`chip${tz===opt.key?' on':''}`,onClick:()=>setTz(opt.key),title:opt.key==='BRT'?'Horário original da planilha':`${opt.offset>0?'+':''}${opt.offset}h em relação ao BRT`},opt.label))
+          ),
+          h('div',{style:{fontSize:'9px',color:'var(--muted)',marginTop:'6px',lineHeight:1.35}},'A planilha permanece em BRT; a conversão é apenas visual.')
+        ),
+        h('div',{className:'fsec'},
           h('div',{className:'flbl'},'Fase'),
           h('div',{className:'chips'},
             h('div',{className:`chip${fR==='todas'?' on':''}`,onClick:()=>setFR('todas')},'Todas'),
@@ -597,7 +716,7 @@ function App(){
             ...SVC_FILTROS.map(s=>{const on=fSvc===s.key;return h('div',{key:s.key,className:'perfil-chip',style:{borderColor:s.cor,color:on?'#fff':s.cor,background:on?s.cor:'rgba(0,0,0,.03)',fontSize:'9px',padding:'3px 7px'},onClick:()=>setFSvc(on?'todos':s.key)},s.nome);})
           )
         ),
-        h('button',{className:'btn-clear',onClick:()=>{setQ('');setFR('todas');setFP('todos');setFSvc('todos');}},'Limpar')
+        h('button',{className:'btn-clear',onClick:()=>{setQ('');setFR('todas');setFP('todos');setFSvc('todos');setTz('BRT');}},'Limpar')
       ),
       h('main',{className:'content'},
         lista.length===0
@@ -608,13 +727,13 @@ function App(){
               const rc2=getRc(rodada);
               return h('div',{key:rodada},
                 h('div',{className:'rodada-header'},h('div',{className:'rodada-badge',style:{background:rc2.cor,color:rc2.ct}},rodada),h('div',{className:'rodada-line'})),
-                h('div',{className:'grid'},...rj.map(j=>h(Card,{key:j.numero,jogo:j,onClick:()=>setSel(j)})))
+                h('div',{className:'grid'},...rj.map(j=>h(Card,{key:j.numero,jogo:j,tz,onClick:()=>setSel(j)})))
               );
             })
           )
       )
     ),
-    sel&&h(Modal,{jogo:sel,onClose:()=>setSel(null),onChange:()=>setTick(t=>t+1)}),
+    sel&&h(Modal,{jogo:sel,tz,onClose:()=>setSel(null),onChange:()=>setTick(t=>t+1)}),
     h('button',{className:'admin-fab',onClick:()=>setAdminOpen(true),title:'Serviços REQ'},'⏳'),
     adminOpen&&h(AdminPanel,{jogos,onClose:()=>setAdminOpen(false),onChange:()=>setTick(t=>t+1)})
     ):h(SheetErrorPanel,{status:srcStatus,error:sheetError}))
@@ -676,7 +795,7 @@ function PainelServicos(){
   );
 }
 
-function Card({jogo,onClick}){
+function Card({jogo,tz,onClick}){
   const svcs = svcsLista(jogo);
   const inet = getInet(jogo);
   const media = mediaLista(jogo);
@@ -685,7 +804,7 @@ function Card({jogo,onClick}){
   return h('div',{className:`gcard${isBRA(jogo)?' bra':''}`,onClick},
     h('div',{className:'gtop'}, h('div',{className:'gnum'},`#${jogo.numero}`), h('div',{className:'gpick'},jogo.pick)),
     h('div',{className:'gmatch'}, n1, h('span',{className:'gvs'},'×'), n2),
-    h('div',{className:'gmeta'}, `${fmtD(jogo.data)} · ${jogo.hora} BRT · ${jogo.local}`),
+    h('div',{className:'gmeta'}, `${fmtHoraJogo(jogo,tz)} · ${jogo.local}`),
     h('div',{className:'gperfil',style:{borderColor:pf.cor,color:pf.cor,background:pf.bg}}, pf.label),
     h('div',{className:'gpills'},
       (svcs.length===0 && inet.length===0 && media.length===0)
@@ -716,7 +835,7 @@ function Card({jogo,onClick}){
   );
 }
 
-function Modal({jogo,onClose,onChange}){
+function Modal({jogo,tz,onClose,onChange}){
   const [exp,setExp]=useState(new Set());
   const [mediaOpen,setMediaOpen]=useState(false);
   const svcs=svcsLista(jogo);
@@ -725,6 +844,8 @@ function Modal({jogo,onClose,onChange}){
   const rc=getRc(jogo.rodada);
   const n1=nomeSel(jogo.selecao_1),n2=nomeSel(jogo.selecao_2);
   const pf=PERFIS[getPerfil(jogo)];
+  const tzTime=shiftGameTime(jogo.data,jogo.hora,tz);
+  const tzDay=diaSemanaISO(tzTime.date)||jogo.dia_semana;
   const reqCount = svcs.filter(s=>s.status==='REQ' && !s.confirmed_manually).length;
 
   return h('div',{className:'overlay',onClick:onClose},
@@ -739,15 +860,16 @@ function Modal({jogo,onClose,onChange}){
           h('div',{className:'mnames',style:{color:'#666',fontStyle:'normal',fontSize:'11px',marginBottom:'8px'}},`${jogo.selecao_1}  ×  ${jogo.selecao_2}${jogo.match_id?'   ·   '+jogo.match_id:''}`),
 
           h('div',{className:'mmeta'},
-            h('div',{className:'mm-item'},h('span',{className:'lbl'},'DATA'),h('span',{className:'val'},`${jogo.dia_semana}, ${fmtDL(jogo.data)}`)),
-            h('div',{className:'mm-item'},h('span',{className:'lbl'},'HORA'),h('span',{className:'val'},`${jogo.hora} BRT`)),
+            h('div',{className:'mm-item'},h('span',{className:'lbl'},'DATA'),h('span',{className:'val'},`${tzDay}, ${fmtDL(tzTime.date)}`)),
+            h('div',{className:'mm-item'},h('span',{className:'lbl'},'HORA'),h('span',{className:'val'},`${tzTime.hora} ${tzTime.label}`)),
             h('div',{className:'mm-item'},h('span',{className:'lbl'},'LOCAL'),h('span',{className:'val'},jogo.local)),
             h('div',{className:'mm-item'},h('span',{className:'lbl'},'PICK'),h('span',{className:'val'},jogo.pick))
           )
         ),
         h('div',{className:'mbody'},
           h('div',{style:{marginBottom:'14px',padding:'9px 12px',borderRadius:'4px',border:`1px solid ${pf.cor}40`,background:pf.bg}},
-            h('div',{style:{fontSize:'10px',fontWeight:700,color:pf.cor,letterSpacing:'.06em',textTransform:'uppercase'}},pf.label)
+            h('div',{style:{fontSize:'10px',fontWeight:700,color:pf.cor,letterSpacing:'.06em',textTransform:'uppercase'}},pf.label),
+            tz!=='BRT'&&h('div',{style:{fontSize:'10px',color:'var(--muted)',marginTop:'4px'}},`Horário convertido de ${jogo.hora} BRT para ${tzTime.hora} ${tzTime.label}.`)
           ),
           reqCount>0 && h('div',{className:'req-banner'},
             h('div',{className:'req-banner-icon'},'⏳'),
@@ -756,6 +878,7 @@ function Modal({jogo,onClose,onChange}){
               h('div',null,'Posição solicitada (REQ) no COS. Quando a FIFA confirmar, o status muda para CNF. Você pode atualizar manualmente via painel admin (canto inferior direito).')
             )
           ),
+          h(AddServiceBox,{jogo,onChange}),
           h('div',{className:'sec'},
             h('div',{className:'sec-hdr'},h('div',{className:'sec-title'},'Serviços HBS'),h('div',{className:'sec-ct'},svcs.length===0?'nenhum':`${svcs.length} serviço${svcs.length>1?'s':''}`)),
             svcs.length===0
@@ -789,7 +912,8 @@ function Modal({jogo,onClose,onChange}){
                         h('div',{className:'dr dr-full'},h('div',{className:'dr-lbl'},'Observações'),h('div',{className:'dr-val'},svc.obs))
                       ),
                       svc.maxP>0 && h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP:Math.max(qty,svc.maxP),cor:svc.cor,onChange,matchId:jogo.match_id,pessoas,jogo}),
-                    h(ObsEditor,{jogo,svcKey:key,cor:svc.cor,obs:obs||'',onChange})
+                      h(ObsEditor,{jogo,svcKey:key,cor:svc.cor,obs:obs||'',onChange}),
+                      h(RemoveServiceButton,{jogo,svcKey:key,cor:svc.cor,onChange})
                     )
                   );
                 })
@@ -817,7 +941,8 @@ function Modal({jogo,onClose,onChange}){
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Máx. pessoas'),h('div',{className:'dr-val'},maxP>0?String(maxP):'—')),
                         h('div',{className:'dr dr-full'},h('div',{className:'dr-lbl'},'Observações'),h('div',{className:'dr-val'},svc.obs||'—'))
                       ),
-                      maxP>0 && h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP,cor:svc.cor||'#555',onChange,matchId:jogo.match_id,pessoas,jogo})
+                      maxP>0 && h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP,cor:svc.cor||'#555',onChange,matchId:jogo.match_id,pessoas,jogo}),
+                      h(RemoveServiceButton,{jogo,svcKey:key,cor:svc.cor||'#555',onChange})
                     )
                   ),
                   h('div',{className:'media-item-qty',style:{cursor:'pointer'},onClick:()=>setExp(prev=>{const s=new Set(prev);s.has(key)?s.delete(key):s.add(key);return s;})},open?'−':`×${qty}`)
@@ -839,12 +964,96 @@ function Modal({jogo,onClose,onChange}){
       ),
       h('div',{className:'mfoot'},
         h('div',{className:'foot-hint'},APPS_SCRIPT_URL?'Alterações sincronizadas com Google Sheets.':'Modo somente leitura: Apps Script não configurado.'),
-        h('button',{className:'btn-pdf',onClick:()=>gerarPDF(jogo,n1,n2)},'↓ Baixar PDF')
+        h('button',{className:'btn-pdf',onClick:()=>gerarPDF(jogo,n1,n2,tz)},'↓ Baixar PDF')
       )
     )
   );
 }
 
+
+
+function AddServiceBox({jogo,onChange}){
+  const [open,setOpen]=useState(false);
+  const opts=serviceOptionsFor(jogo);
+  const [svcKey,setSvcKey]=useState(opts[0]||'');
+  const [status,setStatus]=useState('CNF');
+  const [qty,setQty]=useState(1);
+  const [obs,setObs]=useState('');
+  const [pw,setPw]=useState('');
+  const [saving,setSaving]=useState(false);
+  const [err,setErr]=useState('');
+  useEffect(()=>{ if(!svcKey&&opts[0])setSvcKey(opts[0]); },[opts.join('|')]);
+  const svc=SVC[svcKey]||{};
+  async function save(){
+    setErr('');
+    if(!APPS_SCRIPT_URL){setErr('Modo somente leitura: Apps Script não configurado.');return;}
+    if(!svcKey){setErr('Selecione um serviço.');return;}
+    if(!pw){setErr('Informe a senha admin.');return;}
+    setSaving(true);
+    const r=await apiPost({action:'add_service_to_match',match_id:jogo.match_id,service_key:svcKey,booking:svc.booking,status,qty:Number(qty)||0,obs,token:pw});
+    setSaving(false);
+    if(!r.ok){setErr(r.error||'Erro ao adicionar serviço.');return;}
+    jogo.servicos=jogo.servicos||{};
+    jogo.servicos[svcKey]={status,qty:Number(qty)||0,booking:svc.booking,booking_actual:svc.booking,pessoas:[],obs:obs||'',fully:false};
+    setOpen(false);setObs('');setPw('');setStatus('CNF');setQty(1);
+    onChange&&onChange();
+  }
+  return h('div',{style:{marginBottom:'16px',border:'1px dashed var(--border2)',borderRadius:4,background:'var(--bg)',overflow:'hidden'}},
+    h('button',{className:'media-tog',onClick:()=>setOpen(!open)},
+      h('span',null,'+ Adicionar serviço a este jogo'),h('span',{className:`media-tog-arrow${open?' open':''}`},'▶')
+    ),
+    open&&h('div',{style:{padding:'12px',display:'grid',gap:'8px'}},
+      opts.length===0?h('div',{style:{fontSize:12,color:'var(--muted)'}},'Todos os serviços cadastrados já estão ativos neste jogo.'):
+      h(React.Fragment,null,
+        h('select',{className:'finput',value:svcKey,onChange:e=>setSvcKey(e.target.value)},
+          ...opts.map(k=>h('option',{key:k,value:k},`${SVC[k]?.nome||k} · ${SVC[k]?.booking||''}`))
+        ),
+        svcKey&&h('div',{style:{fontSize:11,color:'var(--muted)',lineHeight:1.4}},svc.descr||''),
+        h('div',{style:{display:'grid',gridTemplateColumns:'1fr 90px',gap:8}},
+          h('select',{className:'finput',value:status,onChange:e=>setStatus(e.target.value)},h('option',{value:'CNF'},'CNF'),h('option',{value:'REQ'},'REQ')),
+          h('input',{className:'finput',type:'number',min:0,value:qty,onChange:e=>setQty(e.target.value)})
+        ),
+        h('textarea',{className:'obs-input',rows:2,placeholder:'Observação opcional…',value:obs,onChange:e=>setObs(e.target.value)}),
+        h('div',{style:{display:'flex',gap:8,alignItems:'center'}},
+          h('input',{className:'finput',type:'password',placeholder:'Senha admin',value:pw,onChange:e=>setPw(e.target.value),style:{flex:1}}),
+          h('button',{className:'admin-confirm-btn',onClick:save,disabled:saving||!APPS_SCRIPT_URL},saving?'Salvando…':'Salvar')
+        ),
+        err&&h('div',{className:'admin-error'},err)
+      )
+    )
+  );
+}
+
+function RemoveServiceButton({jogo,svcKey,cor,onChange}){
+  const [confirming,setConfirming]=useState(false);
+  const [pw,setPw]=useState('');
+  const [saving,setSaving]=useState(false);
+  const [err,setErr]=useState('');
+  async function remove(){
+    setErr('');
+    if(!APPS_SCRIPT_URL){setErr('Modo somente leitura: Apps Script não configurado.');return;}
+    if(!pw){setErr('Informe a senha admin.');return;}
+    setSaving(true);
+    const r=await apiPost({action:'remove_service_from_match',match_id:jogo.match_id,service_key:svcKey,token:pw});
+    setSaving(false);
+    if(!r.ok){setErr(r.error||'Erro ao remover serviço.');return;}
+    if(jogo.servicos) delete jogo.servicos[svcKey];
+    setConfirming(false);setPw('');
+    onChange&&onChange();
+  }
+  return h('div',{style:{marginTop:12,paddingTop:10,borderTop:'1px solid var(--border)'}},
+    !confirming?h('button',{onClick:e=>{e.stopPropagation();setConfirming(true);},style:{background:'transparent',border:'1px solid var(--border2)',color:'var(--red)',padding:'7px 10px',borderRadius:3,fontSize:10,fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em',cursor:'pointer'}},'Remover deste jogo'):
+    h('div',{style:{display:'grid',gap:6},onClick:e=>e.stopPropagation()},
+      h('div',{style:{fontSize:11,color:'var(--muted)'}},'Isso limpa status, quantidade, booking e observação deste serviço neste jogo.'),
+      h('div',{style:{display:'flex',gap:6}},
+        h('input',{className:'finput',type:'password',placeholder:'Senha admin',value:pw,onChange:e=>setPw(e.target.value),style:{flex:1}}),
+        h('button',{className:'admin-confirm-btn undo',onClick:()=>{setConfirming(false);setErr('');}},'Cancelar'),
+        h('button',{className:'admin-confirm-btn',onClick:remove,disabled:saving},saving?'…':'Remover')
+      ),
+      err&&h('div',{className:'admin-error'},err)
+    )
+  );
+}
 
 function PessoasEditor({jogoNum,svcKey,maxP,cor,onChange,matchId,pessoas,jogo}){
   const slots=Array.from({length:maxP},(_,i)=>i);
@@ -1011,10 +1220,66 @@ function AdminPanel({jogos,onClose,onChange}){
                 ?h('div',{style:{padding:'14px',textAlign:'center',color:'var(--muted)',fontSize:'11px'}},'Nenhum REQ.')
                 :reqItems.map(it=>h(AdminReqRow,{key:`${it.match_id}|${it.key}`,it,onChange}))
             )
-          )
+          ),
+          h(BatchImportPanel,{jogos,token:pw,onChange})
         )
       ),
       h('div',{className:'admin-foot'},APPS_SCRIPT_URL?'Alterações gravam no Sheets em tempo real':'Modo somente leitura: Apps Script não configurado.')
+    )
+  );
+}
+
+
+function BatchImportPanel({jogos,token,onChange}){
+  const [text,setText]=useState('');
+  const [parsed,setParsed]=useState(null);
+  const [saving,setSaving]=useState(false);
+  const [result,setResult]=useState(null);
+  const matchSet=useMemo(()=>new Set(jogos.map(j=>j.match_id)),[jogos]);
+  function parseNow(t=text){
+    const p=parseImportPayload(t);
+    const missing=p.updates.filter(u=>!matchSet.has(u.match_id)).map(u=>u.match_id);
+    const uniq=[...new Set(missing)];
+    if(uniq.length) p.errors.push(`Jogos não encontrados na Compat_Sheets carregada: ${uniq.slice(0,10).join(', ')}${uniq.length>10?'…':''}`);
+    setParsed(p);setResult(null);
+  }
+  function readFile(e){
+    const f=e.target.files&&e.target.files[0]; if(!f)return;
+    const rd=new FileReader();
+    rd.onload=()=>{const v=String(rd.result||'');setText(v);parseNow(v);};
+    rd.readAsText(f);
+  }
+  async function apply(){
+    if(!parsed||parsed.errors.length||!parsed.updates.length)return;
+    setSaving(true);setResult(null);
+    const r=await apiPost({action:'batch_update_services',token,updates:parsed.updates});
+    setSaving(false);setResult(r);
+    if(r.ok){
+      for(const u of parsed.updates){
+        const j=jogos.find(x=>x.match_id===u.match_id); if(!j)continue;
+        const svc=SVC[u.service_key]||{}; j.servicos=j.servicos||{};
+        j.servicos[u.service_key]={status:u.status,qty:u.qty,booking:u.booking||svc.booking,pessoas:[],obs:u.obs||'',fully:false};
+      }
+      onChange&&onChange();
+    }
+  }
+  return h('div',{className:'admin-section'},
+    h('h3',null,'Importar lote de confirmações'),
+    h('div',{className:'admin-info'},'Cole ou envie um JSON/CSV já extraído do PDF. Campos aceitos: match_id, booking, service_key, status, qty, obs. Duplicidades são somadas por jogo + serviço.'),
+    h('input',{type:'file',accept:'.csv,.json,.txt',onChange:readFile,style:{fontSize:11,marginBottom:8}}),
+    h('textarea',{className:'obs-input',rows:5,placeholder:'Cole aqui CSV ou JSON…',value:text,onChange:e=>{setText(e.target.value);setParsed(null);setResult(null);}}),
+    h('div',{style:{display:'flex',gap:8,marginTop:8,alignItems:'center'}},
+      h('button',{className:'admin-confirm-btn undo',onClick:()=>parseNow(),disabled:!text},'Pré-visualizar'),
+      h('button',{className:'admin-confirm-btn',onClick:apply,disabled:!parsed||parsed.errors.length||!parsed.updates.length||saving},saving?'Aplicando…':'Aplicar lote')
+    ),
+    parsed&&h('div',{style:{fontSize:11,marginTop:8,lineHeight:1.5}},
+      h('div',null,`Updates válidos: ${parsed.updates.length}`),
+      parsed.updates.slice(0,6).map(u=>h('div',{key:u.match_id+'|'+u.service_key,style:{fontFamily:'monospace',color:'var(--muted)'}},`${u.match_id} · ${u.service_key} · ${u.status} ×${u.qty}`)),
+      parsed.updates.length>6&&h('div',{style:{color:'var(--muted)'}},`… +${parsed.updates.length-6}`),
+      parsed.errors.length>0&&h('div',{className:'admin-error',style:{marginTop:6}},parsed.errors.join(' | '))
+    ),
+    result&&h('div',{className:result.ok?'admin-info':'admin-error',style:{marginTop:8}},
+      result.ok?`Lote aplicado: ${result.applied||0} update(s).`:(result.error||'Erro ao aplicar lote.')
     )
   );
 }
@@ -1036,7 +1301,7 @@ function AdminReqRow({it,onChange}){
     done?h('span',{className:'admin-confirm-tag'},'CNF ✓'):h('button',{className:'admin-confirm-btn',onClick:confirm,disabled:saving},saving?'…':'Confirmar')
   );
 }
-function gerarPDF(jogo,n1,n2){
+function gerarPDF(jogo,n1,n2,tzKey='BRT'){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({unit:'pt',format:'a4'});
   const W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight();
@@ -1072,8 +1337,9 @@ function gerarPDF(jogo,n1,n2){
   const rc=getRc(jogo.rodada);
   const[rr,rg,rb]=h2r(rc.cor);
   const mses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  const[,mm,dd]=(jogo.data||'--').split('-');
-  const dataL=dd&&mm?`${dd} ${mses[+mm-1]}`:jogo.data;
+  const pdfTime=shiftGameTime(jogo.data,jogo.hora,tzKey);
+  const[,mm,dd]=(pdfTime.date||'--').split('-');
+  const dataL=dd&&mm?`${dd} ${mses[+mm-1]}`:pdfTime.date;
 
   const allSvcs=PDF_ORDER.map(k=>{
     const v=jogo.servicos[k];if(!v)return null;
@@ -1121,7 +1387,7 @@ function gerarPDF(jogo,n1,n2){
 
     // Linha 3: siglas · data · hora
     setF('normal',8,120,120,120);
-    doc.text(`${jogo.selecao_1} × ${jogo.selecao_2}   ·   ${dataL}   ·   ${jogo.hora} BRT`,ML,58);
+    doc.text(`${jogo.selecao_1} × ${jogo.selecao_2}   ·   ${dataL}   ·   ${pdfTime.hora} ${pdfTime.label}`,ML,58);
 
     // Linha 4: local
     setF('normal',8,160,160,160);
