@@ -527,7 +527,7 @@ function svcsLista(jogo){
 }
 function mediaLista(jogo){
   return Object.entries(jogo.servicos||{}).filter(([k])=>SVC[k]?.media)
-    .map(([k,v])=>{return{key:k,svc:SVC[k],qty:v.qty,status:v.status,pessoas:v.pessoas||[]}});
+    .map(([k,v])=>{return{key:k,svc:SVC[k],qty:v.qty,status:v.status,pessoas:v.pessoas||[],obs:v.obs||''}});
 }
 function getInet(jogo){
   return Object.entries(jogo.servicos||{}).filter(([k])=>SVC[k]?.inet)
@@ -736,6 +736,18 @@ function App(){
 
   const rodadasPresentes=useMemo(()=>[...new Set(jogos.map(j=>faseLabel(j.rodada)))].sort((a,b)=>faseIndex(a)-faseIndex(b)||a.localeCompare(b)),[jogos]);
   const perfisPresentes=useMemo(()=>[...new Set(jogos.map(j=>getPerfil(j)))].sort((a,b)=>['D','A','E','C','F','B'].indexOf(a)-['D','A','E','C','F','B'].indexOf(b)),[jogos,tick]);
+  const personSuggestions=useMemo(()=>{
+    const names=[];
+    for(const j of jogos){
+      for(const v of Object.values(j.servicos||{})){
+        for(const name of (v.pessoas||[])){
+          const clean=String(name||'').trim();
+          if(clean) names.push(clean);
+        }
+      }
+    }
+    return [...new Set(names)].sort((a,b)=>a.localeCompare(b));
+  },[jogos,tick,activeChannel]);
 
   const lista=useMemo(()=>{
     const lq=q.trim().toLowerCase();
@@ -823,7 +835,7 @@ function App(){
           )
       )
     ),
-    sel&&h(Modal,{jogo:sel,tz,onClose:()=>setSel(null),onChange:()=>setTick(t=>t+1)}),
+    sel&&h(Modal,{jogo:sel,tz,personSuggestions,onClose:()=>setSel(null),onChange:()=>setTick(t=>t+1)}),
     h('button',{className:'admin-fab',onClick:()=>setAdminOpen(true),title:'Serviços REQ'},'⏳'),
     adminOpen&&h(AdminPanel,{jogos,onClose:()=>setAdminOpen(false),onChange:()=>setTick(t=>t+1)})
     ):h(SheetErrorPanel,{status:srcStatus,error:sheetError}))
@@ -931,7 +943,7 @@ function Card({jogo,tz,activeChannel,onClick}){
   );
 }
 
-function Modal({jogo,tz,onClose,onChange}){
+function Modal({jogo,tz,personSuggestions,onClose,onChange}){
   const [exp,setExp]=useState(new Set());
   const [mediaOpen,setMediaOpen]=useState(false);
   const svcs=svcsLista(jogo);
@@ -1008,8 +1020,7 @@ function Modal({jogo,tz,onClose,onChange}){
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Máx. pessoas'),h('div',{className:'dr-val'},svc.maxP>0?String(Math.max(qty, svc.maxP)):'—')),
                         h('div',{className:'dr dr-full'},h('div',{className:'dr-lbl'},'Observações'),h('div',{className:'dr-val'},svc.obs))
                       ),
-                      svc.maxP>0 && h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP:Math.max(qty,svc.maxP),cor:svc.cor,onChange,matchId:jogo.match_id,pessoas,jogo}),
-                      h(ObsEditor,{jogo,svcKey:key,cor:svc.cor,obs:obs||'',onChange}),
+                      h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP:Math.max(qty,svc.maxP||0),cor:svc.cor,onChange,matchId:jogo.match_id,pessoas,obs:obs||'',jogo,personSuggestions}),
                       h(RemoveServiceButton,{jogo,svcKey:key,cor:svc.cor,onChange})
                     )
                   );
@@ -1022,7 +1033,7 @@ function Modal({jogo,tz,onClose,onChange}){
               h('span',{className:'media-tog-arrow'},'▶')
             ),
             h('div',{className:`media-list${mediaOpen?' open':''}`},
-              ...media.map(({key,svc,qty,status,pessoas})=>{
+              ...media.map(({key,svc,qty,status,pessoas,obs})=>{
                 const open=exp.has(key);
                 const maxP=Math.max(qty||0, svc.maxP||0);
                 return h('div',{key,className:'media-item',style:{gridTemplateColumns:'1fr auto',alignItems:'start',border:open?`1px solid ${svc.cor||'#555'}60`:undefined}},
@@ -1038,7 +1049,7 @@ function Modal({jogo,tz,onClose,onChange}){
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Máx. pessoas'),h('div',{className:'dr-val'},maxP>0?String(maxP):'—')),
                         h('div',{className:'dr dr-full'},h('div',{className:'dr-lbl'},'Observações'),h('div',{className:'dr-val'},svc.obs||'—'))
                       ),
-                      maxP>0 && h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP,cor:svc.cor||'#555',onChange,matchId:jogo.match_id,pessoas,jogo}),
+                      h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP,cor:svc.cor||'#555',onChange,matchId:jogo.match_id,pessoas,obs:obs||'',jogo,personSuggestions}),
                       h(RemoveServiceButton,{jogo,svcKey:key,cor:svc.cor||'#555',onChange})
                     )
                   ),
@@ -1152,87 +1163,84 @@ function RemoveServiceButton({jogo,svcKey,cor,onChange}){
   );
 }
 
-function PessoasEditor({jogoNum,svcKey,maxP,cor,onChange,matchId,pessoas,jogo}){
-  const slots=Array.from({length:maxP},(_,i)=>i);
+function PessoasEditor({jogoNum,svcKey,maxP,cor,onChange,matchId,pessoas,obs,jogo,personSuggestions}){
+  const slots=Array.from({length:Math.max(0,maxP||0)},(_,i)=>i);
   const [vals,setVals]=useState(pessoas||[]);
+  const [obsVal,setObsVal]=useState(obs||'');
   const [saving,setSaving]=useState(false);
+  const [saved,setSaved]=useState(false);
   const [err,setErr]=useState('');
-  const timers=useRef({});
+  const listId=`nomes-${matchId}-${svcKey}`.replace(/[^a-zA-Z0-9_-]/g,'-');
 
-  useEffect(()=>{ setVals(pessoas||[]); },[svcKey,matchId,JSON.stringify(pessoas||[])]);
+  useEffect(()=>{ setVals(pessoas||[]); setObsVal(obs||''); setSaved(false); setErr(''); },[svcKey,matchId,JSON.stringify(pessoas||[]),obs||'']);
 
-  async function savePessoa(i,v){
-    setSaving(true);setErr('');
-    const r=await gravar(matchId,`${svcKey}_p${i+1}`,v);
-    setSaving(false);
-    if(r.ok){
+  function handlePessoaChange(i,v){
+    const nv=[...vals];
+    nv[i]=v;
+    setVals(nv);
+    setSaved(false);
+    setErr('');
+  }
+
+  async function saveAll(){
+    if(!APPS_SCRIPT_URL){setErr('Modo somente leitura: Apps Script não configurado.');return;}
+    setSaving(true);setErr('');setSaved(false);
+    try{
+      const tasks=[];
+      for(const i of slots){ tasks.push(gravar(matchId,`${svcKey}_p${i+1}`,vals[i]||'')); }
+      tasks.push(gravar(matchId,`${svcKey}_obs`,obsVal||''));
+      const results=await Promise.all(tasks);
+      const bad=results.find(r=>!r.ok);
+      if(bad){ throw new Error(bad.error||'Erro ao salvar pessoas/observação.'); }
       if(jogo&&jogo.servicos&&jogo.servicos[svcKey]){
-        const arr=[...(jogo.servicos[svcKey].pessoas||[])];
-        arr[i]=v;
-        jogo.servicos[svcKey].pessoas=arr;
+        jogo.servicos[svcKey].pessoas=[...vals];
+        jogo.servicos[svcKey].obs=obsVal||'';
       }
+      setSaved(true);
       onChange&&onChange();
-    }else{
-      setErr(r.error||'Erro ao salvar nome.');
+    }catch(e){
+      setErr(e.message||'Erro ao salvar pessoas/observação.');
+    }finally{
+      setSaving(false);
     }
   }
 
-  function handleChange(i,v){
-    if(!APPS_SCRIPT_URL){setErr('Modo somente leitura: Apps Script não configurado.');return;}
-    const nv=[...vals];nv[i]=v;setVals(nv);
-    if(timers.current[i])clearTimeout(timers.current[i]);
-    timers.current[i]=setTimeout(()=>savePessoa(i,v),800);
-  }
   return h('div',{className:'pessoas-section'},
     h('div',{className:'pessoas-title',style:{color:cor}},
-      'Pessoas neste serviço',
+      'Pessoas e observação deste serviço',
       saving&&h('span',{style:{marginLeft:8,fontSize:9,color:'#007A99',fontWeight:700}},'salvando…'),
+      saved&&!saving&&h('span',{style:{marginLeft:8,fontSize:9,color:'#16a34a',fontWeight:700}},'salvo'),
       !APPS_SCRIPT_URL&&h('span',{style:{marginLeft:8,fontSize:9,color:'#aaa'}},'(somente leitura: Apps Script não configurado)')
     ),
     err&&h('div',{style:{fontSize:10,color:'#E8002D',fontWeight:700,marginBottom:6}},err),
-    h('div',{className:'pessoas-grid'},
+    personSuggestions&&personSuggestions.length>0&&h('datalist',{id:listId},
+      ...personSuggestions.map(name=>h('option',{key:name,value:name}))
+    ),
+    slots.length>0&&h('div',{className:'pessoas-grid'},
       ...slots.map(i=>h('div',{key:i,className:'pessoa-row'},
         h('div',{className:'pessoa-num'},i+1),
-        h('input',{className:'pessoa-input',placeholder:`Pessoa ${i+1}…`,
-          value:vals[i]||'',onChange:e=>handleChange(i,e.target.value),disabled:!APPS_SCRIPT_URL,
+        h('input',{className:'pessoa-input',placeholder:`Pessoa ${i+1}…`,list:listId,
+          value:vals[i]||'',onChange:e=>handlePessoaChange(i,e.target.value),disabled:!APPS_SCRIPT_URL,
           onClick:e=>e.stopPropagation()})
       ))
+    ),
+    h('div',{className:'obs-section'},
+      h('div',{className:'obs-label',style:{color:cor}},'Observações operacionais'),
+      h('textarea',{
+        className:'obs-input',
+        placeholder:'Adicione observações específicas para este serviço neste jogo…',
+        value:obsVal,
+        onChange:e=>{setObsVal(e.target.value);setSaved(false);setErr('');},
+        disabled:!APPS_SCRIPT_URL,
+        onClick:e=>e.stopPropagation(),
+        rows:3,
+      })
+    ),
+    h('div',{style:{display:'flex',justifyContent:'flex-end',gap:8,marginTop:10}},
+      h('button',{className:'admin-confirm-btn',onClick:saveAll,disabled:saving||!APPS_SCRIPT_URL},saving?'Salvando…':'Salvar pessoas e observação')
     )
   );
 }
-
-function ObsEditor({jogo,svcKey,cor,obs,onChange}){
-  const [val,setVal]=useState(obs||'');
-  const [saving,setSaving]=useState(false);
-  function handleChange(v){
-    if(!APPS_SCRIPT_URL)return;
-    setVal(v);
-    clearTimeout(window._obsTimer);
-    window._obsTimer=setTimeout(async()=>{
-      setSaving(true);
-      const r=await gravar(jogo.match_id,`${svcKey}_obs`,v);
-      setSaving(false);
-      if(r.ok){if(jogo.servicos[svcKey]) jogo.servicos[svcKey].obs=v;onChange&&onChange();}
-    },800);
-  }
-  return h('div',{className:'obs-section'},
-    h('div',{className:'obs-label',style:{color:cor}},
-      'Observações operacionais',
-      saving&&h('span',{style:{marginLeft:8,fontSize:9,color:'#007A99',fontWeight:700}},'salvando…'),
-      !APPS_SCRIPT_URL&&h('span',{style:{marginLeft:8,fontSize:9,color:'#bbb'}},'(somente leitura: Apps Script não configurado)')
-    ),
-    h('textarea',{
-      className:'obs-input',
-      placeholder:'Adicione observações específicas para este serviço neste jogo…',
-      value:val,
-      onChange:e=>handleChange(e.target.value),
-      disabled:!APPS_SCRIPT_URL,
-      onClick:e=>e.stopPropagation(),
-      rows:3,
-    })
-  );
-}
-
 
 function StatusEditor({jogo,svcKey,booking,status,qty,onChange}){
   const [ed,setEd]=useState(false);
