@@ -866,6 +866,7 @@ function PainelServicos({jogos,onChange}){
   return h('div',{className:'panel'},
     h('div',{className:'panel-title'},'Guia de Serviços'),
     h('div',{className:'panel-sub'},'Referência operacional de cada posição FIFA · Copa 2026'),
+    h('div',{style:{fontSize:11,color:'var(--muted)',marginTop:8,marginBottom:10,lineHeight:1.4}},'A ferramenta de posições extras fica abaixo, antes da lista de serviços. Ela só aplica extras em serviços já ativos e exige senha admin.'),
     h(ExtraPositionsPanel,{jogos,onChange}),
 
     h('div',{style:{marginTop:'20px',marginBottom:'6px',fontSize:'11px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.1em',color:'var(--muted)'}},'Posições de campo'),
@@ -919,7 +920,7 @@ function PainelServicos({jogos,onChange}){
 
 
 function ExtraPositionsPanel({jogos,onChange}){
-  const [open,setOpen]=useState(false);
+  const [open,setOpen]=useState(true);
   const serviceKeys=useMemo(()=>Object.keys(SVC).filter(k=>!SVC[k]?.inet && (SVC[k]?.maxP||0)>0).sort((a,b)=>{
     const ia=SVC_ORDER.indexOf(a), ib=SVC_ORDER.indexOf(b);
     if(ia!==-1||ib!==-1)return (ia===-1?999:ia)-(ib===-1?999:ib);
@@ -967,7 +968,7 @@ function ExtraPositionsPanel({jogos,onChange}){
     if(!Number.isFinite(n)||n<0){setErr('Quantidade extra inválida.');return;}
     setSaving(true);
     const match_ids=[...selected];
-    const r=await apiPost({action:'set_extra_positions',service_key:svcKey,match_ids,extra_qty:n,token:pw});
+    const r=await apiPost({action:'apply_extra_positions',service_key:svcKey,match_ids,extra_qty:n,token:pw});
     setSaving(false);
     if(!r.ok){setErr(r.error||'Erro ao aplicar posições extras.');return;}
     for(const mid of match_ids){
@@ -979,13 +980,13 @@ function ExtraPositionsPanel({jogos,onChange}){
   }
 
   const svc=SVC[svcKey]||{};
-  return h('div',{className:'extra-admin-box'},
-    h('div',{className:'extra-admin-head',onClick:()=>setOpen(!open)},
+  return h('div',{className:'extra-admin-box',id:'posicoes-extras'},
+    h('div',{className:'extra-admin-head'},
       h('div',null,
         h('div',{className:'extra-admin-title'},'Posições extras'),
-        h('div',{style:{fontSize:10,color:'#cfcfcf',marginTop:2}},'Adicione campos extras em serviços já ativos, com senha admin.')
+        h('div',{style:{fontSize:10,color:'#cfcfcf',marginTop:2}},'Ferramenta da aba Serviços: escolha um serviço ativo, os jogos e a quantidade extra.')
       ),
-      h('div',{style:{fontSize:16}},open?'−':'+')
+      h('button',{className:'admin-confirm-btn',type:'button',onClick:()=>setOpen(!open)},open?'Ocultar':'Abrir')
     ),
     open&&h('div',{className:'extra-admin-body'},
       h('div',{className:'extra-disclaimer'},'As posições extras apenas aumentam a quantidade de campos de pessoas no app. Elas ficam marcadas como EXTRA e não alteram a quantidade oficial do booking FIFA/HBS. Só é possível aplicar extras em serviços já ativos no jogo.'),
@@ -1212,7 +1213,7 @@ function Modal({jogo,tz,personSuggestions,onClose,onChange}){
 
 
 function AddServiceBox({jogo,onChange}){
-  const [open,setOpen]=useState(false);
+  const [open,setOpen]=useState(true);
   const opts=serviceOptionsFor(jogo);
   const [svcKey,setSvcKey]=useState(opts[0]||'');
   const [status,setStatus]=useState('CNF');
