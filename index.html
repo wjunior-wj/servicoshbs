@@ -167,21 +167,6 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans',system-
 .pessoa-input{flex:1;background:var(--surface);border:1px solid var(--border2);color:var(--text);padding:8px 10px;font-family:inherit;font-size:13px;border-radius:3px;outline:none;transition:border-color .15s;-webkit-appearance:none}
 .pessoa-input:focus{border-color:var(--cyan)}
 .pessoa-input::placeholder{color:var(--dim)}
-
-.extra-admin-box{margin:18px 0 24px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);overflow:hidden}
-.extra-admin-head{padding:13px 15px;background:#111;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}
-.extra-admin-title{font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
-.extra-admin-body{padding:14px 15px;display:grid;gap:10px}
-.extra-disclaimer{font-size:10px;line-height:1.45;color:#7C2D12;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.28);border-radius:4px;padding:8px 10px}
-.extra-game-list{max-height:220px;overflow:auto;border:1px solid var(--border);border-radius:4px;background:var(--bg);padding:6px}
-.extra-game-row{display:flex;gap:8px;align-items:center;padding:5px 6px;font-size:11px;border-bottom:1px solid var(--border)}
-.extra-game-row:last-child{border-bottom:none}
-.extra-mini{display:inline-flex;margin-left:5px;padding:1px 4px;border-radius:2px;background:rgba(232,0,45,.11);border:1px solid rgba(232,0,45,.25);color:#E8002D;font-size:8px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
-.extra-slot-note{font-size:10px;color:#7C2D12;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);padding:7px 9px;border-radius:4px;margin-bottom:8px;line-height:1.4}
-.extra-qty-badge{display:inline-flex;margin-left:5px;padding:2px 6px;border-radius:2px;background:rgba(232,0,45,.1);border:1px solid rgba(232,0,45,.3);color:#E8002D;font-size:9px;font-weight:900;letter-spacing:.04em}
-.app-channel-lmtv .extra-admin-head{background:#050505;border-bottom:3px solid #00D12F}
-.app-channel-lmtv .extra-mini,.app-channel-lmtv .extra-qty-badge{background:rgba(0,209,47,.1);border-color:rgba(0,209,47,.35);color:#009E25}
-
 .mfoot{padding:14px 16px;border-top:1px solid var(--border);background:var(--raised);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;flex-shrink:0;padding-bottom:max(14px,env(safe-area-inset-bottom))}
 @media(min-width:681px){.mfoot{padding:14px 28px}}
 .btn-pdf{background:var(--red);color:#fff;border:none;padding:11px 22px;font-weight:900;border-radius:3px;cursor:pointer;font-family:inherit;font-size:12px;letter-spacing:.08em;text-transform:uppercase;transition:all .15s;-webkit-tap-highlight-color:transparent}
@@ -290,6 +275,19 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans',system-
 .app-channel-lmtv .gcard.bra::after{content:none}
 
 @media(max-width:760px){.channel-switch{order:3;width:100%;justify-content:center}.hdr{height:auto;min-height:56px;padding-top:8px;padding-bottom:8px;flex-wrap:wrap}}
+
+/* Posições extras - aba Serviços */
+.extra-admin-box{margin:14px 0 24px;border:1px solid #222;border-radius:6px;background:#0A0A0A;color:#fff;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.10)}
+.extra-admin-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #222}
+.extra-admin-title{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#fff}
+.extra-admin-body{padding:14px 16px;display:flex;flex-direction:column;gap:12px;background:#fff;color:var(--text)}
+.extra-disclaimer{font-size:11px;line-height:1.45;color:#7C2D12;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.28);border-radius:4px;padding:9px 11px}
+.extra-game-list{max-height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:4px;background:var(--bg);display:flex;flex-direction:column}
+.extra-game-row{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;background:var(--surface);cursor:pointer}
+.extra-game-row:last-child{border-bottom:none}
+.extra-mini{font-family:monospace;font-size:10px;font-weight:900;color:#B45309;background:rgba(217,119,6,.12);border:1px solid rgba(217,119,6,.35);border-radius:3px;padding:2px 6px}
+.extra-badge{display:inline-flex;align-items:center;margin-left:6px;padding:1px 5px;border-radius:2px;background:rgba(217,119,6,.12);border:1px solid rgba(217,119,6,.35);color:#B45309;font-size:8px;font-weight:900;letter-spacing:.08em;vertical-align:middle}
+.extra-note{margin-top:8px;font-size:10px;line-height:1.4;color:#7C2D12;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);border-radius:3px;padding:7px 9px}
 
 </style>
 </head>
@@ -508,17 +506,16 @@ function parseSheetCSV(csvText) {
       const rawQty=get(r,`${key}_qty`);
       const qty=rawQty===''?0:parseInt(rawQty,10);
       if(rawQty!==''&&!Number.isFinite(qty))errors.push(`Linha ${line}: quantidade inválida em ${key}_qty (${rawQty}).`);
-      const rawExtraQty=get(r,`${key}_extra_qty`);
-      const extraQty=rawExtraQty===''?0:parseInt(rawExtraQty,10);
-      if(rawExtraQty!==''&&!Number.isFinite(extraQty))errors.push(`Linha ${line}: quantidade extra inválida em ${key}_extra_qty (${rawExtraQty}).`);
       if(!SVC_META_FALLBACK[key])errors.push(`Linha ${line}: serviço desconhecido (${key}). Verifique o nome da coluna ${key}_status.`);
       const pessoas=[];let pi=1;
       while(hdr.includes(`${key}_p${pi}`)){pessoas.push(get(r,`${key}_p${pi}`));pi++;}
       const obs=get(r,`${key}_obs`)||'';
-      const extraObs=get(r,`${key}_extra_obs`)||'';
+      const rawExtra=get(r,`${key}_extra_qty`);
+      const extraQty=rawExtra===''?0:parseInt(rawExtra,10);
+      if(rawExtra!==''&&!Number.isFinite(extraQty))errors.push(`Linha ${line}: quantidade extra inválida em ${key}_extra_qty (${rawExtra}).`);
       const meta=SVC_META_FALLBACK[key]||{};
       const booking=get(r,`${key}_booking`)||meta.booking||key;
-      servicos[key]={st,qty:qty||0,extraQty:extraQty||0,extraObs,fully:(key==='uniflash_fully'||booking==='21225')&&st==='CNF',booking,pessoas,obs,status:st};
+      servicos[key]={st,qty:qty||0,extraQty:extraQty||0,fully:(key==='uniflash_fully'||booking==='21225')&&st==='CNF',booking,pessoas,obs,status:st};
     }
     parsed.push({numero:num||0,match_id:mid,rodada:get(r,'rodada'),
       data:get(r,'data'),dia_semana:get(r,'dia_semana')||'',hora:get(r,'hora'),local:get(r,'local'),
@@ -537,8 +534,8 @@ function svcsLista(jogo){
     const s=SVC[k];if(!s||s.inet||s.media)continue;
     const displayNome=s.nome+(v.fully&&!/fully/i.test(s.nome)?' (Fully Equipped)':'');
     out.push({key:k,svc:{...s,nome:displayNome},
-      qty:v.qty,status:v.status,fully:v.fully||false,
-      booking_actual:v.booking||s.booking,pessoas:v.pessoas||[],obs:v.obs||'',extraQty:v.extraQty||0,extraObs:v.extraObs||''});
+      qty:v.qty,extraQty:v.extraQty||0,status:v.status,fully:v.fully||false,
+      booking_actual:v.booking||s.booking,pessoas:v.pessoas||[],obs:v.obs||''});
   }
   const ORD=["Pré-jogo","Campo","Multilateral","Studio","Pós-jogo","Tribuna","Mídia"];
   out.sort((a,b)=>{const da=ORD.indexOf(a.svc.cat||''),db=ORD.indexOf(b.svc.cat||'');return da!==db?da-db:a.svc.nome.localeCompare(b.svc.nome);});
@@ -546,7 +543,7 @@ function svcsLista(jogo){
 }
 function mediaLista(jogo){
   return Object.entries(jogo.servicos||{}).filter(([k])=>SVC[k]?.media)
-    .map(([k,v])=>{return{key:k,svc:SVC[k],qty:v.qty,status:v.status,pessoas:v.pessoas||[],obs:v.obs||'',extraQty:v.extraQty||0,extraObs:v.extraObs||''}});
+    .map(([k,v])=>{return{key:k,svc:SVC[k],qty:v.qty,extraQty:v.extraQty||0,status:v.status,pessoas:v.pessoas||[],obs:v.obs||''}});
 }
 function getInet(jogo){
   return Object.entries(jogo.servicos||{}).filter(([k])=>SVC[k]?.inet)
@@ -866,7 +863,7 @@ function PainelServicos({jogos,onChange}){
   return h('div',{className:'panel'},
     h('div',{className:'panel-title'},'Guia de Serviços'),
     h('div',{className:'panel-sub'},'Referência operacional de cada posição FIFA · Copa 2026'),
-    h('div',{style:{fontSize:11,color:'var(--muted)',marginTop:8,marginBottom:10,lineHeight:1.4}},'A ferramenta de posições extras fica abaixo, antes da lista de serviços. Ela só aplica extras em serviços já ativos e exige senha admin.'),
+    h('div',{style:{fontSize:11,color:'var(--muted)',marginTop:8,marginBottom:10,lineHeight:1.4}},'Use a ferramenta abaixo para aplicar posições extras apenas a serviços já ativos. A quantidade oficial do booking não será alterada.'),
     h(ExtraPositionsPanel,{jogos,onChange}),
 
     h('div',{style:{marginTop:'20px',marginBottom:'6px',fontSize:'11px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.1em',color:'var(--muted)'}},'Posições de campo'),
@@ -920,7 +917,6 @@ function PainelServicos({jogos,onChange}){
 
 
 function ExtraPositionsPanel({jogos,onChange}){
-  const [open,setOpen]=useState(true);
   const serviceKeys=useMemo(()=>Object.keys(SVC).filter(k=>!SVC[k]?.inet && (SVC[k]?.maxP||0)>0).sort((a,b)=>{
     const ia=SVC_ORDER.indexOf(a), ib=SVC_ORDER.indexOf(b);
     if(ia!==-1||ib!==-1)return (ia===-1?999:ia)-(ib===-1?999:ib);
@@ -942,7 +938,8 @@ function ExtraPositionsPanel({jogos,onChange}){
     return (jogos||[]).filter(j=>{
       const s=j.servicos&&j.servicos[svcKey];
       const st=(s&&String(s.status||s.st||'').toUpperCase())||'';
-      return st==='CNF'||st==='REQ';
+      const qty=Number(s&&s.qty||0);
+      return (st==='CNF'||st==='REQ') && Number.isFinite(qty) && qty>0;
     }).sort((a,b)=>(a.numero||0)-(b.numero||0));
   },[jogos,svcKey]);
 
@@ -950,14 +947,8 @@ function ExtraPositionsPanel({jogos,onChange}){
     setSelected(prev=>{const n=new Set(prev);n.has(mid)?n.delete(mid):n.add(mid);return n;});
     setErr('');setOk('');
   }
-  function selectAll(){
-    setSelected(new Set(activeGames.map(j=>j.match_id)));
-    setErr('');setOk('');
-  }
-  function clearAll(){
-    setSelected(new Set());
-    setErr('');setOk('');
-  }
+  function selectAll(){setSelected(new Set(activeGames.map(j=>j.match_id)));setErr('');setOk('');}
+  function clearAll(){setSelected(new Set());setErr('');setOk('');}
   async function saveExtras(){
     setErr('');setOk('');
     if(!APPS_SCRIPT_URL){setErr('Modo somente leitura: Apps Script não configurado.');return;}
@@ -968,15 +959,17 @@ function ExtraPositionsPanel({jogos,onChange}){
     if(!Number.isFinite(n)||n<0){setErr('Quantidade extra inválida.');return;}
     setSaving(true);
     const match_ids=[...selected];
-    const r=await apiPost({action:'apply_extra_positions',service_key:svcKey,match_ids,extra_qty:n,token:pw});
-    setSaving(false);
-    if(!r.ok){setErr(r.error||'Erro ao aplicar posições extras.');return;}
-    for(const mid of match_ids){
-      const j=(jogos||[]).find(x=>x.match_id===mid);
-      if(j&&j.servicos&&j.servicos[svcKey])j.servicos[svcKey].extraQty=n;
-    }
-    setOk(`Aplicado em ${match_ids.length} jogo${match_ids.length!==1?'s':''}.`);
-    onChange&&onChange();
+    try{
+      const r=await apiPost({action:'apply_extra_positions',service_key:svcKey,match_ids,extra_qty:n,token:pw});
+      if(!r.ok){setErr(r.error||'Erro ao aplicar posições extras.');return;}
+      for(const mid of match_ids){
+        const j=(jogos||[]).find(x=>x.match_id===mid);
+        if(j&&j.servicos&&j.servicos[svcKey])j.servicos[svcKey].extraQty=n;
+      }
+      setOk(`Aplicado em ${match_ids.length} jogo${match_ids.length!==1?'s':''}.`);
+      onChange&&onChange();
+    }catch(e){setErr(e.message||'Erro ao aplicar posições extras.');}
+    finally{setSaving(false);}
   }
 
   const svc=SVC[svcKey]||{};
@@ -984,12 +977,11 @@ function ExtraPositionsPanel({jogos,onChange}){
     h('div',{className:'extra-admin-head'},
       h('div',null,
         h('div',{className:'extra-admin-title'},'Posições extras'),
-        h('div',{style:{fontSize:10,color:'#cfcfcf',marginTop:2}},'Ferramenta da aba Serviços: escolha um serviço ativo, os jogos e a quantidade extra.')
-      ),
-      h('button',{className:'admin-confirm-btn',type:'button',onClick:()=>setOpen(!open)},open?'Ocultar':'Abrir')
+        h('div',{style:{fontSize:10,color:'#cfcfcf',marginTop:2}},'Aplique posições extras em lote, apenas em serviços já ativos.')
+      )
     ),
-    open&&h('div',{className:'extra-admin-body'},
-      h('div',{className:'extra-disclaimer'},'As posições extras apenas aumentam a quantidade de campos de pessoas no app. Elas ficam marcadas como EXTRA e não alteram a quantidade oficial do booking FIFA/HBS. Só é possível aplicar extras em serviços já ativos no jogo.'),
+    h('div',{className:'extra-admin-body'},
+      h('div',{className:'extra-disclaimer'},'As posições extras apenas aumentam a quantidade de campos de pessoas no app. Elas ficam marcadas como EXTRA e não alteram a quantidade oficial do booking FIFA/HBS.'),
       h('div',{style:{display:'grid',gridTemplateColumns:'1fr 120px',gap:8}},
         h('select',{className:'finput',value:svcKey,onChange:e=>setSvcKey(e.target.value)},
           ...serviceKeys.map(k=>h('option',{key:k,value:k},`${SVC[k]?.nome||k} · ${SVC[k]?.booking||''}`))
@@ -998,8 +990,8 @@ function ExtraPositionsPanel({jogos,onChange}){
       ),
       svcKey&&h('div',{style:{fontSize:11,color:'var(--muted)',lineHeight:1.4}},`${svc.nome||svcKey}: ${activeGames.length} jogo${activeGames.length!==1?'s':''} com serviço ativo.`),
       activeGames.length>0&&h('div',{style:{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}},
-        h('button',{className:'admin-confirm-btn undo',onClick:selectAll},'Selecionar todos'),
-        h('button',{className:'admin-confirm-btn undo',onClick:clearAll},'Limpar seleção'),
+        h('button',{className:'admin-confirm-btn undo',type:'button',onClick:selectAll},'Selecionar todos'),
+        h('button',{className:'admin-confirm-btn undo',type:'button',onClick:clearAll},'Limpar seleção'),
         h('span',{style:{fontSize:11,color:'var(--muted)'}},`${selected.size} selecionado${selected.size!==1?'s':''}`)
       ),
       activeGames.length===0
@@ -1017,14 +1009,13 @@ function ExtraPositionsPanel({jogos,onChange}){
         ),
       h('div',{style:{display:'grid',gridTemplateColumns:'1fr auto',gap:8,alignItems:'center'}},
         h('input',{className:'finput',type:'password',placeholder:'Senha admin',value:pw,onChange:e=>{setPw(e.target.value);setErr('');setOk('');},onKeyDown:e=>{if(e.key==='Enter')saveExtras();}}),
-        h('button',{className:'admin-confirm-btn',onClick:saveExtras,disabled:saving||!selected.size},saving?'Aplicando…':'Aplicar extras')
+        h('button',{className:'admin-confirm-btn',type:'button',onClick:saveExtras,disabled:saving||!selected.size},saving?'Aplicando…':'Aplicar extras')
       ),
       err&&h('div',{className:'admin-error'},err),
       ok&&h('div',{style:{fontSize:11,color:'#16a34a',fontWeight:700}},ok)
     )
   );
 }
-
 
 function Card({jogo,tz,activeChannel,onClick}){
   const svcs = svcsLista(jogo);
@@ -1049,11 +1040,12 @@ function Card({jogo,tz,activeChannel,onClick}){
               svcs.length>0 && h('div',null,
                 h('div',{style:{fontSize:'8px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--dim)',marginBottom:'3px'}},'Serviços HBS'),
                 h('div',{className:'gpills-row'},
-                  ...svcs.map(({key,svc,qty,status,fully,confirmed_manually,pessoas,obs})=>{
+                  ...svcs.map(({key,svc,qty,extraQty,status,fully,confirmed_manually,pessoas,obs})=>{
                     const isReq = status==='REQ' && !confirmed_manually;
                     let label = svc.nome;
                     if (fully) label += ' (Fully)';
                     if (qty>1) label += ` ×${qty}`;
+                    if ((extraQty||0)>0) label += ` +${extraQty} extra`;
                     return h('div',{key,className:'svc-tag',
                       style:{borderColor:svc.cor+'55',color:svc.cor,background:svc.cor+'12'}},
                       label,
@@ -1122,17 +1114,15 @@ function Modal({jogo,tz,personSuggestions,onClose,onChange}){
             svcs.length===0
               ?h('div',{style:{color:'#aaa',fontStyle:'italic',padding:'8px 0',fontSize:'13px'}},'Nenhum serviço de campo confirmado.')
               :h('div',{className:'svc-list'},
-                ...svcs.map(({key,svc,qty,status,fully,confirmed_manually,booking_actual,pessoas,obs,extraQty,extraObs})=>{
+                ...svcs.map(({key,svc,qty,extraQty,status,fully,confirmed_manually,booking_actual,pessoas,obs})=>{
                   const open=exp.has(key);
                   const isReq = status==='REQ' && !confirmed_manually;
                   const labelExtra = fully ? ' (Fully Equipped)' : '';
-                  const officialSlots=Math.max(qty||0,svc.maxP||0);
-                  const totalSlots=officialSlots+(extraQty||0);
                   return h('div',{key,className:'svc-item',style:{borderColor:open?svc.cor+'60':undefined}},
                     h('div',{className:'svc-row',onClick:()=>setExp(prev=>{const s=new Set(prev);s.has(key)?s.delete(key):s.add(key);return s;}),style:{background:open?svc.cor+'0a':undefined}},
                       h('div',{className:'svc-left'},
                         h('div',{className:'svc-booking',style:{borderColor:svc.cor+'60',color:svc.cor,background:svc.cor+'10'}}, booking_actual),
-                        h('div',{className:'svc-name'}, svc.nome + labelExtra, h('span',{className:'svc-qty'},extraQty>0?` ×${qty} +${extraQty} extra`:(qty>1?` ×${qty}`:'')),
+                        h('div',{className:'svc-name'}, svc.nome + labelExtra, qty>1 && h('span',{className:'svc-qty'},` ×${qty}`), (extraQty||0)>0 && h('span',{className:'extra-badge'},`+${extraQty} EXTRA`),
                           isReq && h('span',{className:'req-badge',title:'Aguardando confirmação FIFA'},'REQ'),
                           confirmed_manually && h('span',{className:'req-badge',style:{background:'rgba(138,168,0,.15)',color:'#759400',borderColor:'rgba(138,168,0,.4)'},title:'Confirmado manualmente'},'CNF ✓')
                         )
@@ -1148,10 +1138,12 @@ function Modal({jogo,tz,personSuggestions,onClose,onChange}){
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Status FIFA'),h('div',{className:'dr-val'},h(StatusEditor,{jogo,svcKey:key,booking:booking_actual,status,qty,onChange}))),
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Horário'),h('div',{className:'dr-val'},svc.horario)),
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Equipamento'),h('div',{className:'dr-val'},svc.equip)),
-                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Pessoas'),h('div',{className:'dr-val'},svc.maxP>0?(extraQty>0?`${officialSlots} padrão + ${extraQty} extra = ${totalSlots}`:String(officialSlots)):'—')),
+                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Máx. pessoas'),h('div',{className:'dr-val'},svc.maxP>0?String(Math.max(qty, svc.maxP)+(extraQty||0)):'—')),
+                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Extras'),h('div',{className:'dr-val'},(extraQty||0)>0?`+${extraQty} posição${extraQty>1?'ões':''} extra${extraQty>1?'s':''}`:'—')),
                         h('div',{className:'dr dr-full'},h('div',{className:'dr-lbl'},'Observações'),h('div',{className:'dr-val'},svc.obs))
                       ),
-                      h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP:totalSlots,officialSlots,extraQty:extraQty||0,cor:svc.cor,onChange,matchId:jogo.match_id,pessoas,obs:obs||'',jogo,personSuggestions}),
+                      (extraQty||0)>0&&h('div',{className:'extra-note'},'Atenção: os campos marcados como EXTRA são posições operacionais adicionais. Eles não alteram a quantidade oficial confirmada no booking FIFA/HBS.'),
+                      h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP:Math.max(qty,svc.maxP||0)+(extraQty||0),baseP:Math.max(qty,svc.maxP||0),extraQty:extraQty||0,cor:svc.cor,onChange,matchId:jogo.match_id,pessoas,obs:obs||'',jogo,personSuggestions}),
                       h(RemoveServiceButton,{jogo,svcKey:key,cor:svc.cor,onChange})
                     )
                   );
@@ -1164,28 +1156,30 @@ function Modal({jogo,tz,personSuggestions,onClose,onChange}){
               h('span',{className:'media-tog-arrow'},'▶')
             ),
             h('div',{className:`media-list${mediaOpen?' open':''}`},
-              ...media.map(({key,svc,qty,status,pessoas,obs,extraQty,extraObs})=>{
+              ...media.map(({key,svc,qty,extraQty,status,pessoas,obs})=>{
                 const open=exp.has(key);
-                const officialSlots=Math.max(qty||0, svc.maxP||0);
-                const maxP=officialSlots+(extraQty||0);
+                const baseP=Math.max(qty||0, svc.maxP||0);
+                const maxP=baseP+(extraQty||0);
                 return h('div',{key,className:'media-item',style:{gridTemplateColumns:'1fr auto',alignItems:'start',border:open?`1px solid ${svc.cor||'#555'}60`:undefined}},
                   h('div',{className:'media-item-name'},
                     h('div',{style:{cursor:'pointer'},onClick:()=>setExp(prev=>{const s=new Set(prev);s.has(key)?s.delete(key):s.add(key);return s;})},
-                      svc.nome,
+                      svc.nome, (extraQty||0)>0&&h('span',{className:'extra-badge'},`+${extraQty} EXTRA`),
                       h('small',null,`${svc.booking}  ·  ${svc.descr}`)
                     ),
                     open && h('div',{style:{gridColumn:'1/-1',marginTop:'8px'}},
                       h('div',{className:'detail-grid'},
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Booking'),h('div',{className:'dr-val'},h('span',{className:'booking-hl',style:{color:svc.cor||'#555'}},svc.booking))),
                         h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Status FIFA'),h('div',{className:'dr-val'},status||'CNF')),
-                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Pessoas'),h('div',{className:'dr-val'},maxP>0?(extraQty>0?`${officialSlots} padrão + ${extraQty} extra = ${maxP}`:String(maxP)):'—')),
+                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Máx. pessoas'),h('div',{className:'dr-val'},maxP>0?String(maxP):'—')),
+                        h('div',{className:'dr'},h('div',{className:'dr-lbl'},'Extras'),h('div',{className:'dr-val'},(extraQty||0)>0?`+${extraQty} posição${extraQty>1?'ões':''} extra${extraQty>1?'s':''}`:'—')),
                         h('div',{className:'dr dr-full'},h('div',{className:'dr-lbl'},'Observações'),h('div',{className:'dr-val'},svc.obs||'—'))
                       ),
-                      h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP,officialSlots,extraQty:extraQty||0,cor:svc.cor||'#555',onChange,matchId:jogo.match_id,pessoas,obs:obs||'',jogo,personSuggestions}),
+                      (extraQty||0)>0&&h('div',{className:'extra-note'},'Atenção: os campos marcados como EXTRA são posições operacionais adicionais. Eles não alteram a quantidade oficial confirmada no booking FIFA/HBS.'),
+                      h(PessoasEditor,{jogoNum:jogo.numero,svcKey:key,maxP,baseP,extraQty:extraQty||0,cor:svc.cor||'#555',onChange,matchId:jogo.match_id,pessoas,obs:obs||'',jogo,personSuggestions}),
                       h(RemoveServiceButton,{jogo,svcKey:key,cor:svc.cor||'#555',onChange})
                     )
                   ),
-                  h('div',{className:'media-item-qty',style:{cursor:'pointer'},onClick:()=>setExp(prev=>{const s=new Set(prev);s.has(key)?s.delete(key):s.add(key);return s;})},open?'−':(extraQty>0?`×${qty} +${extraQty} extra`:`×${qty}`))
+                  h('div',{className:'media-item-qty',style:{cursor:'pointer'},onClick:()=>setExp(prev=>{const s=new Set(prev);s.has(key)?s.delete(key):s.add(key);return s;})},open?'−':`×${qty}`)
                 );
               })
             )
@@ -1213,7 +1207,7 @@ function Modal({jogo,tz,personSuggestions,onClose,onChange}){
 
 
 function AddServiceBox({jogo,onChange}){
-  const [open,setOpen]=useState(true);
+  const [open,setOpen]=useState(false);
   const opts=serviceOptionsFor(jogo);
   const [svcKey,setSvcKey]=useState(opts[0]||'');
   const [status,setStatus]=useState('CNF');
@@ -1295,9 +1289,9 @@ function RemoveServiceButton({jogo,svcKey,cor,onChange}){
   );
 }
 
-function PessoasEditor({jogoNum,svcKey,maxP,officialSlots,extraQty,cor,onChange,matchId,pessoas,obs,jogo,personSuggestions}){
+function PessoasEditor({jogoNum,svcKey,maxP,baseP,extraQty,cor,onChange,matchId,pessoas,obs,jogo,personSuggestions}){
   const slots=Array.from({length:Math.max(0,maxP||0)},(_,i)=>i);
-  const officialLimit=Number.isFinite(Number(officialSlots))?Number(officialSlots):Math.max(0,(maxP||0)-(extraQty||0));
+  const baseCount=Number.isFinite(Number(baseP))?Number(baseP):Math.max(0,(maxP||0)-(extraQty||0));
   const [vals,setVals]=useState(pessoas||[]);
   const [obsVal,setObsVal]=useState(obs||'');
   const [saving,setSaving]=useState(false);
@@ -1349,11 +1343,11 @@ function PessoasEditor({jogoNum,svcKey,maxP,officialSlots,extraQty,cor,onChange,
     personSuggestions&&personSuggestions.length>0&&h('datalist',{id:listId},
       ...personSuggestions.map(name=>h('option',{key:name,value:name}))
     ),
-    (extraQty||0)>0&&h('div',{className:'extra-slot-note'},`Este serviço tem ${extraQty} posição${extraQty>1?'ões':''} extra${extraQty>1?'s':''}. Campos marcados como EXTRA são adicionais e não alteram a quantidade oficial do booking.`),
     slots.length>0&&h('div',{className:'pessoas-grid'},
       ...slots.map(i=>h('div',{key:i,className:'pessoa-row'},
-        h('div',{className:'pessoa-num'},i+1,i>=officialLimit&&h('span',{className:'extra-mini'},'extra')),
-        h('input',{className:'pessoa-input',placeholder:`Pessoa ${i+1}…`,list:listId,
+        h('div',{className:'pessoa-num'},i+1),
+        i>=baseCount&&h('span',{className:'extra-badge',style:{marginLeft:0,marginRight:0}},'EXTRA'),
+        h('input',{className:'pessoa-input',placeholder:i>=baseCount?`Pessoa ${i+1} · EXTRA…`:`Pessoa ${i+1}…`,list:listId,
           value:vals[i]||'',onChange:e=>handlePessoaChange(i,e.target.value),disabled:!APPS_SCRIPT_URL,
           onClick:e=>e.stopPropagation()})
       ))
@@ -1591,7 +1585,7 @@ function gerarPDF(jogo,n1,n2,tzKey='BRT'){
     return{
       key:k, nome:PDF_NAMES[k]||meta.nome||k,
       booking:v.booking||meta.booking||k,
-      status:v.status, qty:v.qty, extraQty:v.extraQty||0, acessos:acessos==null?acessos:acessos+(v.extraQty||0),
+      status:v.status, qty:v.qty, acessos,
       fully:v.fully||false, cor:meta.cor||'#888888',
       isInet:!!meta.inet, isMedia:!!meta.media,
       horario:meta.horario||'', obs:meta.obs||'',
@@ -1707,7 +1701,7 @@ function gerarPDF(jogo,n1,n2,tzKey='BRT'){
 
     // QTD confirmada
     setF('bold',9,15,15,15);
-    doc.text(s.extraQty>0?`${s.qty}+${s.extraQty}`:String(s.qty),x_qtd+C_QTD/2,midY+3,'center');
+    doc.text(String(s.qty),x_qtd+C_QTD/2,midY+3,'center');
 
     // Nome do serviço
     const nome=s.nome+(s.fully?' (Fully)':'');
@@ -1772,7 +1766,7 @@ function gerarPDF(jogo,n1,n2,tzKey='BRT'){
     const nome=s.nome+(s.fully?' (Fully Equipped)':'');
     doc.text(nome,tx,ty);
     setF('normal',8.5,150,150,150);
-    doc.text(s.extraQty>0?`×${s.qty} +${s.extraQty} extra`:`×${s.qty}`,tx+doc.getTextWidth(nome)+5,ty);
+    doc.text(`×${s.qty}`,tx+doc.getTextWidth(nome)+5,ty);
     const bwb=28,bhb=10,bxb=ML+TW-bwb-5,byb=ty-9;
     if(isReq){
       doc.setFillColor(254,243,199);doc.rect(bxb,byb,bwb,bhb,'F');
@@ -1793,7 +1787,6 @@ function gerarPDF(jogo,n1,n2,tzKey='BRT'){
     field('EQUIPAMENTO',s.equip,false);
     field('DESCRIÇÃO',s.descr,false);
     field('OBSERVAÇÕES COS',s.obs,true);
-    if(s.extraQty>0)field('POSIÇÕES EXTRAS',`${s.extraQty} adicional${s.extraQty>1?'is':''} — não altera a quantidade oficial do booking`,true);
     field('NOTA',s.nota,true);  // obs do produtor por jogo
     y+=blockH+6;
   }
