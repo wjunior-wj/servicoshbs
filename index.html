@@ -384,139 +384,356 @@ function AdminPanel({jogos,onClose,onChange}){const[pw,setPw]=useState("");const
 function AdminReqRow({it,onChange}){const[saving,setSaving]=useState(false);const[done,setDone]=useState(false);async function confirm(){if(!APPS_SCRIPT_URL)return;setSaving(true);const r=await gravar(it.match_id,`${it.key}_status`,"CNF",ADMIN_PASS);setSaving(false);if(r.ok){setDone(true);if(it.jogo.servicos[it.key])it.jogo.servicos[it.key].status="CNF";onChange&&onChange();}}return h("div",{className:`admin-req-row${done?" confirmed":""}`},h("div",{className:"admin-req-mid"},it.match_id),h("div",{className:"admin-req-name"},it.nome,h("small",null,`${it.teams} · ${it.rodada}`)),h("div",{className:"admin-req-qty"},`×${it.qty}`),done?h("span",{className:"admin-confirm-tag"},"CNF ✓"):h("button",{className:"admin-confirm-btn",onClick:confirm,disabled:saving},saving?"...":"Confirmar"));}
 function BatchImportPanel({jogos,token,onChange}){const[text,setText]=useState("");const[parsed,setParsed]=useState(null);const[saving,setSaving]=useState(false);const[result,setResult]=useState(null);const matchSet=useMemo(()=>new Set(jogos.map(j=>j.match_id)),[jogos]);function parseNow(t=text){const p=parseImportPayload(t);const missing=p.updates.filter(u=>!matchSet.has(u.match_id)).map(u=>u.match_id);const uniq=[...new Set(missing)];if(uniq.length)p.errors.push(`Jogos não encontrados na planilha carregada: ${uniq.slice(0,10).join(", ")}${uniq.length>10?"...":""}`);setParsed(p);setResult(null);}function readFile(e){const f=e.target.files&&e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const v=String(rd.result||"");setText(v);parseNow(v);};rd.readAsText(f);}async function apply(){if(!parsed||parsed.errors.length||!parsed.updates.length)return;setSaving(true);setResult(null);const r=await apiPost({action:"batch_update_services",token,updates:parsed.updates});setSaving(false);setResult(r);if(r.ok){for(const u of parsed.updates){const j=jogos.find(x=>x.match_id===u.match_id);if(!j)continue;const svc=SVC[u.service_key]||{};j.servicos=j.servicos||{};j.servicos[u.service_key]={status:u.status,qty:u.qty,booking:u.booking||svc.booking,pessoas:[],obs:u.obs||"",fully:false};}onChange&&onChange();}}return h("div",{className:"admin-section"},h("h3",null,"Importar lote de confirmações"),h("div",{className:"admin-info"},"Cole ou envie um JSON/CSV já extraído do PDF. Campos aceitos: match_id, booking, service_key, status, qty, obs."),h("input",{type:"file",accept:".csv,.json,.txt",onChange:readFile,style:{fontSize:11,marginBottom:8}}),h("textarea",{className:"obs-input",rows:5,placeholder:"Cole aqui CSV ou JSON...",value:text,onChange:e=>{setText(e.target.value);setParsed(null);setResult(null);}}),h("div",{style:{display:"flex",gap:8,marginTop:8,alignItems:"center"}},h("button",{className:"admin-confirm-btn undo",onClick:()=>parseNow(),disabled:!text},"Pré-visualizar"),h("button",{className:"admin-confirm-btn",onClick:apply,disabled:!parsed||parsed.errors.length||!parsed.updates.length||saving},saving?"Aplicando...":"Aplicar lote")),parsed&&h("div",{style:{fontSize:11,marginTop:8,lineHeight:1.5}},h("div",null,`Updates válidos: ${parsed.updates.length}`),...parsed.updates.slice(0,6).map(u=>h("div",{key:u.match_id+"|"+u.service_key,style:{fontFamily:"monospace",color:"var(--muted)"}},`${u.match_id} · ${u.service_key} · ${u.status} ×${u.qty}`)),parsed.updates.length>6&&h("div",{style:{color:"var(--muted)"}},`... +${parsed.updates.length-6}`),parsed.errors.length>0&&h("div",{className:"admin-error",style:{marginTop:6}},parsed.errors.join(" | "))),result&&h("div",{className:result.ok?"admin-info":"admin-error",style:{marginTop:8}},result.ok?`Lote aplicado: ${result.applied||0} update(s).`:(result.error||"Erro ao aplicar lote.")));}
 
-function gerarPDF(jogo,n1,n2,tzKey="BRT"){
-  if(!window.jspdf){alert("Biblioteca jsPDF não carregou.");return;}
-  const{jsPDF}=window.jspdf;
-  const doc=new jsPDF({unit:"pt",format:"a4"});
-  const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();
-  const ML=42,MR=42,TW=W-ML-MR;
-  let y=0;
-  const time=shiftGameTime(jogo.data,jogo.hora,tzKey);
-  const fase=faseLabel(jogo.rodada);
-  const rc=getRc(jogo.rodada);
-  const main=serviceEntries(jogo,"main");
-  const media=serviceEntries(jogo,"media");
-  const inet=serviceEntries(jogo,"inet");
-  const all=[...main,...media,...inet];
-  const cnfCount=all.filter(i=>(i.status||"CNF")!=="REQ").length;
-  const reqCount=all.filter(i=>(i.status||"CNF")==="REQ").length;
-
-  function rgb(hex){const m=String(hex||"#555555").replace("#","").match(/.{2}/g)||["55","55","55"];return m.map(x=>parseInt(x,16));}
-  function setText(size=8,style="normal",color=[40,40,40]){doc.setFont("helvetica",style);doc.setFontSize(size);doc.setTextColor(...color);}
-  function text(txt,x,yy,size=8,style="normal",color=[40,40,40],opt){setText(size,style,color);doc.text(String(txt||""),x,yy,opt||{});}
-  function split(txt,w,size=8){setText(size,"normal",[40,40,40]);return doc.splitTextToSize(String(txt||"—"),w);}
-  function clean(v){return String(v||"").trim();}
-  function pageBreak(need=40){if(y+need>H-42){doc.addPage();drawHeader(false);}}
-  function footer(){const pages=doc.internal.getNumberOfPages();for(let i=1;i<=pages;i++){doc.setPage(i);text(`CazéTV · FIFA World Cup 2026 · ${fase} · Jogo #${jogo.numero}`,ML,H-24,7,"normal",[165,165,165]);text(`Pág. ${i}`,W-MR,H-24,7,"normal",[165,165,165],{align:"right"});}}
-  function drawHeader(first=true){
-    const c=rgb(rc.cor||"#7B2D8B");
-    doc.setFillColor(...c);doc.rect(0,0,W,4,"F");
-    text(`${fase.toUpperCase()} · JOGO #${jogo.numero} · ${jogo.pick||""}`,ML,22,8,"bold",c);
-    text(`${n1} × ${n2}`,ML,48,22,"bold",[20,20,20]);
-    text(`${jogo.selecao_1} × ${jogo.selecao_2} · ${fmtD(time.date).replace("/"," ")} · ${time.hora} ${time.label}`,ML,66,8,"normal",[120,120,120]);
-    text(jogo.local||"",ML,81,8,"normal",[120,120,120]);
-    doc.setDrawColor(230,230,230);doc.line(0,100,W,100);
-    y=first?122:112;
+function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
+  if (!window.jspdf) { alert("Biblioteca jsPDF não carregou."); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "pt", format: "a4" });
+ 
+  const W  = doc.internal.pageSize.getWidth();
+  const H  = doc.internal.pageSize.getHeight();
+  const ML = 36, MR = 36, TW = W - ML - MR;
+ 
+  const time  = shiftGameTime(jogo.data, jogo.hora, tzKey);
+  const fase  = faseLabel(jogo.rodada);
+  const rc    = getRc(fase);
+ 
+  // ── helpers ──────────────────────────────────────────────────────────────
+  function hexRgb(hex) {
+    const m = String(hex || "#555555").replace("#", "").match(/.{2}/g) || ["55","55","55"];
+    return m.map(x => parseInt(x, 16));
   }
-  function statusColor(st){return st==="REQ"?[180,120,0]:[18,155,90];}
-  function accessText(item){const s=item.svc||{};if(s.inet)return"—";const v=Math.max(Number(item.qty)||0,Number(s.maxP)||0);return v>0?String(v):"—";}
-  function peopleText(item){const p=(item.pessoas||[]).map(clean).filter(Boolean);return p.length?p.join(" · "):"—";}
-  function drawSummaryHeader(){
-    doc.setFillColor(238,238,238);doc.setDrawColor(205,205,205);doc.rect(ML,y,TW,18,"FD");
-    text("STATUS",ML+8,y+12,6,"bold",[90,90,90]);
-    text("QTD",ML+54,y+12,6,"bold",[90,90,90]);
-    text("SERVIÇO",ML+86,y+12,6,"bold",[90,90,90]);
-    text("ACESSOS",ML+300,y+12,6,"bold",[90,90,90]);
-    text("PESSOAS",ML+354,y+12,6,"bold",[90,90,90]);
-    y+=28;
+ 
+  function setFont(style, size, rgb) {
+    doc.setFont("helvetica", style);
+    doc.setFontSize(size);
+    doc.setTextColor(...(rgb || [40, 40, 40]));
   }
-  function drawSummarySection(title,items){
-    if(!items.length)return;
-    pageBreak(40);
-    text(title.toUpperCase(),ML,y,7,"bold",[155,155,155]);
-    doc.setDrawColor(232,232,232);doc.line(ML,y+6,W-MR,y+6);
-    y+=18;
-    items.forEach(item=>{
-      const s=item.svc||{},st=item.status||"CNF",c=rgb(s.cor),obs=clean(item.obs);
-      const personLines=split(peopleText(item),TW-354,7.5);
-      const obsLines=obs?split(obs,TW-354,7):[];
-      const rowH=Math.max(22,14+personLines.length*9+(obsLines.length?4+obsLines.length*8:0));
-      pageBreak(rowH+6);
-      doc.setFillColor(...c);doc.rect(ML,y,3,rowH,"F");
-      doc.setFillColor(y%2?250:247,y%2?250:247,y%2?250:247);doc.rect(ML+3,y,TW-3,rowH,"F");
-      text(st,ML+14,y+13,6.5,"bold",statusColor(st));
-      text(String(item.qty||1),ML+62,y+13,8,"bold",[30,30,30],{align:"center"});
-      text(s.nome||item.key,ML+86,y+13,8,"bold",[30,30,30]);
-      text(accessText(item),ML+318,y+13,8,"bold",[30,30,30],{align:"center"});
-      setText(7.5,"normal",[60,60,60]);doc.text(personLines,ML+354,y+13);
-      if(obsLines.length){setText(7,"italic",[92,92,92]);doc.text(obsLines,ML+354,y+13+personLines.length*9+4);}
-      y+=rowH;
-      doc.setDrawColor(232,232,232);doc.line(ML,y,W-MR,y);
-    });
-    y+=10;
+ 
+  let y = 0;
+ 
+  // page-break check
+  function ck(need) {
+    if (y + need > H - 36) { doc.addPage(); y = 0; drawPageHeader(); }
   }
-  function drawSummary(){
-    text(`${all.length} serviços`,ML,y,8,"normal",[120,120,120]);
-    text(`${cnfCount} confirmados`,ML+78,y,8,"normal",[22,150,90]);
-    text(`${reqCount} aguardando`,ML+168,y,8,"normal",[180,120,0]);
-    y+=14;
-    drawSummaryHeader();
-    drawSummarySection("Serviços",main);
-    drawSummarySection("Acessos de Mídia",media);
-    drawSummarySection("Internet",inet);
+ 
+  // thin separator line
+  function hr(gap1 = 6, gap2 = 8) {
+    y += gap1;
+    doc.setDrawColor(210, 210, 210);
+    doc.line(ML, y, W - MR, y);
+    y += gap2;
   }
-  function drawDetailTitle(){
-    y+=24;
-    pageBreak(42);
-    text("DETALHAMENTO DOS SERVIÇOS",ML,y,11,"bold",[30,30,30]);
-    doc.setDrawColor(...rgb(rc.cor||"#7B2D8B"));doc.setLineWidth(1.2);doc.line(ML,y+4,ML+146,y+4);doc.setLineWidth(.2);
-    y+=20;
+ 
+  // ── page header (repeated on each page) ──────────────────────────────────
+  function drawPageHeader() {
+    const c = hexRgb(rc.cor);
+    // top colour bar
+    doc.setFillColor(...c);
+    doc.rect(0, 0, W, 5, "F");
+ 
+    // channel + round line
+    setFont("bold", 7.5, c);
+    doc.text(`${fase.toUpperCase()} · JOGO #${jogo.numero} · ${jogo.pick}`, ML, 20);
+ 
+    // match name
+    setFont("bold", 20, [15, 15, 15]);
+    doc.text(`${n1} × ${n2}`, ML, 42);
+ 
+    // sub-line: codes · date · time · venue
+    setFont("normal", 8, [130, 130, 130]);
+    const subLine = [
+      `${jogo.selecao_1} × ${jogo.selecao_2}`,
+      fmtDL(time.date),
+      `${time.hora} ${time.label}`,
+      jogo.local,
+    ].filter(Boolean).join("  ·  ");
+    doc.text(subLine, ML, 54);
+ 
+    y = 64;
+    doc.setDrawColor(...c);
+    doc.setLineWidth(0.8);
+    doc.line(ML, y, W - MR, y);
+    doc.setLineWidth(0.2);
+    y += 10;
   }
-  function drawDetailSection(title,items){
-    if(!items.length)return;
-    pageBreak(26);
-    text(title.toUpperCase(),ML,y,7,"bold",[150,150,150]);
-    doc.setDrawColor(232,232,232);doc.line(ML+50,y-2,W-MR,y-2);
-    y+=12;
-    items.forEach(drawDetailCard);
+ 
+  // ── footer ────────────────────────────────────────────────────────────────
+  function drawFooter() {
+    const totalPages = doc.internal.getNumberOfPages();
+    for (let p = 1; p <= totalPages; p++) {
+      doc.setPage(p);
+      setFont("normal", 7.5, [160, 160, 160]);
+      doc.text(
+        `${jogo.pick}  ·  FIFA World Cup 2026  ·  ${fase}  ·  Jogo #${jogo.numero}`,
+        ML, H - 16
+      );
+      doc.text(`Pág. ${p}`, W - MR, H - 16, { align: "right" });
+    }
   }
-  function drawDetailCard(item){
-    const s=item.svc||{},st=item.status||"CNF",c=rgb(s.cor),name=s.nome||item.key;
-    const fields=[
-      ["HORÁRIO",s.horario||"—"],
-      ["EQUIPAMENTO",s.equip||"—"],
-      ["DESCRIÇÃO",s.descr||"—"],
-      ["OBSERVAÇÕES COS",s.obs||"—"]
-    ];
-    const labelW=78,bodyX=ML+labelW+18,bodyW=TW-labelW-34;
-    const fieldData=fields.map(([lab,val])=>[lab,split(val,bodyW,7.5)]);
-    const contentH=fieldData.reduce((sum,[,lines])=>sum+Math.max(10,lines.length*8.5),0);
-    const cardH=Math.max(50,26+contentH);
-    pageBreak(cardH+10);
-    doc.setDrawColor(225,225,225);doc.setFillColor(255,255,255);doc.rect(ML,y,TW,cardH,"FD");
-    doc.setFillColor(...c);doc.rect(ML,y,3,cardH,"F");
-    text(`${name} ×${item.qty||1}`,ML+12,y+16,10,"bold",[30,30,30]);
-    doc.setFillColor(st==="REQ"?255:232,st==="REQ"?246:255,st==="REQ"?205:244);
-    doc.rect(W-MR-34,y+7,28,12,"F");
-    text(st,W-MR-20,y+16,6,"bold",statusColor(st),{align:"center"});
-    let yy=y+29;
-    fieldData.forEach(([lab,lines])=>{
-      text(lab,ML+12,yy,6,"bold",[145,145,145]);
-      setText(7.5,"normal",[40,40,40]);doc.text(lines,bodyX,yy);
-      yy+=Math.max(10,lines.length*8.5);
-    });
-    y+=cardH+8;
+ 
+  // ── collect all service entries ───────────────────────────────────────────
+  const mainSvcs  = serviceEntries(jogo, "main");
+  const mediaSvcs = serviceEntries(jogo, "media");
+  const inetSvcs  = serviceEntries(jogo, "inet");
+  const allSvcs   = [...mainSvcs, ...mediaSvcs, ...inetSvcs];
+ 
+  const cnfCount = allSvcs.filter(s => s.status === "CNF").length;
+  const reqCount = allSvcs.filter(s => s.status === "REQ").length;
+ 
+  // ── PAGE 1: HEADER ────────────────────────────────────────────────────────
+  drawPageHeader();
+ 
+  // summary pill line
+  setFont("normal", 8, [100, 100, 100]);
+  const summaryParts = [
+    `${allSvcs.length} serviços`,
+    cnfCount > 0 ? `${cnfCount} confirmados` : null,
+    reqCount > 0 ? `${reqCount} aguardando` : null,
+  ].filter(Boolean).join("  ·  ");
+  doc.text(summaryParts, ML, y);
+  y += 14;
+ 
+  // ── SUMMARY TABLE ─────────────────────────────────────────────────────────
+  // Column x positions
+  const COL = {
+    status : ML,
+    qty    : ML + 36,
+    nome   : ML + 58,
+    acess  : ML + 268,
+    pessoas: ML + 310,
+  };
+ 
+  // Table header
+  function tableHeader() {
+    setFont("bold", 6.5, [160, 160, 160]);
+    doc.text("STATUS", COL.status, y);
+    doc.text("QTD",    COL.qty,    y);
+    doc.text("SERVIÇO",COL.nome,   y);
+    doc.text("ACESS.", COL.acess,  y);
+    doc.text("PESSOAS",COL.pessoas,y);
+    y += 3;
+    hr(1, 5);
   }
-
-  drawHeader(true);
-  drawSummary();
-  drawDetailTitle();
-  drawDetailSection("Serviços",main);
-  drawDetailSection("Acessos de Mídia",media);
-  drawDetailSection("Internet",inet);
-  if(!all.length)text("Nenhum serviço contratado para este jogo.",ML,y,10,"normal",[120,120,120]);
-  footer();
-  doc.save(`CazeTV_J${String(jogo.numero).padStart(2,"0")}_${String(jogo.selecao_1||"").replace(/[^A-Za-z0-9]/g,"")}x${String(jogo.selecao_2||"").replace(/[^A-Za-z0-9]/g,"")}.pdf`);
+ 
+  // Section label inside table
+  function sectionLabel(label) {
+    ck(20);
+    setFont("bold", 6.5, [160, 160, 160]);
+    doc.text(label.toUpperCase(), ML, y);
+    y += 9;
+  }
+ 
+  // One summary row
+  function tableRow(item) {
+    const isReq = item.status === "REQ";
+    const statusColor = isReq ? [180, 100, 0] : [22, 163, 74];
+    const slots = Math.max(item.qty || 0, item.svc.maxP || 0) + (item.extraQty || 0);
+    const pessoasFilled = (item.pessoas || []).filter(Boolean).length;
+ 
+    ck(14);
+ 
+    // STATUS badge
+    setFont("bold", 7.5, statusColor);
+    doc.text(item.status, COL.status, y);
+ 
+    // QTD
+    setFont("normal", 8, [60, 60, 60]);
+    const qtyLabel = item.extraQty > 0
+      ? `×${item.qty}+${item.extraQty}`
+      : item.qty > 1 ? `×${item.qty}` : "1";
+    doc.text(qtyLabel, COL.qty, y);
+ 
+    // Nome
+    setFont("normal", 8, [20, 20, 20]);
+    const nomeFull = item.svc.nome + (item.fully && !/fully/i.test(item.svc.nome) ? " (Fully)" : "");
+    doc.text(nomeFull, COL.nome, y);
+ 
+    // Acessos (max pessoas oficial)
+    setFont("normal", 8, [100, 100, 100]);
+    doc.text(slots > 0 ? String(slots) : "—", COL.acess, y);
+ 
+    // Pessoas preenchidas
+    const pessoasStr = pessoasFilled > 0
+      ? (item.pessoas || []).filter(Boolean).join(", ")
+      : "—";
+    const pessoasMaxW = W - MR - COL.pessoas;
+    const pessoasLines = doc.splitTextToSize(pessoasStr, pessoasMaxW);
+    doc.text(pessoasLines[0], COL.pessoas, y); // only first line in summary
+ 
+    y += 13;
+  }
+ 
+  tableHeader();
+ 
+  if (mainSvcs.length > 0) {
+    sectionLabel("Serviços");
+    mainSvcs.forEach(tableRow);
+  }
+  if (mediaSvcs.length > 0) {
+    hr(4, 4);
+    sectionLabel("Acessos de Mídia");
+    mediaSvcs.forEach(tableRow);
+  }
+  if (inetSvcs.length > 0) {
+    hr(4, 4);
+    sectionLabel("Internet");
+    inetSvcs.forEach(tableRow);
+  }
+ 
+  // ── DETAIL SECTION ────────────────────────────────────────────────────────
+  // Section title
+  function detailSectionTitle(label) {
+    ck(30);
+    y += 6;
+    doc.setFillColor(245, 245, 245);
+    doc.rect(ML, y - 10, TW, 14, "F");
+    setFont("bold", 7, [100, 100, 100]);
+    doc.text(label.toUpperCase(), ML + 4, y);
+    y += 8;
+  }
+ 
+  // One detail card
+  function detailCard(item) {
+    const s = item.svc;
+    const isReq   = item.status === "REQ";
+    const cor      = hexRgb(s.cor || "#555555");
+    const statusC  = isReq ? [180, 100, 0] : [22, 163, 74];
+ 
+    // Estimate height needed (rough)
+    const descLines   = s.descr   ? doc.splitTextToSize(s.descr,   TW - 80) : [];
+    const obsLines    = s.obs     ? doc.splitTextToSize(s.obs,     TW - 80) : [];
+    const horLines    = s.horario ? doc.splitTextToSize(s.horario, TW - 80) : [];
+ 
+    // Pessoas + obs específica
+    const pessoasClean = (item.pessoas || []).filter(Boolean);
+    const obsEsp       = item.obs ? item.obs.trim() : "";
+    const pessoasLines = pessoasClean.length > 0
+      ? doc.splitTextToSize(pessoasClean.join(" · "), TW - 80)
+      : [];
+    const obsEspLines  = obsEsp
+      ? doc.splitTextToSize(obsEsp, TW - 80)
+      : [];
+ 
+    const rowH = 11;
+    const estH = 28
+      + (horLines.length  > 0 ? rowH * horLines.length  + 2 : 0)
+      + rowH  // equipamento line always
+      + (descLines.length > 0 ? rowH * descLines.length + 2 : 0)
+      + (obsLines.length  > 0 ? rowH * obsLines.length  + 2 : 0)
+      + (pessoasLines.length > 0 || obsEspLines.length > 0 ? rowH * (pessoasLines.length + obsEspLines.length) + 10 : 0)
+      + 14;
+ 
+    ck(estH);
+ 
+    const cardTop = y;
+ 
+    // Left colour stripe
+    doc.setFillColor(...cor);
+    doc.rect(ML, cardTop, 3, estH - 4, "F");
+ 
+    // Service name + status
+    setFont("bold", 10, [20, 20, 20]);
+    const qLabel = item.extraQty > 0
+      ? ` ×${item.qty}+${item.extraQty} extra`
+      : item.qty > 1 ? ` ×${item.qty}` : "";
+    doc.text(`${s.nome}${qLabel}`, ML + 10, y + 12);
+ 
+    setFont("bold", 8, statusColor);
+    doc.text(item.status, W - MR, y + 12, { align: "right" });
+ 
+    y += 20;
+ 
+    // Detail rows
+    function detailRow(label, lines, color = [80, 80, 80], italic = false) {
+      if (!lines || lines.length === 0) return;
+      setFont("bold", 7, [140, 140, 140]);
+      doc.text(label.toUpperCase(), ML + 10, y);
+      const indent = ML + 10 + doc.getTextWidth(label.toUpperCase() + "  ");
+      const maxW = W - MR - indent;
+      const wrapped = doc.splitTextToSize(Array.isArray(lines) ? lines.join("") : lines, maxW);
+      setFont(italic ? "italic" : "normal", 7.5, color);
+      wrapped.forEach((line, i) => {
+        doc.text(line, indent, y + i * 10);
+      });
+      y += wrapped.length * 10 + 3;
+    }
+ 
+    // Use a label+value layout (like the old PDF)
+    function labelVal(label, val, color = [60, 60, 60], italic = false) {
+      if (!val) return;
+      const lines = doc.splitTextToSize(val, TW - 85);
+      ck(lines.length * 11 + 4);
+      setFont("bold", 7, [140, 140, 140]);
+      doc.text(label, ML + 10, y);
+      setFont(italic ? "italic" : "normal", 7.5, color);
+      lines.forEach((l, i) => doc.text(l, ML + 85, y + i * 10.5));
+      y += lines.length * 10.5 + 2;
+    }
+ 
+    labelVal("HORÁRIO",     s.horario);
+    labelVal("EQUIPAMENTO", s.equip);
+    labelVal("DESCRIÇÃO",   s.descr);
+    labelVal("OBSERVAÇÕES COS", s.obs);
+ 
+    // Pessoas designadas + obs específica do jogo
+    if (pessoasClean.length > 0 || obsEsp) {
+      y += 4;
+      doc.setFillColor(248, 248, 248);
+      const blockLines = pessoasClean.length > 0 ? doc.splitTextToSize(pessoasClean.join(" · "), TW - 85) : [];
+      const obsEL = obsEsp ? doc.splitTextToSize(obsEsp, TW - 85) : [];
+      const blockH = (blockLines.length + obsEL.length) * 10.5 + 10;
+      doc.rect(ML + 10, y - 4, TW - 10, blockH, "F");
+ 
+      if (pessoasClean.length > 0) {
+        setFont("bold", 7, [140, 140, 140]);
+        doc.text("PESSOAS", ML + 14, y + 3);
+        setFont("normal", 7.5, [40, 40, 40]);
+        blockLines.forEach((l, i) => doc.text(l, ML + 85, y + 3 + i * 10.5));
+        y += blockLines.length * 10.5 + 4;
+      }
+ 
+      if (obsEsp) {
+        setFont("bold", 7, [140, 140, 140]);
+        doc.text("OBS. JOGO", ML + 14, y + 3);
+        setFont("italic", 7.5, [80, 80, 120]);  // italic, slightly blue-grey
+        obsEL.forEach((l, i) => doc.text(l, ML + 85, y + 3 + i * 10.5));
+        y += obsEL.length * 10.5 + 4;
+      }
+ 
+      y += 4;
+    }
+ 
+    // card bottom rule
+    doc.setDrawColor(220, 220, 220);
+    doc.line(ML, y + 2, W - MR, y + 2);
+    y += 12;
+  }
+ 
+  // ── Render detail section ─────────────────────────────────────────────────
+  ck(40);
+  hr(10, 6);
+  setFont("bold", 9, [40, 40, 40]);
+  doc.text("DETALHAMENTO DOS SERVIÇOS", ML, y);
+  y += 12;
+ 
+  if (mainSvcs.length > 0) {
+    detailSectionTitle("Serviços");
+    mainSvcs.forEach(detailCard);
+  }
+  if (mediaSvcs.length > 0) {
+    detailSectionTitle("Acessos de Mídia");
+    mediaSvcs.forEach(detailCard);
+  }
+  if (inetSvcs.length > 0) {
+    detailSectionTitle("Internet");
+    inetSvcs.forEach(detailCard);
+  }
+ 
+  // ── Finalize ──────────────────────────────────────────────────────────────
+  drawFooter();
+ 
+  const fname = `${jogo.pick || "CazeTV"}_J${String(jogo.numero).padStart(2,"0")}_${String(jogo.selecao_1||"").replace(/[^A-Za-z0-9]/g,"")}x${String(jogo.selecao_2||"").replace(/[^A-Za-z0-9]/g,"")}.pdf`;
+  doc.save(fname);
 }
 
 window.addEventListener("error",e=>console.error("Erro global:",e.error||e.message));
