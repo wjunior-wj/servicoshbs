@@ -32,6 +32,10 @@ button{cursor:pointer}
 .mfoot{padding:14px 16px;border-top:1px solid var(--border);background:var(--raised);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;flex-shrink:0;padding-bottom:max(14px,env(safe-area-inset-bottom))}.btn-pdf{background:var(--red);color:#fff;border:0;padding:11px 22px;font-weight:900;border-radius:3px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;transition:all .15s}.btn-pdf:hover{background:#c0001f;transform:translateY(-1px)}.foot-hint{font-size:10px;color:var(--muted)}.empty{text-align:center;padding:60px 20px;color:var(--muted)}.empty-ico{font-size:40px;opacity:.3;margin-bottom:12px}
 .admin-fab{position:fixed;bottom:18px;right:18px;width:42px;height:42px;border-radius:50%;background:var(--text);color:#fff;border:0;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.18);z-index:30;transition:transform .15s,background .15s}.admin-fab:hover{transform:translateY(-2px);background:var(--red)}.admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:flex-start;justify-content:center;padding:60px 20px 20px;z-index:80;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}.admin-panel{background:var(--surface);border-radius:6px;max-width:560px;width:100%;max-height:calc(100vh - 80px);overflow-y:auto;border:1px solid var(--border)}.admin-head{padding:18px 20px;border-bottom:1px solid var(--border);background:#0A0A0A;color:#fff;border-radius:6px 6px 0 0;display:flex;justify-content:space-between;align-items:center}.admin-head h2{font-size:14px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.admin-head .close{background:transparent;border:0;color:#fff;font-size:22px;line-height:1;padding:0 4px}.admin-body{padding:18px 20px}.admin-pass-row{display:flex;gap:8px;margin-bottom:8px}.admin-pass-row input{flex:1;background:var(--bg);border:1px solid var(--border2);padding:9px 11px;font-size:13px;border-radius:3px;outline:none}.admin-pass-row button,.admin-confirm-btn{padding:7px 12px;background:var(--lime);color:#fff;border:0;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:2px}.admin-pass-row button{background:var(--text);font-size:11px;padding:9px 16px}.admin-pass-row button:hover{background:var(--red)}.admin-confirm-btn.undo{background:transparent;color:var(--muted);border:1px solid var(--border2)}.admin-confirm-btn.undo:hover{color:var(--red);border-color:var(--red)}.admin-error{color:var(--red);font-size:11px;margin-top:6px;font-weight:600}.admin-section{margin-bottom:18px}.admin-section h3{font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}.admin-info{font-size:11px;color:var(--text2);margin-bottom:10px;line-height:1.5;padding:9px 11px;background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.25);border-radius:3px}.admin-req-list{display:flex;flex-direction:column;gap:4px;max-height:340px;overflow-y:auto;border:1px solid var(--border);border-radius:3px;background:var(--bg)}.admin-req-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:9px;align-items:center;padding:8px 11px;border-bottom:1px solid var(--border);background:var(--surface);font-size:11px}.admin-req-mid{font-family:monospace;font-size:10px;color:var(--muted);font-weight:700;min-width:34px}.admin-req-name{font-weight:600;line-height:1.3}.admin-req-name small{display:block;font-size:9px;color:var(--muted);font-weight:400;margin-top:1px}.admin-req-qty{font-family:monospace;font-size:11px;font-weight:700;color:var(--text)}.admin-confirm-tag{font-family:monospace;font-size:9px;font-weight:700;color:var(--lime);padding:3px 7px;background:rgba(138,168,0,.12);border:1px solid rgba(138,168,0,.35);border-radius:2px;letter-spacing:.06em}.admin-foot{padding:12px 20px;border-top:1px solid var(--border);background:var(--bg);font-size:10px;color:var(--muted);text-align:center;line-height:1.5}
 .fatal{max-width:820px;margin:42px auto;padding:22px;background:#fff;border:1px solid #ef4444;border-radius:6px;color:#111}.fatal h1{font-size:18px;margin-bottom:8px;color:#b91c1c}.fatal pre{white-space:pre-wrap;background:#f8f8f8;border:1px solid #eee;padding:12px;margin-top:12px;font-size:11px;color:#333;overflow:auto}
+
+.dia-badge{font-size:13px;font-weight:900;letter-spacing:.01em;color:var(--text);white-space:nowrap}
+.dia-fases{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.dia-fase-tag{font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:2px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -74,7 +78,7 @@ const SVC_META_FALLBACK={
   uniflash_inet:{nome:"Internet · UniFlash",cor:"#007A99",cat:"Internet",maxP:0,booking:"52711",equip:"Link 50 Mbps",horario:"FJ+10 min · ~50 min",descr:"Internet dedicada para Uniflash.",obs:"-",inet:true},
   media_pc_journ:{nome:"Press Conference",cor:"#555555",cat:"Mídia",maxP:1,booking:"213653",equip:"Acesso individual",horario:"Pós-jogo (~20min após o jogo)",descr:"Acesso à coletiva para 1 jornalista.",obs:"Não é posição de câmera.",media:true},
   media_mz_tv:{nome:"Mixed Zone · TV",cor:"#555555",cat:"Mídia",maxP:2,booking:"213662",equip:"1 Câmera + TVU",horario:"Pós-jogo (~50min após o jogo)",descr:"Acesso à zona mista tradicional para repórter e cinegrafista.",obs:"Jogadores não têm obrigação de parar.",media:true},
-  media_mz_phone:{nome:"Mixed Zone Station",cor:"#555555",cat:"Mídia",maxP:1,booking:"213641",equip:"Celular apenas",horario:"Pós-jogo (~5 min após o jogo)",descr:"Estação de zona mista antes do vestiário, com câmera HBS única.",obs:"Não é permitido entrar com câmera." ,media:true},
+  media_mz_phone:{nome:"Mixed Zone Station",cor:"#555555",cat:"Mídia",maxP:1,booking:"213641",equip:"Celular apenas",horario:"Pós-jogo (~5 min após o jogo)",descr:"Estação de zona mista antes do vestiário, com câmera HBS única.",obs:"Não é permitido entrar com câmera.",media:true},
   media_mz_digital:{nome:"Mixed Zone · Digital",cor:"#555555",cat:"Mídia",maxP:1,booking:"213661",equip:"1 Celular / câmera leve",horario:"Pós-jogo (~50min após o jogo)",descr:"Acesso à zona mista tradicional para repórter digital.",obs:"Acesso para um videorrepórter.",media:true},
   media_pc_camera:{nome:"Press Conf. + Câmera",cor:"#555555",cat:"Mídia",maxP:1,booking:"213652",equip:"1 Câmera + TVU",horario:"Pós-jogo (~20min após o jogo)",descr:"Acesso à coletiva para 1 câmera ENG.",obs:"Não garante o repórter.",media:true},
   media_parking:{nome:"Parking Pass",cor:"#555555",cat:"Mídia",maxP:0,booking:"21611",equip:"-",horario:"A confirmar",descr:"Vagas de estacionamento no P3.",obs:"Para veículos de até 12 pessoas.",media:true}
@@ -132,10 +136,10 @@ function App(){const[activeChannel,setActiveChannel]=useState(DEFAULT_CHANNEL);c
   const perfisPresentes=useMemo(()=>[...new Set(jogos.map(j=>getPerfil(j)))].sort((a,b)=>["D","A","E","C","F","B"].indexOf(a)-["D","A","E","C","F","B"].indexOf(b)),[jogos,tick,svcVersion]);
   const personSuggestions=useMemo(()=>{const names=[];for(const j of jogos){for(const v of Object.values(j.servicos||{})){for(const name of v.pessoas||[]){const clean=String(name||"").trim();if(clean)names.push(clean);}}}return[...new Set(names)].sort((a,b)=>a.localeCompare(b));},[jogos,tick,activeChannel]);
   const lista=useMemo(()=>{const lq=q.trim().toLowerCase();return jogos.filter(j=>{if(fR!=="todas"&&faseLabel(j.rodada)!==fR)return false;if(fP!=="todos"&&getPerfil(j)!==fP)return false;if(fSvc!=="todos"&&!(j.servicos&&j.servicos[fSvc]))return false;if(lq){const hay=[j.selecao_1,j.selecao_2,j.local,j.dia_semana,nomeSel(j.selecao_1),nomeSel(j.selecao_2)].join(" ").toLowerCase();if(!hay.includes(lq))return false;}return true;});},[jogos,q,fR,fP,fSvc,tick,svcVersion]);
-  const porRodada=useMemo(()=>{const g={};for(const j of lista){const fr=faseLabel(j.rodada);(g[fr]||(g[fr]=[])).push(j);}return rodadasPresentes.filter(r=>g[r]).map(r=>({rodada:r,jogos:g[r].slice().sort((a,b)=>(a.numero||0)-(b.numero||0))}));},[lista,rodadasPresentes]);
+  const porDia=useMemo(()=>{const g={};for(const j of lista){const dia=j.data||"9999-99-99";(g[dia]||(g[dia]=[])).push(j);}return Object.keys(g).sort().map(dia=>{const js=g[dia].slice().sort((a,b)=>{const ta=String(a.hora||"").replace(":",""),tb=String(b.hora||"").replace(":","");return ta.localeCompare(tb)||((a.numero||0)-(b.numero||0));});const fases=[...new Set(js.map(j=>faseLabel(j.rodada)))].sort((a,b)=>faseIndex(a)-faseIndex(b));return{dia,jogos:js,fases};});},[lista,tick,svcVersion]);
   const comSvc=jogos.filter(j=>Object.keys(j.servicos||{}).length>0).length;const statusInfo={loading:{dot:"loading",txt:`Carregando ${channel.label} do Google Sheets...`},ok:{dot:"ok",txt:`Sincronizado com Google Sheets · ${channel.label}`},err:{dot:"err",txt:`Erro ao carregar Google Sheets de ${channel.label} — dados bloqueados`}}[srcStatus]||{dot:"err",txt:""};
   return h("div",{className:`app-channel app-channel-${activeChannel}`},h("header",{className:"hdr"},h("div",{className:"hdr-brand"},h("div",{className:"hdr-logo"},channel.logo),h("div",null,h("div",{className:"hdr-title"},channel.title),h("div",{className:"hdr-sub"},channel.subtitle))),h("div",{className:"hdr-pills"},h("div",{className:"hdr-pill",style:{background:activeChannel==="lmtv"?"rgba(0,209,47,.12)":"rgba(232,0,45,.08)",color:activeChannel==="lmtv"?"#00D12F":"#E8002D",borderColor:activeChannel==="lmtv"?"rgba(0,209,47,.35)":"rgba(232,0,45,.2)"}},`${jogos.length} jogos`),h("div",{className:"hdr-pill",style:{background:activeChannel==="lmtv"?"rgba(232,0,45,.12)":"rgba(0,122,153,.08)",color:activeChannel==="lmtv"?"#E8002D":"#007A99",borderColor:activeChannel==="lmtv"?"rgba(232,0,45,.35)":"rgba(0,122,153,.2)"}},`${comSvc} com serviços`)),h("div",{className:"channel-switch"},...Object.values(CHANNELS).map(ch=>h("button",{key:ch.key,className:`channel-btn${activeChannel===ch.key?" on":""}`,onClick:()=>{CURRENT_CHANNEL_KEY=ch.key;setActiveChannel(ch.key);setTz(ch.key==="lmtv"?"POR":"BRT");}},ch.label))),h("div",{className:"hdr-tabs"},h("button",{className:`hdr-tab${aba==="jogos"?" on":""}`,onClick:()=>setAba("jogos")},"Jogos"),h("button",{className:`hdr-tab${aba==="servicos"?" on":""}`,onClick:()=>setAba("servicos")},"Serviços"))),
-    aba==="servicos"?h(PainelServicos,{jogos,onChange:bump,svcVersion}):(srcStatus==="ok"?h(React.Fragment,null,h("div",{className:"layout"},h("aside",{className:"sidebar"},h("div",{className:"fsec"},h("div",{className:"status-bar"},h("div",{className:`status-dot ${statusInfo.dot}`}),statusInfo.txt)),h("div",{className:"fsec"},h("div",{className:"flbl"},"Busca"),h("input",{className:"finput",placeholder:"Seleção, cidade...",value:q,onChange:e=>setQ(e.target.value)})),h("div",{className:"fsec"},h("div",{className:"flbl"},"Fuso horário"),h("div",{className:"chips"},...TZ_OPTIONS.map(opt=>h("button",{key:opt.key,className:`chip${tz===opt.key?" on":""}`,onClick:()=>setTz(opt.key),title:opt.key==="BRT"?"Horário original da planilha":`${opt.offset>0?"+":""}${opt.offset}h em relação ao BRT`},opt.label))),h("div",{style:{fontSize:"9px",color:"var(--muted)",marginTop:"6px",lineHeight:1.35}},"A planilha permanece em BRT; a conversão é apenas visual.")),h("div",{className:"fsec"},h("div",{className:"flbl"},"Fase"),h("div",{className:"chips"},h("button",{className:`chip${fR==="todas"?" on":""}`,onClick:()=>setFR("todas")},"Todas"),...rodadasPresentes.map(r=>h("button",{key:r,className:`chip${fR===r?" on":""}`,onClick:()=>setFR(fR===r?"todas":r)},r)))),h("div",{className:"fsec"},h("div",{className:"flbl"},"Perfil"),h("div",{className:"chips"},h("button",{className:`chip${fP==="todos"?" on":""}`,onClick:()=>setFP("todos")},"Todos"),...perfisPresentes.map(p=>{const pf=PERFIS[p]||PERFIS.B,on=fP===p;return h("button",{key:p,className:"perfil-chip",style:{borderColor:pf.cor,color:on?"#fff":pf.cor,background:on?pf.cor:pf.bg},onClick:()=>setFP(on?"todos":p)},pf.label);}))),h("div",{className:"fsec"},h("div",{className:"flbl"},"Serviço"),h("div",{className:"chips",style:{gap:"4px"}},h("button",{className:`chip${fSvc==="todos"?" on":""}`,onClick:()=>setFSvc("todos")},"Todos"),...SVC_FILTROS.filter(k=>SVC[k]).map(k=>{const s=SVC[k],on=fSvc===k;return h("button",{key:k,className:"perfil-chip",style:{borderColor:s.cor,color:on?"#fff":s.cor,background:on?s.cor:"rgba(0,0,0,.03)",fontSize:"9px",padding:"3px 7px"},onClick:()=>setFSvc(on?"todos":k)},s.nome);}))),h("button",{className:"btn-clear",onClick:()=>{setQ("");setFR("todas");setFP("todos");setFSvc("todos");setTz(activeChannel==="lmtv"?"POR":"BRT");}},"Limpar")),h("main",{className:"content"},lista.length===0?h("div",{className:"empty"},h("div",{className:"empty-ico"},"-"),h("div",null,"Nenhum jogo encontrado.")):h("div",null,h("div",{className:"ctop"},h("div",{className:"ccount"},"Mostrando ",h("strong",null,lista.length)," de ",jogos.length," jogos")),...porRodada.map(({rodada,jogos:rj})=>{const rc=getRc(rodada);return h("section",{key:rodada},h("div",{className:"rodada-header"},h("div",{className:"rodada-badge",style:{background:rc.cor,color:rc.ct}},rodada),h("div",{className:"rodada-line"})),h("div",{className:"grid"},...rj.map(j=>h(Card,{key:j.match_id||j.numero,jogo:j,tz,activeChannel,onClick:()=>setSel(j)}))));})))),sel&&h(Modal,{jogo:sel,tz,personSuggestions,onClose:()=>setSel(null),onChange:bump}),h("button",{className:"admin-fab",onClick:()=>setAdminOpen(true),title:"Serviços REQ"},"REQ"),adminOpen&&h(AdminPanel,{jogos,onClose:()=>setAdminOpen(false),onChange:bump})):h(SheetErrorPanel,{status:srcStatus,error:sheetError})));
+    aba==="servicos"?h(PainelServicos,{jogos,onChange:bump,svcVersion}):(srcStatus==="ok"?h(React.Fragment,null,h("div",{className:"layout"},h("aside",{className:"sidebar"},h("div",{className:"fsec"},h("div",{className:"status-bar"},h("div",{className:`status-dot ${statusInfo.dot}`}),statusInfo.txt)),h("div",{className:"fsec"},h("div",{className:"flbl"},"Busca"),h("input",{className:"finput",placeholder:"Seleção, cidade...",value:q,onChange:e=>setQ(e.target.value)})),h("div",{className:"fsec"},h("div",{className:"flbl"},"Fuso horário"),h("div",{className:"chips"},...TZ_OPTIONS.map(opt=>h("button",{key:opt.key,className:`chip${tz===opt.key?" on":""}`,onClick:()=>setTz(opt.key),title:opt.key==="BRT"?"Horário original da planilha":`${opt.offset>0?"+":""}${opt.offset}h em relação ao BRT`},opt.label))),h("div",{style:{fontSize:"9px",color:"var(--muted)",marginTop:"6px",lineHeight:1.35}},"A planilha permanece em BRT; a conversão é apenas visual.")),h("div",{className:"fsec"},h("div",{className:"flbl"},"Fase"),h("div",{className:"chips"},h("button",{className:`chip${fR==="todas"?" on":""}`,onClick:()=>setFR("todas")},"Todas"),...rodadasPresentes.map(r=>h("button",{key:r,className:`chip${fR===r?" on":""}`,onClick:()=>setFR(fR===r?"todas":r)},r)))),h("div",{className:"fsec"},h("div",{className:"flbl"},"Perfil"),h("div",{className:"chips"},h("button",{className:`chip${fP==="todos"?" on":""}`,onClick:()=>setFP("todos")},"Todos"),...perfisPresentes.map(p=>{const pf=PERFIS[p]||PERFIS.B,on=fP===p;return h("button",{key:p,className:"perfil-chip",style:{borderColor:pf.cor,color:on?"#fff":pf.cor,background:on?pf.cor:pf.bg},onClick:()=>setFP(on?"todos":p)},pf.label);}))),h("div",{className:"fsec"},h("div",{className:"flbl"},"Serviço"),h("div",{className:"chips",style:{gap:"4px"}},h("button",{className:`chip${fSvc==="todos"?" on":""}`,onClick:()=>setFSvc("todos")},"Todos"),...SVC_FILTROS.filter(k=>SVC[k]).map(k=>{const s=SVC[k],on=fSvc===k;return h("button",{key:k,className:"perfil-chip",style:{borderColor:s.cor,color:on?"#fff":s.cor,background:on?s.cor:"rgba(0,0,0,.03)",fontSize:"9px",padding:"3px 7px"},onClick:()=>setFSvc(on?"todos":k)},s.nome);}))),h("button",{className:"btn-clear",onClick:()=>{setQ("");setFR("todas");setFP("todos");setFSvc("todos");setTz(activeChannel==="lmtv"?"POR":"BRT");}},"Limpar")),h("main",{className:"content"},lista.length===0?h("div",{className:"empty"},h("div",{className:"empty-ico"},"-"),h("div",null,"Nenhum jogo encontrado.")):h("div",null,h("div",{className:"ctop"},h("div",{className:"ccount"},"Mostrando ",h("strong",null,lista.length)," de ",jogos.length," jogos")),...porDia.map(({dia,jogos:dj,fases})=>{const diasNomes=["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];const d=String(dia).split("-").map(Number);const diaSem=d.length===3?diasNomes[new Date(Date.UTC(d[0],d[1]-1,d[2])).getUTCDay()]:"";const meses=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];const dLabel=d.length===3?`${diaSem}, ${d[2]} ${meses[d[1]-1]}`:dia;return h("section",{key:dia},h("div",{className:"rodada-header"},h("div",{className:"dia-badge"},dLabel),h("div",{className:"dia-fases"},...fases.map(f=>{const rc=getRc(f);return h("span",{key:f,className:"dia-fase-tag",style:{background:rc.cor,color:rc.ct}},f);})),h("div",{className:"rodada-line"})),h("div",{className:"grid"},...dj.map(j=>h(Card,{key:j.match_id||j.numero,jogo:j,tz,activeChannel,onClick:()=>setSel(j)}))));})))),sel&&h(Modal,{jogo:sel,tz,personSuggestions,onClose:()=>setSel(null),onChange:bump}),h("button",{className:"admin-fab",onClick:()=>setAdminOpen(true),title:"Serviços REQ"},"REQ"),adminOpen&&h(AdminPanel,{jogos,onClose:()=>setAdminOpen(false),onChange:bump})):h(SheetErrorPanel,{status:srcStatus,error:sheetError})));
 }
 
 function PainelServicos({jogos=[],onChange,svcVersion}){const freqByService=useMemo(()=>{const m={};(jogos||[]).forEach(j=>Object.keys(j.servicos||{}).forEach(k=>{m[k]=(m[k]||0)+1;}));return m;},[jogos,svcVersion]);const entries=Object.entries(SVC||{}).filter(([,s])=>s&&!s.inet&&!s.media).sort(([a],[b])=>sortSvcKeys(a,b));const media=Object.entries(SVC||{}).filter(([,s])=>s&&s.media).sort(([a],[b])=>sortSvcKeys(a,b));const inet=Object.entries(SVC||{}).filter(([,s])=>s&&s.inet).sort(([a],[b])=>sortSvcKeys(a,b));return h("main",{className:"panel"},h("div",{className:"panel-title"},"Guia de Serviços"),h("div",{className:"panel-sub"},"Referência operacional de cada posição FIFA · Copa 2026"),h("div",{style:{fontSize:11,color:"var(--muted)",marginTop:8,marginBottom:10,lineHeight:1.4}},"A ferramenta de posições extras fica abaixo. Ela só aplica extras em serviços já ativos e exige senha admin."),h(ExtraPositionsPanel,{jogos,onChange,svcVersion}),h(ServiceSection,{title:"Posições de campo",entries,freqByService}),media.length>0&&h(ServiceSection,{title:"Acessos de mídia",entries:media,freqByService}),h(ServiceSection,{title:"Infraestrutura de Internet",entries:inet,freqByService,inet:true}));}
@@ -143,10 +147,7 @@ function ServiceSection({title,entries,freqByService,inet=false}){return h(React
 
 function ExtraPositionsPanel({jogos=[],onChange,svcVersion}){
   const[open,setOpen]=useState(true);
-  const serviceKeys=useMemo(()=>Object.keys(SVC||{}).filter(k=>{
-    const s=SVC[k];
-    return s&&!s.inet&&!s.media&&(Number(s.maxP)||0)>0;
-  }).sort(sortSvcKeys),[svcVersion]);
+  const serviceKeys=useMemo(()=>Object.keys(SVC||{}).filter(k=>{const s=SVC[k];return s&&!s.inet&&!s.media&&(Number(s.maxP)||0)>0;}).sort(sortSvcKeys),[svcVersion]);
   const firstKey=serviceKeys[0]||"";
   const[svcKey,setSvcKey]=useState(firstKey);
   const[selected,setSelected]=useState(new Set());
@@ -155,159 +156,17 @@ function ExtraPositionsPanel({jogos=[],onChange,svcVersion}){
   const[saving,setSaving]=useState(false);
   const[err,setErr]=useState("");
   const[ok,setOk]=useState("");
-
   useEffect(()=>{if(!serviceKeys.includes(svcKey))setSvcKey(firstKey);},[svcKey,firstKey,serviceKeys.join("|")]);
   useEffect(()=>{setSelected(new Set());setErr("");setOk("");},[svcKey]);
-
-  const activeGames=useMemo(()=>{
-    if(!svcKey)return[];
-    return(jogos||[]).filter(j=>{
-      const s=j.servicos&&j.servicos[svcKey];
-      const st=s&&String(s.status||s.st||"").toUpperCase();
-      return st==="CNF"||st==="REQ";
-    }).sort((a,b)=>(a.numero||0)-(b.numero||0));
-  },[jogos,svcKey,svcVersion]);
-
-  function toggleGame(mid){
-    setSelected(prev=>{const n=new Set(prev);n.has(mid)?n.delete(mid):n.add(mid);return n;});
-    setErr("");setOk("");
-  }
-
-  async function saveExtras(){
-    setErr("");setOk("");
-    if(!APPS_SCRIPT_URL){setErr("Modo somente leitura: Apps Script não configurado.");return;}
-    if(!svcKey){setErr("Selecione um serviço.");return;}
-    if(!selected.size){setErr("Selecione pelo menos um jogo com este serviço ativo.");return;}
-    if(!pw){setErr("Informe a senha admin.");return;}
-    const n=Number(extraQty);
-    if(!Number.isFinite(n)||n<0){setErr("Quantidade extra inválida.");return;}
-    setSaving(true);
-    const match_ids=[...selected];
-    const r=await apiPost({action:"apply_extra_positions",service_key:svcKey,match_ids,extra_qty:n,token:pw});
-    setSaving(false);
-    if(!r.ok){setErr(r.error||"Erro ao aplicar posições extras.");return;}
-    for(const mid of match_ids){
-      const j=(jogos||[]).find(x=>x.match_id===mid);
-      if(j&&j.servicos&&j.servicos[svcKey])j.servicos[svcKey].extraQty=n;
-    }
-    setOk(`Aplicado em ${match_ids.length} jogo${match_ids.length!==1?"s":""}.`);
-    onChange&&onChange();
-  }
-
+  const activeGames=useMemo(()=>{if(!svcKey)return[];return(jogos||[]).filter(j=>{const s=j.servicos&&j.servicos[svcKey];const st=s&&String(s.status||s.st||"").toUpperCase();return st==="CNF"||st==="REQ";}).sort((a,b)=>(a.numero||0)-(b.numero||0));},[jogos,svcKey,svcVersion]);
+  function toggleGame(mid){setSelected(prev=>{const n=new Set(prev);n.has(mid)?n.delete(mid):n.add(mid);return n;});setErr("");setOk("");}
+  async function saveExtras(){setErr("");setOk("");if(!APPS_SCRIPT_URL){setErr("Modo somente leitura: Apps Script não configurado.");return;}if(!svcKey){setErr("Selecione um serviço.");return;}if(!selected.size){setErr("Selecione pelo menos um jogo com este serviço ativo.");return;}if(!pw){setErr("Informe a senha admin.");return;}const n=Number(extraQty);if(!Number.isFinite(n)||n<0){setErr("Quantidade extra inválida.");return;}setSaving(true);const match_ids=[...selected];const r=await apiPost({action:"apply_extra_positions",service_key:svcKey,match_ids,extra_qty:n,token:pw});setSaving(false);if(!r.ok){setErr(r.error||"Erro ao aplicar posições extras.");return;}for(const mid of match_ids){const j=(jogos||[]).find(x=>x.match_id===mid);if(j&&j.servicos&&j.servicos[svcKey])j.servicos[svcKey].extraQty=n;}setOk(`Aplicado em ${match_ids.length} jogo${match_ids.length!==1?"s":""}.`);onChange&&onChange();}
   const svc=SVC[svcKey]||{};
-  const body=serviceKeys.length===0
-    ? h("div",{style:{fontSize:12,color:"var(--muted)"}},"Nenhum serviço com pessoas foi encontrado no catálogo.")
-    : h(React.Fragment,null,
-        h("div",{style:{display:"grid",gridTemplateColumns:"1fr 120px",gap:8}},
-          h("select",{className:"finput",value:svcKey,onChange:e=>setSvcKey(e.target.value)},
-            ...serviceKeys.map(k=>h("option",{key:k,value:k},`${SVC[k]?.nome||k} · ${SVC[k]?.booking||""}`))
-          ),
-          h("input",{className:"finput",type:"number",min:0,max:99,value:extraQty,onChange:e=>setExtraQty(e.target.value),placeholder:"Qtd. extra"})
-        ),
-        h("div",{style:{fontSize:11,color:"var(--muted)",lineHeight:1.4}},
-          `${svc.nome||svcKey}: ${activeGames.length} jogo${activeGames.length!==1?"s":""} com serviço ativo.`
-        ),
-        activeGames.length>0&&h("div",{style:{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}},
-          h("button",{className:"admin-confirm-btn undo",onClick:()=>setSelected(new Set(activeGames.map(j=>j.match_id)))},"Selecionar todos"),
-          h("button",{className:"admin-confirm-btn undo",onClick:()=>setSelected(new Set())},"Limpar seleção"),
-          h("span",{style:{fontSize:11,color:"var(--muted)"}},`${selected.size} selecionado${selected.size!==1?"s":""}`)
-        ),
-        activeGames.length===0
-          ? h("div",{style:{fontSize:12,color:"var(--muted)",padding:"8px 0"}},"Nenhum jogo tem este serviço ativo.")
-          : h("div",{className:"extra-game-list"},
-              ...activeGames.map(j=>{
-                const checked=selected.has(j.match_id);
-                const current=(j.servicos&&j.servicos[svcKey]&&j.servicos[svcKey].extraQty)||0;
-                return h("label",{key:j.match_id,className:"extra-game-row"},
-                  h("input",{type:"checkbox",checked,onChange:()=>toggleGame(j.match_id)}),
-                  h("span",null,`M${String(j.numero).padStart(3,"0")} · ${j.selecao_1} × ${j.selecao_2} · ${j.data} ${j.hora}`),
-                  current>0&&h("span",{className:"extra-mini"},`+${current}`)
-                );
-              })
-            ),
-        h("div",{style:{display:"grid",gridTemplateColumns:"1fr auto",gap:8,alignItems:"center"}},
-          h("input",{className:"finput",type:"password",placeholder:"Senha admin",value:pw,onChange:e=>{setPw(e.target.value);setErr("");setOk("");},onKeyDown:e=>{if(e.key==="Enter")saveExtras();}}),
-          h("button",{className:"admin-confirm-btn",onClick:saveExtras,disabled:saving||!selected.size},saving?"Aplicando...":"Aplicar extras")
-        ),
-        err&&h("div",{className:"admin-error"},err),
-        ok&&h("div",{style:{fontSize:11,color:"#16a34a",fontWeight:700}},ok)
-      );
-
-  return h("section",{className:"extra-admin-box",id:"posicoes-extras"},
-    h("div",{className:"extra-admin-head"},
-      h("div",null,
-        h("div",{className:"extra-admin-title"},"Posições extras"),
-        h("div",{style:{fontSize:10,color:"#cfcfcf",marginTop:2}},"Escolha um serviço ativo, os jogos e a quantidade extra.")
-      ),
-      h("button",{className:"admin-confirm-btn",type:"button",onClick:()=>setOpen(!open)},open?"Ocultar":"Abrir")
-    ),
-    open&&h("div",{className:"extra-admin-body"},
-      h("div",{className:"extra-disclaimer"},"As posições extras apenas aumentam a quantidade de campos de pessoas no app. Elas ficam marcadas como EXTRA e não alteram a quantidade oficial do booking FIFA/HBS."),
-      body
-    )
-  );
+  const body=serviceKeys.length===0?h("div",{style:{fontSize:12,color:"var(--muted)"}},"Nenhum serviço com pessoas foi encontrado no catálogo."):h(React.Fragment,null,h("div",{style:{display:"grid",gridTemplateColumns:"1fr 120px",gap:8}},h("select",{className:"finput",value:svcKey,onChange:e=>setSvcKey(e.target.value)},...serviceKeys.map(k=>h("option",{key:k,value:k},`${SVC[k]?.nome||k} · ${SVC[k]?.booking||""}}`))),h("input",{className:"finput",type:"number",min:0,max:99,value:extraQty,onChange:e=>setExtraQty(e.target.value),placeholder:"Qtd. extra"})),h("div",{style:{fontSize:11,color:"var(--muted)",lineHeight:1.4}},`${svc.nome||svcKey}: ${activeGames.length} jogo${activeGames.length!==1?"s":""} com serviço ativo.`),activeGames.length>0&&h("div",{style:{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}},h("button",{className:"admin-confirm-btn undo",onClick:()=>setSelected(new Set(activeGames.map(j=>j.match_id)))},"Selecionar todos"),h("button",{className:"admin-confirm-btn undo",onClick:()=>setSelected(new Set())},"Limpar seleção"),h("span",{style:{fontSize:11,color:"var(--muted)"}},`${selected.size} selecionado${selected.size!==1?"s":""}`)),activeGames.length===0?h("div",{style:{fontSize:12,color:"var(--muted)",padding:"8px 0"}},"Nenhum jogo tem este serviço ativo."):h("div",{className:"extra-game-list"},...activeGames.map(j=>{const checked=selected.has(j.match_id);const current=(j.servicos&&j.servicos[svcKey]&&j.servicos[svcKey].extraQty)||0;return h("label",{key:j.match_id,className:"extra-game-row"},h("input",{type:"checkbox",checked,onChange:()=>toggleGame(j.match_id)}),h("span",null,`M${String(j.numero).padStart(3,"0")} · ${j.selecao_1} × ${j.selecao_2} · ${j.data} ${j.hora}`),current>0&&h("span",{className:"extra-mini"},`+${current}`));})),h("div",{style:{display:"grid",gridTemplateColumns:"1fr auto",gap:8,alignItems:"center"}},h("input",{className:"finput",type:"password",placeholder:"Senha admin",value:pw,onChange:e=>{setPw(e.target.value);setErr("");setOk("");},onKeyDown:e=>{if(e.key==="Enter")saveExtras();}}),h("button",{className:"admin-confirm-btn",onClick:saveExtras,disabled:saving||!selected.size},saving?"Aplicando...":"Aplicar extras")),err&&h("div",{className:"admin-error"},err),ok&&h("div",{style:{fontSize:11,color:"#16a34a",fontWeight:700}},ok));
+  return h("section",{className:"extra-admin-box",id:"posicoes-extras"},h("div",{className:"extra-admin-head"},h("div",null,h("div",{className:"extra-admin-title"},"Posições extras"),h("div",{style:{fontSize:10,color:"#cfcfcf",marginTop:2}},"Escolha um serviço ativo, os jogos e a quantidade extra.")),h("button",{className:"admin-confirm-btn",type:"button",onClick:()=>setOpen(!open)},open?"Ocultar":"Abrir")),open&&h("div",{className:"extra-admin-body"},h("div",{className:"extra-disclaimer"},"As posições extras apenas aumentam a quantidade de campos de pessoas no app. Elas ficam marcadas como EXTRA e não alteram a quantidade oficial do booking FIFA/HBS."),body));
 }
 
-function Card({jogo,tz,activeChannel,onClick}){
-  const svcs=svcsLista(jogo);
-  const inet=getInet(jogo);
-  const media=mediaLista(jogo);
-  const pf=PERFIS[getPerfil(jogo)]||PERFIS.B;
-  const n1=nomeSel(jogo.selecao_1);
-  const n2=nomeSel(jogo.selecao_2);
-  const featured=isFeaturedGame(jogo,activeChannel);
-  const featureClass=activeChannel==="lmtv"?" por":" bra";
-
-  const serviceBlock=svcs.length>0&&h("div",null,
-    h("div",{style:{fontSize:"8px",fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",color:"var(--dim)",marginBottom:"3px"}},"Serviços HBS"),
-    h("div",{className:"gpills-row"},
-      ...svcs.map(({key,svc,qty,status,fully})=>{
-        const isReq=status==="REQ";
-        let label=svc.nome;
-        if(fully&&!/fully/i.test(label))label+=" (Fully)";
-        if(qty>1)label+=` ×${qty}`;
-        const cor=svc.cor||"#555";
-        return h("div",{key,className:"svc-tag",style:{borderColor:cor+"55",color:cor,background:cor+"12"}},
-          label,
-          isReq&&h("span",{className:"req-badge",title:"Aguardando confirmação FIFA"},"REQ")
-        );
-      })
-    )
-  );
-
-  const inetBlock=inet.length>0&&h("div",{style:{marginTop:"4px"}},
-    h("div",{style:{fontSize:"8px",fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",color:"var(--dim)",marginBottom:"3px"}},"Internet"),
-    h("div",{className:"inet-row"},...inet.map(i=>h("div",{key:i.booking,className:"inet-tag"},i.nome)))
-  );
-
-  const mediaBlock=media.length>0&&h("div",{style:{marginTop:"4px"}},
-    h("div",{style:{fontSize:"8px",fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",color:"var(--dim)",marginBottom:"3px"}},"Mídia"),
-    h("div",{className:"gpills-row"},
-      ...media.map(({key,svc,qty})=>h("div",{key,className:"svc-tag",style:{borderColor:"#5555",color:"#555",background:"rgba(0,0,0,.04)"}},
-        `${svc.nome}${qty>1?` ×${qty}`:""}`
-      ))
-    )
-  );
-
-  const content=(svcs.length===0&&inet.length===0&&media.length===0)
-    ? h("div",{className:"nosvc"},"Nenhum serviço contratado")
-    : h("div",null,serviceBlock,inetBlock,mediaBlock);
-
-  return h("article",{className:`gcard${featured?featureClass:""}`,onClick},
-    h("div",{className:"gcard-head"},
-      h("div",{className:"gtop"},
-        h("div",{className:"gnum"},`#${jogo.numero}`),
-        h("div",{className:"gpick"},jogo.pick)
-      ),
-      h("div",{className:"gmatch"},n1,h("span",{className:"gvs"},"×"),n2),
-      h("div",{className:"gmeta"},`${fmtHoraJogo(jogo,tz)} · ${jogo.local}`)
-    ),
-    h("div",{className:"gcard-body"},
-      h("div",{className:"gperfil",style:{borderColor:pf.cor,color:pf.cor,background:pf.bg}},pf.label),
-      h("div",{className:"gpills"},content)
-    )
-  );
-}
+function Card({jogo,tz,activeChannel,onClick}){const svcs=svcsLista(jogo);const inet=getInet(jogo);const media=mediaLista(jogo);const pf=PERFIS[getPerfil(jogo)]||PERFIS.B;const n1=nomeSel(jogo.selecao_1);const n2=nomeSel(jogo.selecao_2);const featured=isFeaturedGame(jogo,activeChannel);const featureClass=activeChannel==="lmtv"?" por":" bra";const serviceBlock=svcs.length>0&&h("div",null,h("div",{style:{fontSize:"8px",fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",color:"var(--dim)",marginBottom:"3px"}},"Serviços HBS"),h("div",{className:"gpills-row"},...svcs.map(({key,svc,qty,status,fully})=>{const isReq=status==="REQ";let label=svc.nome;if(fully&&!/fully/i.test(label))label+=" (Fully)";if(qty>1)label+=` ×${qty}`;const cor=svc.cor||"#555";return h("div",{key,className:"svc-tag",style:{borderColor:cor+"55",color:cor,background:cor+"12"}},label,isReq&&h("span",{className:"req-badge",title:"Aguardando confirmação FIFA"},"REQ"));})));const inetBlock=inet.length>0&&h("div",{style:{marginTop:"4px"}},h("div",{style:{fontSize:"8px",fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",color:"var(--dim)",marginBottom:"3px"}},"Internet"),h("div",{className:"inet-row"},...inet.map(i=>h("div",{key:i.booking,className:"inet-tag"},i.nome))));const mediaBlock=media.length>0&&h("div",{style:{marginTop:"4px"}},h("div",{style:{fontSize:"8px",fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",color:"var(--dim)",marginBottom:"3px"}},"Mídia"),h("div",{className:"gpills-row"},...media.map(({key,svc,qty})=>h("div",{key,className:"svc-tag",style:{borderColor:"#5555",color:"#555",background:"rgba(0,0,0,.04)"}},`${svc.nome}${qty>1?` ×${qty}`:""}`))));const content=(svcs.length===0&&inet.length===0&&media.length===0)?h("div",{className:"nosvc"},"Nenhum serviço contratado"):h("div",null,serviceBlock,inetBlock,mediaBlock);return h("article",{className:`gcard${featured?featureClass:""}`,onClick},h("div",{className:"gcard-head"},h("div",{className:"gtop"},h("div",{className:"gnum"},`#${jogo.numero}`),h("div",{className:"gpick"},jogo.pick)),h("div",{className:"gmatch"},n1,h("span",{className:"gvs"},"×"),n2),h("div",{className:"gmeta"},`${fmtHoraJogo(jogo,tz)} · ${jogo.local}`)),h("div",{className:"gcard-body"},h("div",{className:"gperfil",style:{borderColor:pf.cor,color:pf.cor,background:pf.bg}},pf.label),h("div",{className:"gpills"},content)));}
 
 function Modal({jogo,tz,personSuggestions,onClose,onChange}){const[exp,setExp]=useState(new Set());const[mediaOpen,setMediaOpen]=useState(false);const svcs=svcsLista(jogo),inet=getInet(jogo),media=mediaLista(jogo),fase=faseLabel(jogo.rodada),rc=getRc(fase),n1=nomeSel(jogo.selecao_1),n2=nomeSel(jogo.selecao_2),pf=PERFIS[getPerfil(jogo)]||PERFIS.B,tzTime=shiftGameTime(jogo.data,jogo.hora,tz),tzDay=diaSemanaISO(tzTime.date)||jogo.dia_semana,reqCount=svcs.filter(s=>s.status==="REQ").length;const toggle=k=>setExp(prev=>{const s=new Set(prev);s.has(k)?s.delete(k):s.add(k);return s;});
 return h("div",{className:"overlay",onClick:onClose},h("div",{className:"modal",onClick:e=>e.stopPropagation()},h("div",{className:"modal-drag"},h("div",{className:"modal-drag-bar"})),h("div",{className:"modal-scroll"},h("div",{className:"mhero"},h("div",{className:"mhero-stripe"}),h("button",{className:"mclose",onClick:onClose},"×"),h("div",{className:"mrodada",style:{color:rc.cor}},`${fase} · Jogo #${jogo.numero}`),h("div",{className:"mmatch"},n1,h("span",{className:"vs"},"×"),n2),h("div",{className:"mnames"},`${jogo.selecao_1} × ${jogo.selecao_2}${jogo.match_id?" · "+jogo.match_id:""}`),h("div",{className:"mmeta"},h("div",{className:"mm-item"},h("span",{className:"lbl"},"DATA"),h("span",{className:"val"},`${tzDay}, ${fmtDL(tzTime.date)}`)),h("div",{className:"mm-item"},h("span",{className:"lbl"},"HORA"),h("span",{className:"val"},`${tzTime.hora} ${tzTime.label}`)),h("div",{className:"mm-item"},h("span",{className:"lbl"},"LOCAL"),h("span",{className:"val"},jogo.local)),h("div",{className:"mm-item"},h("span",{className:"lbl"},"PICK"),h("span",{className:"val"},jogo.pick)))),h("div",{className:"mbody"},h("div",{style:{marginBottom:"14px",padding:"9px 12px",borderRadius:"4px",border:`1px solid ${pf.cor}40`,background:pf.bg}},h("div",{style:{fontSize:"10px",fontWeight:700,color:pf.cor,letterSpacing:".06em",textTransform:"uppercase"}},pf.label),tz!=="BRT"&&h("div",{style:{fontSize:"10px",color:"var(--muted)",marginTop:"4px"}},`Horário convertido de ${jogo.hora} BRT para ${tzTime.hora} ${tzTime.label}.`)),reqCount>0&&h("div",{className:"extra-slot-note"},`${reqCount} serviço${reqCount>1?"s":""} aguardando confirmação FIFA (REQ).`),h(AddServiceBox,{jogo,onChange}),h("section",{className:"sec"},h("div",{className:"sec-hdr"},h("div",{className:"sec-title"},"Serviços HBS"),h("div",{className:"sec-ct"},svcs.length===0?"nenhum":`${svcs.length} serviço${svcs.length>1?"s":""}`)),svcs.length===0?h("div",{style:{color:"#aaa",fontStyle:"italic",padding:"8px 0",fontSize:"13px"}},"Nenhum serviço de campo confirmado."):h("div",{className:"svc-list"},...svcs.map(item=>h(ServiceItem,{key:item.key,item,jogo,isOpen:exp.has(item.key),toggle:()=>toggle(item.key),personSuggestions,onChange})))),media.length>0&&h("div",{className:"media-block"},h("button",{className:`media-tog${mediaOpen?" open":""}`,onClick:()=>setMediaOpen(!mediaOpen)},h("span",null,`Acessos de mídia · ${media.length} item${media.length>1?"s":""}`),h("span",{className:"media-tog-arrow"},"▶")),h("div",{className:`media-list${mediaOpen?" open":""}`},...media.map(item=>h(MediaItem,{key:item.key,item,jogo,isOpen:exp.has(item.key),toggle:()=>toggle(item.key),personSuggestions,onChange})))),inet.length>0&&h("section",{className:"sec",style:{marginTop:"18px"}},h("div",{className:"sec-hdr"},h("div",{className:"sec-title",style:{color:"var(--cyan)"}},"Internet"),h("div",{className:"sec-ct"},`${inet.length} link${inet.length>1?"s":""}`)),h("div",{style:{display:"flex",flexDirection:"column",gap:"6px"}},...inet.map(i=>h("div",{key:i.booking,className:"internet-banner"},h("div",{className:"inet-info"},h("div",{className:"inet-name"},i.nome),h("div",{className:"inet-desc"},i.descr)),h("div",{className:"inet-booking"},i.booking))))))),h("div",{className:"mfoot"},h("div",{className:"foot-hint"},APPS_SCRIPT_URL?"Alterações sincronizadas com Google Sheets.":"Modo somente leitura."),h("button",{className:"btn-pdf",onClick:()=>gerarPDF(jogo,n1,n2,tz)},"Baixar PDF"))));}
@@ -315,66 +174,7 @@ return h("div",{className:"overlay",onClick:onClose},h("div",{className:"modal",
 function ServiceItem({item,jogo,isOpen,toggle,personSuggestions,onChange}){const{key,svc,qty,status,fully,booking_actual,pessoas,obs,extraQty}=item;const isReq=status==="REQ";const officialSlots=Math.max(qty||0,svc.maxP||0);const totalSlots=officialSlots+(extraQty||0);const cor=svc.cor||"#555";return h("div",{className:"svc-item",style:{borderColor:isOpen?cor+"60":undefined}},h("div",{className:"svc-row",onClick:toggle,style:{background:isOpen?cor+"0a":undefined}},h("div",{className:"svc-left"},h("div",{className:"svc-booking",style:{borderColor:cor+"60",color:cor,background:cor+"10"}},booking_actual),h("div",{className:"svc-name"},svc.nome+(fully&&!/fully/i.test(svc.nome)?" (Fully Equipped)":""),h("span",{className:"svc-qty"},extraQty>0?` ×${qty} +${extraQty} extra`:qty>1?` ×${qty}`:""),isReq&&h("span",{className:"req-badge",title:"Aguardando confirmação FIFA"},"REQ"))),h("div",{className:"svc-right"},h("div",{className:"svc-equip"},svc.equip),h("div",{className:"svc-tog"},isOpen?"−":"+"))),isOpen&&h("div",{className:"svc-detail"},h("div",{className:"detail-grid"},h("div",{className:"dr dr-full"},h("div",{className:"dr-lbl"},"Descrição"),h("div",{className:"dr-val"},svc.descr||"-")),h("div",{className:"dr"},h("div",{className:"dr-lbl"},"Booking"),h("div",{className:"dr-val"},h("span",{className:"booking-hl",style:{color:cor}},booking_actual))),h("div",{className:"dr"},h("div",{className:"dr-lbl"},"Status FIFA"),h("div",{className:"dr-val"},h(StatusEditor,{jogo,svcKey:key,booking:booking_actual,status,qty,onChange}))),h("div",{className:"dr"},h("div",{className:"dr-lbl"},"Horário"),h("div",{className:"dr-val"},svc.horario||"-")),h("div",{className:"dr"},h("div",{className:"dr-lbl"},"Equipamento"),h("div",{className:"dr-val"},svc.equip||"-")),h("div",{className:"dr"},h("div",{className:"dr-lbl"},"Pessoas"),h("div",{className:"dr-val"},svc.maxP>0?(extraQty>0?`${officialSlots} padrão + ${extraQty} extra = ${totalSlots}`:String(officialSlots)):"-")),h("div",{className:"dr dr-full"},h("div",{className:"dr-lbl"},"Observações"),h("div",{className:"dr-val"},svc.obs||"-"))),h(PessoasEditor,{svcKey:key,maxP:totalSlots,officialSlots,extraQty:extraQty||0,cor,onChange,matchId:jogo.match_id,pessoas,obs:obs||"",jogo,personSuggestions}),h(RemoveServiceButton,{jogo,svcKey:key,onChange})));} 
 function MediaItem({item,jogo,isOpen,toggle,personSuggestions,onChange}){const{key,svc,qty,status,pessoas,obs,extraQty}=item;const officialSlots=Math.max(qty||0,svc.maxP||0);const maxP=officialSlots+(extraQty||0);const cor=svc.cor||"#555";return h("div",{className:"media-item",style:{alignItems:"start",border:isOpen?`1px solid ${cor}60`:undefined}},h("div",{className:"media-item-name"},h("div",{style:{cursor:"pointer"},onClick:toggle},svc.nome,h("small",null,`${svc.booking} · ${svc.descr||""}`)),isOpen&&h("div",{style:{marginTop:"8px"}},h("div",{className:"detail-grid"},h("div",{className:"dr"},h("div",{className:"dr-lbl"},"Booking"),h("div",{className:"dr-val"},h("span",{className:"booking-hl",style:{color:cor}},svc.booking))),h("div",{className:"dr"},h("div",{className:"dr-lbl"},"Status FIFA"),h("div",{className:"dr-val"},status||"CNF")),h("div",{className:"dr"},h("div",{className:"dr-lbl"},"Pessoas"),h("div",{className:"dr-val"},maxP>0?(extraQty>0?`${officialSlots} padrão + ${extraQty} extra = ${maxP}`:String(maxP)):"-")),h("div",{className:"dr dr-full"},h("div",{className:"dr-lbl"},"Observações"),h("div",{className:"dr-val"},svc.obs||"-"))),h(PessoasEditor,{svcKey:key,maxP,officialSlots,extraQty:extraQty||0,cor,onChange,matchId:jogo.match_id,pessoas,obs:obs||"",jogo,personSuggestions}),h(RemoveServiceButton,{jogo,svcKey:key,onChange}))),h("div",{className:"media-item-qty",style:{cursor:"pointer"},onClick:toggle},isOpen?"−":extraQty>0?`×${qty} +${extraQty} extra`:`×${qty}`));}
 
-function AddServiceBox({jogo,onChange}){
-  const[open,setOpen]=useState(false);
-  const opts=serviceOptionsFor(jogo);
-  const[svcKey,setSvcKey]=useState(opts[0]||"");
-  const[status,setStatus]=useState("CNF");
-  const[qty,setQty]=useState(1);
-  const[obs,setObs]=useState("");
-  const[pw,setPw]=useState("");
-  const[saving,setSaving]=useState(false);
-  const[err,setErr]=useState("");
-
-  useEffect(()=>{if(!svcKey&&opts[0])setSvcKey(opts[0]);},[opts.join("|")]);
-
-  const svc=SVC[svcKey]||{};
-
-  async function save(){
-    setErr("");
-    if(!APPS_SCRIPT_URL){setErr("Modo somente leitura: Apps Script não configurado.");return;}
-    if(!svcKey){setErr("Selecione um serviço.");return;}
-    if(!pw){setErr("Informe a senha admin.");return;}
-    setSaving(true);
-    const r=await apiPost({action:"add_service_to_match",match_id:jogo.match_id,service_key:svcKey,booking:svc.booking,status,qty:Number(qty)||0,obs,token:pw});
-    setSaving(false);
-    if(!r.ok){setErr(r.error||"Erro ao adicionar serviço.");return;}
-    jogo.servicos=jogo.servicos||{};
-    jogo.servicos[svcKey]={status,qty:Number(qty)||0,booking:svc.booking,pessoas:[],obs:obs||"",fully:false};
-    setOpen(false);setObs("");setPw("");setStatus("CNF");setQty(1);
-    onChange&&onChange();
-  }
-
-  const form=opts.length===0
-    ? h("div",{style:{fontSize:12,color:"var(--muted)"}},"Todos os serviços cadastrados já estão ativos neste jogo.")
-    : h(React.Fragment,null,
-        h("select",{className:"finput",value:svcKey,onChange:e=>setSvcKey(e.target.value)},
-          ...opts.map(k=>h("option",{key:k,value:k},`${SVC[k]?.nome||k} · ${SVC[k]?.booking||""}`))
-        ),
-        svcKey&&h("div",{style:{fontSize:11,color:"var(--muted)",lineHeight:1.4}},svc.descr||""),
-        h("div",{style:{display:"grid",gridTemplateColumns:"1fr 90px",gap:8}},
-          h("select",{className:"finput",value:status,onChange:e=>setStatus(e.target.value)},
-            h("option",{value:"CNF"},"CNF"),
-            h("option",{value:"REQ"},"REQ")
-          ),
-          h("input",{className:"finput",type:"number",min:0,value:qty,onChange:e=>setQty(e.target.value)})
-        ),
-        h("textarea",{className:"obs-input",rows:2,placeholder:"Observação opcional...",value:obs,onChange:e=>setObs(e.target.value)}),
-        h("div",{style:{display:"flex",gap:8,alignItems:"center"}},
-          h("input",{className:"finput",type:"password",placeholder:"Senha admin",value:pw,onChange:e=>setPw(e.target.value),style:{flex:1}}),
-          h("button",{className:"admin-confirm-btn",onClick:save,disabled:saving||!APPS_SCRIPT_URL},saving?"Salvando...":"Salvar")
-        ),
-        err&&h("div",{className:"admin-error"},err)
-      );
-
-  return h("div",{style:{marginBottom:"16px",border:"1px dashed var(--border2)",borderRadius:4,background:"var(--bg)",overflow:"hidden"}},
-    h("button",{className:`media-tog${open?" open":""}`,onClick:()=>setOpen(!open)},
-      h("span",null,"Adicionar serviço a este jogo"),
-      h("span",{className:"media-tog-arrow"},"▶")
-    ),
-    open&&h("div",{style:{padding:"12px",display:"grid",gap:"8px"}},form)
-  );
-}
+function AddServiceBox({jogo,onChange}){const[open,setOpen]=useState(false);const opts=serviceOptionsFor(jogo);const[svcKey,setSvcKey]=useState(opts[0]||"");const[status,setStatus]=useState("CNF");const[qty,setQty]=useState(1);const[obs,setObs]=useState("");const[pw,setPw]=useState("");const[saving,setSaving]=useState(false);const[err,setErr]=useState("");useEffect(()=>{if(!svcKey&&opts[0])setSvcKey(opts[0]);},[opts.join("|")]);const svc=SVC[svcKey]||{};async function save(){setErr("");if(!APPS_SCRIPT_URL){setErr("Modo somente leitura: Apps Script não configurado.");return;}if(!svcKey){setErr("Selecione um serviço.");return;}if(!pw){setErr("Informe a senha admin.");return;}setSaving(true);const r=await apiPost({action:"add_service_to_match",match_id:jogo.match_id,service_key:svcKey,booking:svc.booking,status,qty:Number(qty)||0,obs,token:pw});setSaving(false);if(!r.ok){setErr(r.error||"Erro ao adicionar serviço.");return;}jogo.servicos=jogo.servicos||{};jogo.servicos[svcKey]={status,qty:Number(qty)||0,booking:svc.booking,pessoas:[],obs:obs||"",fully:false};setOpen(false);setObs("");setPw("");setStatus("CNF");setQty(1);onChange&&onChange();}const form=opts.length===0?h("div",{style:{fontSize:12,color:"var(--muted)"}},"Todos os serviços cadastrados já estão ativos neste jogo."):h(React.Fragment,null,h("select",{className:"finput",value:svcKey,onChange:e=>setSvcKey(e.target.value)},...opts.map(k=>h("option",{key:k,value:k},`${SVC[k]?.nome||k} · ${SVC[k]?.booking||""}}`))),svcKey&&h("div",{style:{fontSize:11,color:"var(--muted)",lineHeight:1.4}},svc.descr||""),h("div",{style:{display:"grid",gridTemplateColumns:"1fr 90px",gap:8}},h("select",{className:"finput",value:status,onChange:e=>setStatus(e.target.value)},h("option",{value:"CNF"},"CNF"),h("option",{value:"REQ"},"REQ")),h("input",{className:"finput",type:"number",min:0,value:qty,onChange:e=>setQty(e.target.value)})),h("textarea",{className:"obs-input",rows:2,placeholder:"Observação opcional...",value:obs,onChange:e=>setObs(e.target.value)}),h("div",{style:{display:"flex",gap:8,alignItems:"center"}},h("input",{className:"finput",type:"password",placeholder:"Senha admin",value:pw,onChange:e=>setPw(e.target.value),style:{flex:1}}),h("button",{className:"admin-confirm-btn",onClick:save,disabled:saving||!APPS_SCRIPT_URL},saving?"Salvando...":"Salvar")),err&&h("div",{className:"admin-error"},err));return h("div",{style:{marginBottom:"16px",border:"1px dashed var(--border2)",borderRadius:4,background:"var(--bg)",overflow:"hidden"}},h("button",{className:`media-tog${open?" open":""}`,onClick:()=>setOpen(!open)},h("span",null,"Adicionar serviço a este jogo"),h("span",{className:"media-tog-arrow"},"▶")),open&&h("div",{style:{padding:"12px",display:"grid",gap:"8px"}},form));}
 function RemoveServiceButton({jogo,svcKey,onChange}){const[confirming,setConfirming]=useState(false);const[pw,setPw]=useState("");const[saving,setSaving]=useState(false);const[err,setErr]=useState("");async function remove(){setErr("");if(!APPS_SCRIPT_URL){setErr("Modo somente leitura: Apps Script não configurado.");return;}if(!pw){setErr("Informe a senha admin.");return;}setSaving(true);const r=await apiPost({action:"remove_service_from_match",match_id:jogo.match_id,service_key:svcKey,token:pw});setSaving(false);if(!r.ok){setErr(r.error||"Erro ao remover serviço.");return;}if(jogo.servicos)delete jogo.servicos[svcKey];setConfirming(false);setPw("");onChange&&onChange();}return h("div",{style:{marginTop:12,paddingTop:10,borderTop:"1px solid var(--border)"}},!confirming?h("button",{onClick:e=>{e.stopPropagation();setConfirming(true);},style:{background:"transparent",border:"1px solid var(--border2)",color:"var(--red)",padding:"7px 10px",borderRadius:3,fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:".06em"}},"Remover deste jogo"):h("div",{style:{display:"grid",gap:6},onClick:e=>e.stopPropagation()},h("div",{style:{fontSize:11,color:"var(--muted)"}},"Isso limpa status, quantidade, booking e observação deste serviço neste jogo."),h("div",{style:{display:"flex",gap:6}},h("input",{className:"finput",type:"password",placeholder:"Senha admin",value:pw,onChange:e=>setPw(e.target.value),style:{flex:1}}),h("button",{className:"admin-confirm-btn undo",onClick:()=>{setConfirming(false);setErr("");}},"Cancelar"),h("button",{className:"admin-confirm-btn",onClick:remove,disabled:saving},saving?"...":"Remover")),err&&h("div",{className:"admin-error"},err)));}
 
 function PessoasEditor({svcKey,maxP,officialSlots,extraQty,cor,onChange,matchId,pessoas,obs,jogo,personSuggestions}){const slots=Array.from({length:Math.max(0,maxP||0)},(_,i)=>i);const officialLimit=Number.isFinite(Number(officialSlots))?Number(officialSlots):Math.max(0,(maxP||0)-(extraQty||0));const[vals,setVals]=useState(pessoas||[]);const[obsVal,setObsVal]=useState(obs||"");const[saving,setSaving]=useState(false);const[saved,setSaved]=useState(false);const[err,setErr]=useState("");const listId=`nomes-${matchId}-${svcKey}`.replace(/[^a-zA-Z0-9_-]/g,"-");useEffect(()=>{setVals(pessoas||[]);setObsVal(obs||"");setSaved(false);setErr("");},[svcKey,matchId,JSON.stringify(pessoas||[]),obs||""]);function handlePessoaChange(i,v){const nv=[...vals];nv[i]=v;setVals(nv);setSaved(false);setErr("");}async function saveAll(){if(!APPS_SCRIPT_URL){setErr("Modo somente leitura: Apps Script não configurado.");return;}setSaving(true);setErr("");setSaved(false);try{const tasks=[];for(const i of slots)tasks.push(gravar(matchId,`${svcKey}_p${i+1}`,vals[i]||""));tasks.push(gravar(matchId,`${svcKey}_obs`,obsVal||""));const results=await Promise.all(tasks);const bad=results.find(r=>!r.ok);if(bad)throw new Error(bad.error||"Erro ao salvar pessoas/observação.");if(jogo&&jogo.servicos&&jogo.servicos[svcKey]){jogo.servicos[svcKey].pessoas=[...vals];jogo.servicos[svcKey].obs=obsVal||"";}setSaved(true);onChange&&onChange();}catch(e){setErr(e.message||"Erro ao salvar pessoas/observação.");}finally{setSaving(false);}}return h("div",{className:"pessoas-section"},h("div",{className:"pessoas-title",style:{color:cor}},"Pessoas e observação deste serviço",saving&&h("span",{style:{marginLeft:8,fontSize:9,color:"var(--cyan)",fontWeight:700}},"salvando..."),saved&&!saving&&h("span",{style:{marginLeft:8,fontSize:9,color:"#16a34a",fontWeight:700}},"salvo")),err&&h("div",{className:"admin-error",style:{marginBottom:6}},err),personSuggestions&&personSuggestions.length>0&&h("datalist",{id:listId},...personSuggestions.map(name=>h("option",{key:name,value:name}))),extraQty>0&&h("div",{className:"extra-slot-note"},`Este serviço tem ${extraQty} posição${extraQty>1?"ões":""} extra${extraQty>1?"s":""}. Campos marcados como EXTRA são adicionais.`),slots.length>0&&h("div",{className:"pessoas-grid"},...slots.map(i=>h("div",{key:i,className:"pessoa-row"},h("div",{className:"pessoa-num"},i+1,i>=officialLimit&&h("span",{className:"extra-mini"},"extra")),h("input",{className:"pessoa-input",placeholder:`Pessoa ${i+1}...`,list:listId,value:vals[i]||"",onChange:e=>handlePessoaChange(i,e.target.value),disabled:!APPS_SCRIPT_URL,onClick:e=>e.stopPropagation()})))),h("div",{className:"obs-section"},h("div",{className:"obs-label",style:{color:cor}},"Observações operacionais"),h("textarea",{className:"obs-input",placeholder:"Adicione observações específicas para este serviço neste jogo...",value:obsVal,onChange:e=>{setObsVal(e.target.value);setSaved(false);setErr("");},disabled:!APPS_SCRIPT_URL,onClick:e=>e.stopPropagation(),rows:3})),h("div",{style:{display:"flex",justifyContent:"flex-end",gap:8,marginTop:10}},h("button",{className:"admin-confirm-btn",onClick:saveAll,disabled:saving||!APPS_SCRIPT_URL},saving?"Salvando...":"Salvar pessoas e observação")));}
@@ -384,29 +184,21 @@ function AdminPanel({jogos,onClose,onChange}){const[pw,setPw]=useState("");const
 function AdminReqRow({it,onChange}){const[saving,setSaving]=useState(false);const[done,setDone]=useState(false);async function confirm(){if(!APPS_SCRIPT_URL)return;setSaving(true);const r=await gravar(it.match_id,`${it.key}_status`,"CNF",ADMIN_PASS);setSaving(false);if(r.ok){setDone(true);if(it.jogo.servicos[it.key])it.jogo.servicos[it.key].status="CNF";onChange&&onChange();}}return h("div",{className:`admin-req-row${done?" confirmed":""}`},h("div",{className:"admin-req-mid"},it.match_id),h("div",{className:"admin-req-name"},it.nome,h("small",null,`${it.teams} · ${it.rodada}`)),h("div",{className:"admin-req-qty"},`×${it.qty}`),done?h("span",{className:"admin-confirm-tag"},"CNF ✓"):h("button",{className:"admin-confirm-btn",onClick:confirm,disabled:saving},saving?"...":"Confirmar"));}
 function BatchImportPanel({jogos,token,onChange}){const[text,setText]=useState("");const[parsed,setParsed]=useState(null);const[saving,setSaving]=useState(false);const[result,setResult]=useState(null);const matchSet=useMemo(()=>new Set(jogos.map(j=>j.match_id)),[jogos]);function parseNow(t=text){const p=parseImportPayload(t);const missing=p.updates.filter(u=>!matchSet.has(u.match_id)).map(u=>u.match_id);const uniq=[...new Set(missing)];if(uniq.length)p.errors.push(`Jogos não encontrados na planilha carregada: ${uniq.slice(0,10).join(", ")}${uniq.length>10?"...":""}`);setParsed(p);setResult(null);}function readFile(e){const f=e.target.files&&e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const v=String(rd.result||"");setText(v);parseNow(v);};rd.readAsText(f);}async function apply(){if(!parsed||parsed.errors.length||!parsed.updates.length)return;setSaving(true);setResult(null);const r=await apiPost({action:"batch_update_services",token,updates:parsed.updates});setSaving(false);setResult(r);if(r.ok){for(const u of parsed.updates){const j=jogos.find(x=>x.match_id===u.match_id);if(!j)continue;const svc=SVC[u.service_key]||{};j.servicos=j.servicos||{};j.servicos[u.service_key]={status:u.status,qty:u.qty,booking:u.booking||svc.booking,pessoas:[],obs:u.obs||"",fully:false};}onChange&&onChange();}}return h("div",{className:"admin-section"},h("h3",null,"Importar lote de confirmações"),h("div",{className:"admin-info"},"Cole ou envie um JSON/CSV já extraído do PDF. Campos aceitos: match_id, booking, service_key, status, qty, obs."),h("input",{type:"file",accept:".csv,.json,.txt",onChange:readFile,style:{fontSize:11,marginBottom:8}}),h("textarea",{className:"obs-input",rows:5,placeholder:"Cole aqui CSV ou JSON...",value:text,onChange:e=>{setText(e.target.value);setParsed(null);setResult(null);}}),h("div",{style:{display:"flex",gap:8,marginTop:8,alignItems:"center"}},h("button",{className:"admin-confirm-btn undo",onClick:()=>parseNow(),disabled:!text},"Pré-visualizar"),h("button",{className:"admin-confirm-btn",onClick:apply,disabled:!parsed||parsed.errors.length||!parsed.updates.length||saving},saving?"Aplicando...":"Aplicar lote")),parsed&&h("div",{style:{fontSize:11,marginTop:8,lineHeight:1.5}},h("div",null,`Updates válidos: ${parsed.updates.length}`),...parsed.updates.slice(0,6).map(u=>h("div",{key:u.match_id+"|"+u.service_key,style:{fontFamily:"monospace",color:"var(--muted)"}},`${u.match_id} · ${u.service_key} · ${u.status} ×${u.qty}`)),parsed.updates.length>6&&h("div",{style:{color:"var(--muted)"}},`... +${parsed.updates.length-6}`),parsed.errors.length>0&&h("div",{className:"admin-error",style:{marginTop:6}},parsed.errors.join(" | "))),result&&h("div",{className:result.ok?"admin-info":"admin-error",style:{marginTop:8}},result.ok?`Lote aplicado: ${result.applied||0} update(s).`:(result.error||"Erro ao aplicar lote.")));}
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SUBSTITUIR a função gerarPDF existente por esta versão completa
-// ─────────────────────────────────────────────────────────────────────────────
-
 function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
   if (!window.jspdf) { alert("Biblioteca jsPDF não carregou."); return; }
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: "pt", format: "a4" });
-
-  const W  = doc.internal.pageSize.getWidth();
-  const H  = doc.internal.pageSize.getHeight();
+  const W = doc.internal.pageSize.getWidth();
+  const H = doc.internal.pageSize.getHeight();
   const ML = 36, MR = 36, TW = W - ML - MR;
+  const time = shiftGameTime(jogo.data, jogo.hora, tzKey);
+  const fase = faseLabel(jogo.rodada);
+  const rc = getRc(fase);
 
-  const time  = shiftGameTime(jogo.data, jogo.hora, tzKey);
-  const fase  = faseLabel(jogo.rodada);
-  const rc    = getRc(fase);
-
-  // ── helpers ──────────────────────────────────────────────────────────────
   function hexRgb(hex) {
     const m = String(hex || "#555555").replace("#", "").match(/.{2}/g) || ["55","55","55"];
     return m.map(x => parseInt(x, 16));
   }
-
   function setFont(style, size, rgb) {
     doc.setFont("helvetica", style);
     doc.setFontSize(size);
@@ -415,12 +207,9 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
 
   let y = 0;
 
-  // page-break check
   function ck(need) {
     if (y + need > H - 36) { doc.addPage(); y = 0; drawPageHeader(); }
   }
-
-  // thin separator line
   function hr(gap1 = 6, gap2 = 8) {
     y += gap1;
     doc.setDrawColor(210, 210, 210);
@@ -428,31 +217,17 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
     y += gap2;
   }
 
-  // ── page header (repeated on each page) ──────────────────────────────────
   function drawPageHeader() {
     const c = hexRgb(rc.cor);
-    // top colour bar
     doc.setFillColor(...c);
     doc.rect(0, 0, W, 5, "F");
-
-    // channel + round line
     setFont("bold", 7.5, c);
     doc.text(`${fase.toUpperCase()} · JOGO #${jogo.numero} · ${jogo.pick}`, ML, 20);
-
-    // match name
     setFont("bold", 20, [15, 15, 15]);
     doc.text(`${n1} × ${n2}`, ML, 42);
-
-    // sub-line: codes · date · time · venue
     setFont("normal", 8, [130, 130, 130]);
-    const subLine = [
-      `${jogo.selecao_1} × ${jogo.selecao_2}`,
-      fmtDL(time.date),
-      `${time.hora} ${time.label}`,
-      jogo.local,
-    ].filter(Boolean).join("  ·  ");
+    const subLine = [`${jogo.selecao_1} × ${jogo.selecao_2}`, fmtDL(time.date), `${time.hora} ${time.label}`, jogo.local].filter(Boolean).join("  ·  ");
     doc.text(subLine, ML, 54);
-
     y = 64;
     doc.setDrawColor(...c);
     doc.setLineWidth(0.8);
@@ -461,147 +236,88 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
     y += 10;
   }
 
-  // ── footer ────────────────────────────────────────────────────────────────
   function drawFooter() {
     const totalPages = doc.internal.getNumberOfPages();
     for (let p = 1; p <= totalPages; p++) {
       doc.setPage(p);
       setFont("normal", 7.5, [160, 160, 160]);
-      doc.text(
-        `${jogo.pick}  ·  FIFA World Cup 2026  ·  ${fase}  ·  Jogo #${jogo.numero}`,
-        ML, H - 16
-      );
+      doc.text(`${jogo.pick}  ·  FIFA World Cup 2026  ·  ${fase}  ·  Jogo #${jogo.numero}`, ML, H - 16);
       doc.text(`Pág. ${p}`, W - MR, H - 16, { align: "right" });
     }
   }
 
-  // ── collect all service entries ───────────────────────────────────────────
-  const mainSvcs  = serviceEntries(jogo, "main");
+  const mainSvcs = serviceEntries(jogo, "main");
   const mediaSvcs = serviceEntries(jogo, "media");
-  const inetSvcs  = serviceEntries(jogo, "inet");
-  const allSvcs   = [...mainSvcs, ...mediaSvcs, ...inetSvcs];
-
+  const inetSvcs = serviceEntries(jogo, "inet");
+  const allSvcs = [...mainSvcs, ...mediaSvcs, ...inetSvcs];
   const cnfCount = allSvcs.filter(s => s.status === "CNF").length;
   const reqCount = allSvcs.filter(s => s.status === "REQ").length;
 
-  // ── PAGE 1: HEADER ────────────────────────────────────────────────────────
   drawPageHeader();
 
-  // summary pill line
   setFont("normal", 8, [100, 100, 100]);
-  const summaryParts = [
-    `${allSvcs.length} serviços`,
-    cnfCount > 0 ? `${cnfCount} confirmados` : null,
-    reqCount > 0 ? `${reqCount} aguardando` : null,
-  ].filter(Boolean).join("  ·  ");
+  const summaryParts = [`${allSvcs.length} serviços`, cnfCount > 0 ? `${cnfCount} confirmados` : null, reqCount > 0 ? `${reqCount} aguardando` : null].filter(Boolean).join("  ·  ");
   doc.text(summaryParts, ML, y);
   y += 14;
 
-  // ── SUMMARY TABLE ─────────────────────────────────────────────────────────
-  // Column x positions
-  const COL = {
-    status : ML,
-    qty    : ML + 36,
-    nome   : ML + 58,
-    acess  : ML + 268,
-    pessoas: ML + 310,
-  };
+  const COL = { status: ML, qty: ML + 36, nome: ML + 58, acess: ML + 268, pessoas: ML + 310 };
 
-  // Table header
   function tableHeader() {
     setFont("bold", 6.5, [160, 160, 160]);
     doc.text("STATUS", COL.status, y);
-    doc.text("QTD",    COL.qty,    y);
-    doc.text("SERVIÇO",COL.nome,   y);
-    doc.text("ACESS.", COL.acess,  y);
-    doc.text("PESSOAS",COL.pessoas,y);
+    doc.text("QTD", COL.qty, y);
+    doc.text("SERVIÇO", COL.nome, y);
+    doc.text("ACESS.", COL.acess, y);
+    doc.text("PESSOAS", COL.pessoas, y);
     y += 3;
     hr(1, 5);
   }
 
-  // Section label inside table
+  let tableRowIndex = 0;
+
   function sectionLabel(label) {
     ck(20);
-    tableRowIndex = 0; // reset alternating rows per section
+    tableRowIndex = 0;
     setFont("bold", 6.5, [160, 160, 160]);
     doc.text(label.toUpperCase(), ML, y);
     y += 9;
   }
 
-  // Alternating row counter
-  let tableRowIndex = 0;
-
-  // One summary row
   function tableRow(item) {
     const isReq = item.status === "REQ";
     const statusColor = isReq ? [180, 100, 0] : [22, 163, 74];
     const slots = Math.max(item.qty || 0, item.svc.maxP || 0) + (item.extraQty || 0);
     const pessoasFilled = (item.pessoas || []).filter(Boolean).length;
-
     ck(14);
-
-    // Alternating background
     if (tableRowIndex % 2 === 0) {
       doc.setFillColor(246, 246, 246);
       doc.rect(ML, y - 9, TW, 13, "F");
     }
     tableRowIndex++;
-
-    // Left colour stripe per service
     const cor = hexRgb(item.svc.cor || "#555555");
     doc.setFillColor(...cor);
     doc.rect(ML, y - 9, 3, 13, "F");
-
-    // STATUS badge
     setFont("bold", 7.5, statusColor);
     doc.text(item.status, COL.status, y);
-
-    // QTD
     setFont("normal", 8, [60, 60, 60]);
-    const qtyLabel = item.extraQty > 0
-      ? `×${item.qty}+${item.extraQty}`
-      : item.qty > 1 ? `×${item.qty}` : "1";
+    const qtyLabel = item.extraQty > 0 ? `×${item.qty}+${item.extraQty}` : item.qty > 1 ? `×${item.qty}` : "1";
     doc.text(qtyLabel, COL.qty, y);
-
-    // Nome
     setFont("normal", 8, [20, 20, 20]);
     const nomeFull = item.svc.nome + (item.fully && !/fully/i.test(item.svc.nome) ? " (Fully)" : "");
     doc.text(nomeFull, COL.nome, y);
-
-    // Acessos (max pessoas oficial)
     setFont("normal", 8, [100, 100, 100]);
     doc.text(slots > 0 ? String(slots) : "—", COL.acess, y);
-
-    // Pessoas preenchidas
-    const pessoasStr = pessoasFilled > 0
-      ? (item.pessoas || []).filter(Boolean).join(", ")
-      : "—";
-    const pessoasMaxW = W - MR - COL.pessoas;
-    const pessoasLines = doc.splitTextToSize(pessoasStr, pessoasMaxW);
-    doc.text(pessoasLines[0], COL.pessoas, y); // only first line in summary
-
+    const pessoasStr = pessoasFilled > 0 ? (item.pessoas || []).filter(Boolean).join(", ") : "—";
+    const pessoasLines = doc.splitTextToSize(pessoasStr, W - MR - COL.pessoas);
+    doc.text(pessoasLines[0], COL.pessoas, y);
     y += 13;
   }
 
   tableHeader();
+  if (mainSvcs.length > 0) { sectionLabel("Serviços"); mainSvcs.forEach(tableRow); }
+  if (mediaSvcs.length > 0) { hr(4, 4); sectionLabel("Acessos de Mídia"); mediaSvcs.forEach(tableRow); }
+  if (inetSvcs.length > 0) { hr(4, 4); sectionLabel("Internet"); inetSvcs.forEach(tableRow); }
 
-  if (mainSvcs.length > 0) {
-    sectionLabel("Serviços");
-    mainSvcs.forEach(tableRow);
-  }
-  if (mediaSvcs.length > 0) {
-    hr(4, 4);
-    sectionLabel("Acessos de Mídia");
-    mediaSvcs.forEach(tableRow);
-  }
-  if (inetSvcs.length > 0) {
-    hr(4, 4);
-    sectionLabel("Internet");
-    inetSvcs.forEach(tableRow);
-  }
-
-  // ── DETAIL SECTION ────────────────────────────────────────────────────────
-  // Section title
   function detailSectionTitle(label) {
     ck(30);
     y += 6;
@@ -612,74 +328,45 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
     y += 8;
   }
 
-  // One detail card
   function detailCard(item) {
     const s = item.svc;
-    const isReq   = item.status === "REQ";
-    const cor      = hexRgb(s.cor || "#555555");
-    const statusC  = isReq ? [180, 100, 0] : [22, 163, 74];
+    const isReq = item.status === "REQ";
+    const cor = hexRgb(s.cor || "#555555");
+    const statusColor = isReq ? [180, 100, 0] : [22, 163, 74];
 
-    // Estimate height needed (rough)
-    const descLines   = s.descr   ? doc.splitTextToSize(s.descr,   TW - 80) : [];
-    const obsLines    = s.obs     ? doc.splitTextToSize(s.obs,     TW - 80) : [];
-    const horLines    = s.horario ? doc.splitTextToSize(s.horario, TW - 80) : [];
-
-    // Pessoas + obs específica
+    const descLines = s.descr ? doc.splitTextToSize(s.descr, TW - 80) : [];
+    const obsLines = s.obs ? doc.splitTextToSize(s.obs, TW - 80) : [];
+    const horLines = s.horario ? doc.splitTextToSize(s.horario, TW - 80) : [];
     const pessoasClean = (item.pessoas || []).filter(Boolean);
-    const obsEsp       = item.obs ? item.obs.trim() : "";
-    const pessoasLines = pessoasClean.length > 0
-      ? doc.splitTextToSize(pessoasClean.join(" · "), TW - 80)
-      : [];
-    const obsEspLines  = obsEsp
-      ? doc.splitTextToSize(obsEsp, TW - 80)
-      : [];
+    const obsEsp = item.obs ? item.obs.trim() : "";
+    const pessoasLines = pessoasClean.length > 0 ? doc.splitTextToSize(pessoasClean.join(" · "), TW - 80) : [];
+    const obsEspLines = obsEsp ? doc.splitTextToSize(obsEsp, TW - 80) : [];
 
     const rowH = 11;
     const estH = 28
-      + (horLines.length  > 0 ? rowH * horLines.length  + 2 : 0)
-      + rowH  // equipamento line always
+      + (horLines.length > 0 ? rowH * horLines.length + 2 : 0)
+      + rowH
       + (descLines.length > 0 ? rowH * descLines.length + 2 : 0)
-      + (obsLines.length  > 0 ? rowH * obsLines.length  + 2 : 0)
+      + (obsLines.length > 0 ? rowH * obsLines.length + 2 : 0)
       + (pessoasLines.length > 0 || obsEspLines.length > 0 ? rowH * (pessoasLines.length + obsEspLines.length) + 10 : 0)
       + 14;
 
     ck(estH);
-
     const cardTop = y;
 
-    // Left colour stripe
     doc.setFillColor(...cor);
     doc.rect(ML, cardTop, 3, estH - 4, "F");
 
-    // Service name + status
     setFont("bold", 10, [20, 20, 20]);
-    const qLabel = item.extraQty > 0
-      ? ` ×${item.qty}+${item.extraQty} extra`
-      : item.qty > 1 ? ` ×${item.qty}` : "";
+    const qLabel = item.extraQty > 0 ? ` ×${item.qty}+${item.extraQty} extra` : item.qty > 1 ? ` ×${item.qty}` : "";
     doc.text(`${s.nome}${qLabel}`, ML + 10, y + 12);
-
     setFont("bold", 8, statusColor);
     doc.text(item.status, W - MR, y + 12, { align: "right" });
-
     y += 20;
 
-    // Detail rows
-    function detailRow(label, lines, color = [80, 80, 80], italic = false) {
-      if (!lines || lines.length === 0) return;
-      setFont("bold", 7, [140, 140, 140]);
-      doc.text(label.toUpperCase(), ML + 10, y);
-      const indent = ML + 10 + doc.getTextWidth(label.toUpperCase() + "  ");
-      const maxW = W - MR - indent;
-      const wrapped = doc.splitTextToSize(Array.isArray(lines) ? lines.join("") : lines, maxW);
-      setFont(italic ? "italic" : "normal", 7.5, color);
-      wrapped.forEach((line, i) => {
-        doc.text(line, indent, y + i * 10);
-      });
-      y += wrapped.length * 10 + 3;
-    }
-
-    // Use a label+value layout (like the old PDF)
-    function labelVal(label, val, color = [60, 60, 60], italic = false) {
+    function labelVal(label, val, color, italic) {
+      color = color || [60, 60, 60];
+      italic = italic || false;
       if (!val) return;
       const lines = doc.splitTextToSize(val, TW - 85);
       ck(lines.length * 11 + 4);
@@ -690,12 +377,11 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
       y += lines.length * 10.5 + 2;
     }
 
-    labelVal("HORÁRIO",     s.horario);
+    labelVal("HORÁRIO", s.horario);
     labelVal("EQUIPAMENTO", s.equip);
-    labelVal("DESCRIÇÃO",   s.descr);
+    labelVal("DESCRIÇÃO", s.descr);
     labelVal("OBSERVAÇÕES COS", s.obs);
 
-    // Pessoas designadas + obs específica do jogo
     if (pessoasClean.length > 0 || obsEsp) {
       y += 4;
       doc.setFillColor(248, 248, 248);
@@ -711,50 +397,37 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
         blockLines.forEach((l, i) => doc.text(l, ML + 85, y + 3 + i * 10.5));
         y += blockLines.length * 10.5 + 4;
       }
-
       if (obsEsp) {
         setFont("bold", 7, [140, 140, 140]);
         doc.text("OBS. JOGO", ML + 14, y + 3);
-        setFont("italic", 7.5, [80, 80, 120]);  // italic, slightly blue-grey
+        setFont("italic", 7.5, [80, 80, 120]);
         obsEL.forEach((l, i) => doc.text(l, ML + 85, y + 3 + i * 10.5));
         y += obsEL.length * 10.5 + 4;
       }
-
       y += 4;
     }
 
-    // card bottom rule
     doc.setDrawColor(220, 220, 220);
     doc.line(ML, y + 2, W - MR, y + 2);
     y += 12;
   }
 
-  // ── Render detail section ─────────────────────────────────────────────────
   ck(40);
   hr(10, 6);
   setFont("bold", 9, [40, 40, 40]);
   doc.text("DETALHAMENTO DOS SERVIÇOS", ML, y);
   y += 12;
 
-  if (mainSvcs.length > 0) {
-    detailSectionTitle("Serviços");
-    mainSvcs.forEach(detailCard);
-  }
-  if (mediaSvcs.length > 0) {
-    detailSectionTitle("Acessos de Mídia");
-    mediaSvcs.forEach(detailCard);
-  }
-  if (inetSvcs.length > 0) {
-    detailSectionTitle("Internet");
-    inetSvcs.forEach(detailCard);
-  }
+  if (mainSvcs.length > 0) { detailSectionTitle("Serviços"); mainSvcs.forEach(detailCard); }
+  if (mediaSvcs.length > 0) { detailSectionTitle("Acessos de Mídia"); mediaSvcs.forEach(detailCard); }
+  if (inetSvcs.length > 0) { detailSectionTitle("Internet"); inetSvcs.forEach(detailCard); }
 
-  // ── Finalize ──────────────────────────────────────────────────────────────
   drawFooter();
 
   const fname = `${jogo.pick || "CazeTV"}_J${String(jogo.numero).padStart(2,"0")}_${String(jogo.selecao_1||"").replace(/[^A-Za-z0-9]/g,"")}x${String(jogo.selecao_2||"").replace(/[^A-Za-z0-9]/g,"")}.pdf`;
   doc.save(fname);
 }
+
 window.addEventListener("error",e=>console.error("Erro global:",e.error||e.message));
 window.addEventListener("unhandledrejection",e=>console.error("Promise rejeitada:",e.reason));
 ReactDOM.createRoot(document.getElementById("root")).render(h(ErrorBoundary,null,h(App)));
