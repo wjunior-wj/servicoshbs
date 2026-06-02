@@ -180,7 +180,7 @@ function ObsGeralEditor({jogo,onChange}){
   const[saved,setSaved]=useState(false);
   const[err,setErr]=useState("");
   const[open,setOpen]=useState(!!(jogo.obs_geral));
-  useEffect(()=>{setVal(jogo.obs_geral||"");setSaved(false);},[jogo.match_id]);
+  useEffect(()=>{setVal(jogo.obs_geral||"");setSaved(false);setErr("");},[jogo.match_id]);
   async function save(){
     if(!APPS_SCRIPT_URL){setErr("Modo somente leitura.");return;}
     setSaving(true);setErr("");setSaved(false);
@@ -200,10 +200,11 @@ function ObsGeralEditor({jogo,onChange}){
         placeholder:"Observações gerais sobre esta cobertura (aparecem no PDF abaixo do cabeçalho)...",
         value:val,
         onChange:e=>{setVal(e.target.value);setSaved(false);setErr("");},
-        disabled:!APPS_SCRIPT_URL
+        disabled:!APPS_SCRIPT_URL,
+        onClick:e=>e.stopPropagation()
       }),
       h("div",{style:{display:"flex",justifyContent:"flex-end",alignItems:"center",gap:10}},
-        saved&&!saving&&h("span",{style:{fontSize:10,color:"#16a34a",fontWeight:700}},"salvo"),
+        saved&&!saving&&h("span",{style:{fontSize:10,color:"#16a34a",fontWeight:700}},"✓ salvo"),
         saving&&h("span",{style:{fontSize:10,color:"var(--cyan)",fontWeight:700}},"salvando..."),
         err&&h("span",{className:"admin-error"},err),
         h("button",{className:"admin-confirm-btn",onClick:save,disabled:saving||!APPS_SCRIPT_URL},
