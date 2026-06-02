@@ -136,7 +136,7 @@ function App(){const[activeChannel,setActiveChannel]=useState(DEFAULT_CHANNEL);c
   const perfisPresentes=useMemo(()=>[...new Set(jogos.map(j=>getPerfil(j)))].sort((a,b)=>["D","A","E","C","F","B"].indexOf(a)-["D","A","E","C","F","B"].indexOf(b)),[jogos,tick,svcVersion]);
   const personSuggestions=useMemo(()=>{const names=[];for(const j of jogos){for(const v of Object.values(j.servicos||{})){for(const name of v.pessoas||[]){const clean=String(name||"").trim();if(clean)names.push(clean);}}}return[...new Set(names)].sort((a,b)=>a.localeCompare(b));},[jogos,tick,activeChannel]);
   const lista=useMemo(()=>{const lq=q.trim().toLowerCase();return jogos.filter(j=>{if(fR!=="todas"&&faseLabel(j.rodada)!==fR)return false;if(fP!=="todos"&&getPerfil(j)!==fP)return false;if(fSvc!=="todos"&&!(j.servicos&&j.servicos[fSvc]))return false;if(lq){const hay=[j.selecao_1,j.selecao_2,j.local,j.dia_semana,nomeSel(j.selecao_1),nomeSel(j.selecao_2)].join(" ").toLowerCase();if(!hay.includes(lq))return false;}return true;});},[jogos,q,fR,fP,fSvc,tick,svcVersion]);
-  const porDia=useMemo(()=>{const g={};for(const j of lista){const dia=j.data||"9999-99-99";(g[dia]||(g[dia]=[])).push(j);}return Object.keys(g).sort().map(dia=>{const js=g[dia].slice().sort((a,b)=>{const ta=String(a.hora||"").replace(":",""),tb=String(b.hora||"").replace(":","");return ta.localeCompare(tb)||((a.numero||0)-(b.numero||0));});const fases=[...new Set(js.map(j=>faseLabel(j.rodada)))].sort((a,b)=>faseIndex(a)-faseIndex(b));return{dia,jogos:js,fases};});},[lista,tick,svcVersion]);
+  const porDia=useMemo(()=>{const g={};for(const j of lista){const shifted=shiftGameTime(j.data,j.hora,"BRT-2");const dia=shifted.date||j.data||"9999-99-99";(g[dia]||(g[dia]=[])).push(j);}return Object.keys(g).sort().map(dia=>{const js=g[dia].slice().sort((a,b)=>{const sa=shiftGameTime(a.data,a.hora,"BRT-2"),sb=shiftGameTime(b.data,b.hora,"BRT-2");const ta=String(sa.hora||"").replace(":",""),tb=String(sb.hora||"").replace(":","");return ta.localeCompare(tb)||((a.numero||0)-(b.numero||0));});const fases=[...new Set(js.map(j=>faseLabel(j.rodada)))].sort((a,b)=>faseIndex(a)-faseIndex(b));return{dia,jogos:js,fases};});},[lista,tick,svcVersion]);
   const comSvc=jogos.filter(j=>Object.keys(j.servicos||{}).length>0).length;const statusInfo={loading:{dot:"loading",txt:`Carregando ${channel.label} do Google Sheets...`},ok:{dot:"ok",txt:`Sincronizado com Google Sheets · ${channel.label}`},err:{dot:"err",txt:`Erro ao carregar Google Sheets de ${channel.label} — dados bloqueados`}}[srcStatus]||{dot:"err",txt:""};
   return h("div",{className:`app-channel app-channel-${activeChannel}`},h("header",{className:"hdr"},h("div",{className:"hdr-brand"},h("div",{className:"hdr-logo"},channel.logo),h("div",null,h("div",{className:"hdr-title"},channel.title),h("div",{className:"hdr-sub"},channel.subtitle))),h("div",{className:"hdr-pills"},h("div",{className:"hdr-pill",style:{background:activeChannel==="lmtv"?"rgba(0,209,47,.12)":"rgba(232,0,45,.08)",color:activeChannel==="lmtv"?"#00D12F":"#E8002D",borderColor:activeChannel==="lmtv"?"rgba(0,209,47,.35)":"rgba(232,0,45,.2)"}},`${jogos.length} jogos`),h("div",{className:"hdr-pill",style:{background:activeChannel==="lmtv"?"rgba(232,0,45,.12)":"rgba(0,122,153,.08)",color:activeChannel==="lmtv"?"#E8002D":"#007A99",borderColor:activeChannel==="lmtv"?"rgba(232,0,45,.35)":"rgba(0,122,153,.2)"}},`${comSvc} com serviços`)),h("div",{className:"channel-switch"},...Object.values(CHANNELS).map(ch=>h("button",{key:ch.key,className:`channel-btn${activeChannel===ch.key?" on":""}`,onClick:()=>{CURRENT_CHANNEL_KEY=ch.key;setActiveChannel(ch.key);setTz(ch.key==="lmtv"?"POR":"BRT");}},ch.label))),h("div",{className:"hdr-tabs"},h("button",{className:`hdr-tab${aba==="jogos"?" on":""}`,onClick:()=>setAba("jogos")},"Jogos"),h("button",{className:`hdr-tab${aba==="servicos"?" on":""}`,onClick:()=>setAba("servicos")},"Serviços"))),
     aba==="servicos"?h(PainelServicos,{jogos,onChange:bump,svcVersion}):(srcStatus==="ok"?h(React.Fragment,null,h("div",{className:"layout"},h("aside",{className:"sidebar"},h("div",{className:"fsec"},h("div",{className:"status-bar"},h("div",{className:`status-dot ${statusInfo.dot}`}),statusInfo.txt)),h("div",{className:"fsec"},h("div",{className:"flbl"},"Busca"),h("input",{className:"finput",placeholder:"Seleção, cidade...",value:q,onChange:e=>setQ(e.target.value)})),h("div",{className:"fsec"},h("div",{className:"flbl"},"Fuso horário"),h("div",{className:"chips"},...TZ_OPTIONS.map(opt=>h("button",{key:opt.key,className:`chip${tz===opt.key?" on":""}`,onClick:()=>setTz(opt.key),title:opt.key==="BRT"?"Horário original da planilha":`${opt.offset>0?"+":""}${opt.offset}h em relação ao BRT`},opt.label))),h("div",{style:{fontSize:"9px",color:"var(--muted)",marginTop:"6px",lineHeight:1.35}},"A planilha permanece em BRT; a conversão é apenas visual.")),h("div",{className:"fsec"},h("div",{className:"flbl"},"Fase"),h("div",{className:"chips"},h("button",{className:`chip${fR==="todas"?" on":""}`,onClick:()=>setFR("todas")},"Todas"),...rodadasPresentes.map(r=>h("button",{key:r,className:`chip${fR===r?" on":""}`,onClick:()=>setFR(fR===r?"todas":r)},r)))),h("div",{className:"fsec"},h("div",{className:"flbl"},"Perfil"),h("div",{className:"chips"},h("button",{className:`chip${fP==="todos"?" on":""}`,onClick:()=>setFP("todos")},"Todos"),...perfisPresentes.map(p=>{const pf=PERFIS[p]||PERFIS.B,on=fP===p;return h("button",{key:p,className:"perfil-chip",style:{borderColor:pf.cor,color:on?"#fff":pf.cor,background:on?pf.cor:pf.bg},onClick:()=>setFP(on?"todos":p)},pf.label);}))),h("div",{className:"fsec"},h("div",{className:"flbl"},"Serviço"),h("div",{className:"chips",style:{gap:"4px"}},h("button",{className:`chip${fSvc==="todos"?" on":""}`,onClick:()=>setFSvc("todos")},"Todos"),...SVC_FILTROS.filter(k=>SVC[k]).map(k=>{const s=SVC[k],on=fSvc===k;return h("button",{key:k,className:"perfil-chip",style:{borderColor:s.cor,color:on?"#fff":s.cor,background:on?s.cor:"rgba(0,0,0,.03)",fontSize:"9px",padding:"3px 7px"},onClick:()=>setFSvc(on?"todos":k)},s.nome);}))),h("button",{className:"btn-clear",onClick:()=>{setQ("");setFR("todas");setFP("todos");setFSvc("todos");setTz(activeChannel==="lmtv"?"POR":"BRT");}},"Limpar")),h("main",{className:"content"},lista.length===0?h("div",{className:"empty"},h("div",{className:"empty-ico"},"-"),h("div",null,"Nenhum jogo encontrado.")):h("div",null,h("div",{className:"ctop"},h("div",{className:"ccount"},"Mostrando ",h("strong",null,lista.length)," de ",jogos.length," jogos")),...porDia.map(({dia,jogos:dj,fases})=>{const diasNomes=["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];const d=String(dia).split("-").map(Number);const diaSem=d.length===3?diasNomes[new Date(Date.UTC(d[0],d[1]-1,d[2])).getUTCDay()]:"";const meses=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];const dLabel=d.length===3?`${diaSem}, ${d[2]} ${meses[d[1]-1]}`:dia;return h("section",{key:dia},h("div",{className:"rodada-header"},h("div",{className:"dia-badge"},dLabel),h("div",{className:"dia-fases"},...fases.map(f=>{const rc=getRc(f);return h("span",{key:f,className:"dia-fase-tag",style:{background:rc.cor,color:rc.ct}},f);})),h("div",{className:"rodada-line"})),h("div",{className:"grid"},...dj.map(j=>h(Card,{key:j.match_id||j.numero,jogo:j,tz,activeChannel,onClick:()=>setSel(j)}))));})))),sel&&h(Modal,{jogo:sel,tz,personSuggestions,onClose:()=>setSel(null),onChange:bump}),h("button",{className:"admin-fab",onClick:()=>setAdminOpen(true),title:"Serviços REQ"},"REQ"),adminOpen&&h(AdminPanel,{jogos,onClose:()=>setAdminOpen(false),onChange:bump})):h(SheetErrorPanel,{status:srcStatus,error:sheetError})));
@@ -308,9 +308,26 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
     setFont("normal", 8, [100, 100, 100]);
     doc.text(slots > 0 ? String(slots) : "—", COL.acess, y);
     const pessoasStr = pessoasFilled > 0 ? (item.pessoas || []).filter(Boolean).join(", ") : "—";
-    const pessoasLines = doc.splitTextToSize(pessoasStr, W - MR - COL.pessoas);
-    doc.text(pessoasLines[0], COL.pessoas, y);
-    y += 13;
+    const pessoasMaxW = W - MR - COL.pessoas;
+    const pessoasWrap = doc.splitTextToSize(pessoasStr, pessoasMaxW);
+    const obsEspRow = item.obs ? item.obs.trim() : "";
+    const obsEspWrap = obsEspRow ? doc.splitTextToSize(obsEspRow, pessoasMaxW) : [];
+    const extraH = (pessoasWrap.length - 1) * 10 + obsEspWrap.length * 9.5;
+    const rowH2 = 13 + extraH;
+    if (extraH > 0 && (tableRowIndex - 1) % 2 === 0) {
+      doc.setFillColor(246, 246, 246);
+      doc.rect(ML, y - 9, TW, rowH2, "F");
+      const rc2 = hexRgb(item.svc.cor || "#555555");
+      doc.setFillColor(...rc2);
+      doc.rect(ML, y - 9, 3, rowH2, "F");
+    }
+    setFont("normal", 7.5, [20, 20, 20]);
+    pessoasWrap.forEach((l, i) => doc.text(l, COL.pessoas, y + i * 10));
+    if (obsEspRow) {
+      setFont("italic", 7, [100, 100, 160]);
+      obsEspWrap.forEach((l, i) => doc.text(l, COL.pessoas, y + pessoasWrap.length * 10 + i * 9.5));
+    }
+    y += rowH2;
   }
 
   tableHeader();
@@ -337,18 +354,12 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
     const descLines = s.descr ? doc.splitTextToSize(s.descr, TW - 80) : [];
     const obsLines = s.obs ? doc.splitTextToSize(s.obs, TW - 80) : [];
     const horLines = s.horario ? doc.splitTextToSize(s.horario, TW - 80) : [];
-    const pessoasClean = (item.pessoas || []).filter(Boolean);
-    const obsEsp = item.obs ? item.obs.trim() : "";
-    const pessoasLines = pessoasClean.length > 0 ? doc.splitTextToSize(pessoasClean.join(" · "), TW - 80) : [];
-    const obsEspLines = obsEsp ? doc.splitTextToSize(obsEsp, TW - 80) : [];
-
     const rowH = 11;
     const estH = 28
       + (horLines.length > 0 ? rowH * horLines.length + 2 : 0)
       + rowH
       + (descLines.length > 0 ? rowH * descLines.length + 2 : 0)
       + (obsLines.length > 0 ? rowH * obsLines.length + 2 : 0)
-      + (pessoasLines.length > 0 || obsEspLines.length > 0 ? rowH * (pessoasLines.length + obsEspLines.length) + 10 : 0)
       + 14;
 
     ck(estH);
@@ -357,12 +368,15 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
     doc.setFillColor(...cor);
     doc.rect(ML, cardTop, 3, estH - 4, "F");
 
+    // nome do serviço (limitado para não sobrepor o status)
     setFont("bold", 10, [20, 20, 20]);
     const qLabel = item.extraQty > 0 ? ` ×${item.qty}+${item.extraQty} extra` : item.qty > 1 ? ` ×${item.qty}` : "";
-    doc.text(`${s.nome}${qLabel}`, ML + 10, y + 12);
+    const nomeLines = doc.splitTextToSize(`${s.nome}${qLabel}`, TW - 55);
+    nomeLines.forEach((l, i) => doc.text(l, ML + 10, y + 12 + i * 12));
+    // status à direita, alinhado com primeira linha do nome
     setFont("bold", 8, statusColor);
     doc.text(item.status, W - MR, y + 12, { align: "right" });
-    y += 20;
+    y += (nomeLines.length > 1 ? nomeLines.length * 12 + 4 : 20);
 
     function labelVal(label, val, color, italic) {
       color = color || [60, 60, 60];
@@ -382,30 +396,7 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
     labelVal("DESCRIÇÃO", s.descr);
     labelVal("OBSERVAÇÕES COS", s.obs);
 
-    if (pessoasClean.length > 0 || obsEsp) {
-      y += 4;
-      doc.setFillColor(248, 248, 248);
-      const blockLines = pessoasClean.length > 0 ? doc.splitTextToSize(pessoasClean.join(" · "), TW - 85) : [];
-      const obsEL = obsEsp ? doc.splitTextToSize(obsEsp, TW - 85) : [];
-      const blockH = (blockLines.length + obsEL.length) * 10.5 + 10;
-      doc.rect(ML + 10, y - 4, TW - 10, blockH, "F");
 
-      if (pessoasClean.length > 0) {
-        setFont("bold", 7, [140, 140, 140]);
-        doc.text("PESSOAS", ML + 14, y + 3);
-        setFont("normal", 7.5, [40, 40, 40]);
-        blockLines.forEach((l, i) => doc.text(l, ML + 85, y + 3 + i * 10.5));
-        y += blockLines.length * 10.5 + 4;
-      }
-      if (obsEsp) {
-        setFont("bold", 7, [140, 140, 140]);
-        doc.text("OBS. JOGO", ML + 14, y + 3);
-        setFont("italic", 7.5, [80, 80, 120]);
-        obsEL.forEach((l, i) => doc.text(l, ML + 85, y + 3 + i * 10.5));
-        y += obsEL.length * 10.5 + 4;
-      }
-      y += 4;
-    }
 
     doc.setDrawColor(220, 220, 220);
     doc.line(ML, y + 2, W - MR, y + 2);
@@ -424,7 +415,7 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
 
   drawFooter();
 
-  const fname = `${jogo.pick || "CazeTV"}_J${String(jogo.numero).padStart(2,"0")}_${String(jogo.selecao_1||"").replace(/[^A-Za-z0-9]/g,"")}x${String(jogo.selecao_2||"").replace(/[^A-Za-z0-9]/g,"")}.pdf`;
+  const fname = `CazeTV_J${String(jogo.numero).padStart(2,"0")}_${String(jogo.selecao_1||"").replace(/[^A-Za-z0-9]/g,"")}x${String(jogo.selecao_2||"").replace(/[^A-Za-z0-9]/g,"")}.pdf`;
   doc.save(fname);
 }
 
