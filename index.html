@@ -258,29 +258,37 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
   setFont("normal", 8, [100, 100, 100]);
   const summaryParts = [`${allSvcs.length} serviços`, cnfCount > 0 ? `${cnfCount} confirmados` : null, reqCount > 0 ? `${reqCount} aguardando` : null].filter(Boolean).join("  ·  ");
   doc.text(summaryParts, ML, y);
-  y += 14;
+  y += 18;
 
-  const COL = { status: ML, qty: ML + 36, nome: ML + 58, acess: ML + 268, pessoas: ML + 310 };
+  // All y positions work from the TOP of each row (not baseline).
+  // ROW_PAD = vertical padding inside each row (top & bottom).
+  const ROW_PAD = 4;
+  const ROW_LH  = 11;  // line-height for normal 8pt text
+  const COL = { status: ML + 5, qty: ML + 42, nome: ML + 64, acess: ML + 272, pessoas: ML + 314 };
 
   function tableHeader() {
     setFont("bold", 6.5, [160, 160, 160]);
-    doc.text("STATUS", COL.status, y);
-    doc.text("QTD", COL.qty, y);
-    doc.text("SERVIÇO", COL.nome, y);
-    doc.text("ACESS.", COL.acess, y);
-    doc.text("PESSOAS", COL.pessoas, y);
-    y += 3;
-    hr(1, 5);
+    const ty = y + 8; // baseline inside the header row
+    doc.text("STATUS",  COL.status, ty);
+    doc.text("QTD",     COL.qty,    ty);
+    doc.text("SERVIÇO", COL.nome,   ty);
+    doc.text("ACESS.",  COL.acess,  ty);
+    doc.text("PESSOAS", COL.pessoas,ty);
+    y += 14;
+    doc.setDrawColor(200, 200, 200);
+    doc.line(ML, y, W - MR, y);
+    y += 6;
   }
 
   let tableRowIndex = 0;
 
   function sectionLabel(label) {
-    ck(20);
+    ck(22);
     tableRowIndex = 0;
-    setFont("bold", 6.5, [160, 160, 160]);
-    doc.text(label.toUpperCase(), ML, y);
-    y += 9;
+    y += 4;
+    setFont("bold", 6.5, [150, 150, 150]);
+    doc.text(label.toUpperCase(), ML + 5, y + 7);
+    y += 14;
   }
 
   function tableRow(item) {
@@ -289,78 +297,79 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
     const slots = Math.max(item.qty || 0, item.svc.maxP || 0) + (item.extraQty || 0);
     const pessoasFilled = (item.pessoas || []).filter(Boolean).length;
 
-    // ── Pre-calculate all text to know row height before drawing anything ──
+    // Pre-calculate wraps to know row height before drawing
     const nomeFull = item.svc.nome + (item.fully && !/fully/i.test(item.svc.nome) ? " (Fully)" : "");
     const qtyLabel = item.extraQty > 0 ? `×${item.qty}+${item.extraQty}` : item.qty > 1 ? `×${item.qty}` : "1";
     const pessoasStr = pessoasFilled > 0 ? (item.pessoas || []).filter(Boolean).join(", ") : "—";
-    const pessoasMaxW = W - MR - COL.pessoas;
+    const pessoasMaxW = W - MR - COL.pessoas - 4;
+    const nomeMaxW = COL.acess - COL.nome - 8;
+    const nomeWrap    = doc.splitTextToSize(nomeFull, nomeMaxW);
     const pessoasWrap = doc.splitTextToSize(pessoasStr, pessoasMaxW);
-    const obsEspRow = item.obs ? item.obs.trim() : "";
-    const obsEspWrap = obsEspRow ? doc.splitTextToSize(obsEspRow, pessoasMaxW) : [];
-    const nomeWrap = doc.splitTextToSize(nomeFull, COL.acess - COL.nome - 6);
+    const obsEspRow   = item.obs ? item.obs.trim() : "";
+    const obsEspWrap  = obsEspRow ? doc.splitTextToSize(obsEspRow, pessoasMaxW) : [];
 
-    // row height = max of left columns vs right pessoas+obs column
-    const leftH = Math.max(nomeWrap.length, 1) * 11;
-    const rightH = pessoasWrap.length * 10 + obsEspWrap.length * 9.5;
-    const rowH2 = Math.max(leftH, rightH, 13) + 4;
+    const leftLines  = nomeWrap.length;
+    const rightLines = pessoasWrap.length + obsEspWrap.length;
+    const innerH = Math.max(leftLines, rightLines, 1) * ROW_LH;
+    const rowH   = innerH + ROW_PAD * 2;
 
-    ck(rowH2 + 2);
+    ck(rowH + 2);
 
-    // ── 1. Background first ──────────────────────────────────────────────
+    const rowTop = y;
+
+    // 1. Background
     if (tableRowIndex % 2 === 0) {
       doc.setFillColor(246, 246, 246);
-      doc.rect(ML, y - 9, TW, rowH2, "F");
+      doc.rect(ML, rowTop, TW, rowH, "F");
     }
     tableRowIndex++;
 
-    // ── 2. Colour stripe ─────────────────────────────────────────────────
+    // 2. Colour stripe (full row height)
     const cor = hexRgb(item.svc.cor || "#555555");
     doc.setFillColor(...cor);
-    doc.rect(ML, y - 9, 3, rowH2, "F");
+    doc.rect(ML, rowTop, 3, rowH, "F");
 
-    // ── 3. All text on top ────────────────────────────────────────────────
-    // STATUS
+    // 3. Text — baseline = rowTop + ROW_PAD + ~8 (cap height offset)
+    const base = rowTop + ROW_PAD + 8;
+
     setFont("bold", 7.5, statusColor);
-    doc.text(item.status, COL.status, y);
+    doc.text(item.status, COL.status, base);
 
-    // QTD
     setFont("normal", 8, [60, 60, 60]);
-    doc.text(qtyLabel, COL.qty, y);
+    doc.text(qtyLabel, COL.qty, base);
 
-    // SERVIÇO (wraps if long)
     setFont("normal", 8, [20, 20, 20]);
-    nomeWrap.forEach((l, i) => doc.text(l, COL.nome, y + i * 11));
+    nomeWrap.forEach((l, i) => doc.text(l, COL.nome, base + i * ROW_LH));
 
-    // ACESS.
     setFont("normal", 8, [100, 100, 100]);
-    doc.text(slots > 0 ? String(slots) : "—", COL.acess, y);
+    doc.text(slots > 0 ? String(slots) : "—", COL.acess, base);
 
-    // PESSOAS
     setFont("normal", 7.5, [20, 20, 20]);
-    pessoasWrap.forEach((l, i) => doc.text(l, COL.pessoas, y + i * 10));
+    pessoasWrap.forEach((l, i) => doc.text(l, COL.pessoas, base + i * ROW_LH));
 
-    // OBS. JOGO em itálico abaixo dos nomes
     if (obsEspRow) {
+      const obsBase = base + pessoasWrap.length * ROW_LH;
       setFont("italic", 7, [100, 100, 160]);
-      obsEspWrap.forEach((l, i) => doc.text(l, COL.pessoas, y + pessoasWrap.length * 10 + i * 9.5));
+      obsEspWrap.forEach((l, i) => doc.text(l, COL.pessoas, obsBase + i * ROW_LH));
     }
 
-    y += rowH2;
+    y = rowTop + rowH;
   }
 
   tableHeader();
   if (mainSvcs.length > 0) { sectionLabel("Serviços"); mainSvcs.forEach(tableRow); }
-  if (mediaSvcs.length > 0) { hr(4, 4); sectionLabel("Acessos de Mídia"); mediaSvcs.forEach(tableRow); }
-  if (inetSvcs.length > 0) { hr(4, 4); sectionLabel("Internet"); inetSvcs.forEach(tableRow); }
+  if (mediaSvcs.length > 0) { y += 6; doc.setDrawColor(220,220,220); doc.line(ML,y,W-MR,y); y += 4; sectionLabel("Acessos de Mídia"); mediaSvcs.forEach(tableRow); }
+  if (inetSvcs.length > 0)  { y += 6; doc.setDrawColor(220,220,220); doc.line(ML,y,W-MR,y); y += 4; sectionLabel("Internet");         inetSvcs.forEach(tableRow); }
 
+  // ── DETAIL SECTION ────────────────────────────────────────────────────────
   function detailSectionTitle(label) {
-    ck(30);
-    y += 6;
-    doc.setFillColor(245, 245, 245);
-    doc.rect(ML, y - 10, TW, 14, "F");
-    setFont("bold", 7, [100, 100, 100]);
-    doc.text(label.toUpperCase(), ML + 4, y);
+    ck(32);
     y += 8;
+    doc.setFillColor(240, 240, 240);
+    doc.rect(ML, y, TW, 16, "F");
+    setFont("bold", 7, [90, 90, 90]);
+    doc.text(label.toUpperCase(), ML + 6, y + 11);
+    y += 22;
   }
 
   function detailCard(item) {
@@ -369,63 +378,70 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
     const cor = hexRgb(s.cor || "#555555");
     const statusColor = isReq ? [180, 100, 0] : [22, 163, 74];
 
-    const descLines = s.descr ? doc.splitTextToSize(s.descr, TW - 80) : [];
-    const obsLines = s.obs ? doc.splitTextToSize(s.obs, TW - 80) : [];
-    const horLines = s.horario ? doc.splitTextToSize(s.horario, TW - 80) : [];
-    const rowH = 11;
-    const estH = 28
-      + (horLines.length > 0 ? rowH * horLines.length + 2 : 0)
-      + rowH
-      + (descLines.length > 0 ? rowH * descLines.length + 2 : 0)
-      + (obsLines.length > 0 ? rowH * obsLines.length + 2 : 0)
-      + 14;
+    const LBL_X  = ML + 12;
+    const VAL_X  = ML + 90;
+    const VAL_W  = W - MR - VAL_X;
+    const LH     = 11;
 
-    ck(estH);
+    const horLines  = s.horario ? doc.splitTextToSize(s.horario,  VAL_W) : [];
+    const equiLines = s.equip   ? doc.splitTextToSize(s.equip,    VAL_W) : [];
+    const descLines = s.descr   ? doc.splitTextToSize(s.descr,    VAL_W) : [];
+    const obsLines  = s.obs     ? doc.splitTextToSize(s.obs,      VAL_W) : [];
+
+    const bodyH = 8
+      + (horLines.length  > 0 ? LH * horLines.length  + 4 : 0)
+      + (equiLines.length > 0 ? LH * equiLines.length + 4 : 0)
+      + (descLines.length > 0 ? LH * descLines.length + 4 : 0)
+      + (obsLines.length  > 0 ? LH * obsLines.length  + 4 : 0);
+    const headerH = 24;
+    const cardH   = headerH + bodyH + 8;
+
+    ck(cardH);
     const cardTop = y;
 
+    // Colour stripe
     doc.setFillColor(...cor);
-    doc.rect(ML, cardTop, 3, estH - 4, "F");
+    doc.rect(ML, cardTop, 3, cardH, "F");
 
-    // nome do serviço (limitado para não sobrepor o status)
+    // Card header: name left, status right
     setFont("bold", 10, [20, 20, 20]);
     const qLabel = item.extraQty > 0 ? ` ×${item.qty}+${item.extraQty} extra` : item.qty > 1 ? ` ×${item.qty}` : "";
-    const nomeLines = doc.splitTextToSize(`${s.nome}${qLabel}`, TW - 55);
-    nomeLines.forEach((l, i) => doc.text(l, ML + 10, y + 12 + i * 12));
-    // status à direita, alinhado com primeira linha do nome
+    const nomeCardWrap = doc.splitTextToSize(`${s.nome}${qLabel}`, TW - 60);
+    nomeCardWrap.forEach((l, i) => doc.text(l, LBL_X, cardTop + 14 + i * 13));
     setFont("bold", 8, statusColor);
-    doc.text(item.status, W - MR, y + 12, { align: "right" });
-    y += (nomeLines.length > 1 ? nomeLines.length * 12 + 4 : 20);
+    doc.text(item.status, W - MR, cardTop + 14, { align: "right" });
 
-    function labelVal(label, val, color, italic) {
-      color = color || [60, 60, 60];
-      italic = italic || false;
-      if (!val) return;
-      const lines = doc.splitTextToSize(val, TW - 85);
-      ck(lines.length * 11 + 4);
-      setFont("bold", 7, [140, 140, 140]);
-      doc.text(label, ML + 10, y);
-      setFont(italic ? "italic" : "normal", 7.5, color);
-      lines.forEach((l, i) => doc.text(l, ML + 85, y + i * 10.5));
-      y += lines.length * 10.5 + 2;
+    y = cardTop + headerH + (nomeCardWrap.length > 1 ? (nomeCardWrap.length - 1) * 13 : 0);
+
+    function labelVal(label, lines) {
+      if (!lines || lines.length === 0) return;
+      ck(lines.length * LH + 8);
+      setFont("bold", 7, [150, 150, 150]);
+      doc.text(label, LBL_X, y + 8);
+      setFont("normal", 7.5, [50, 50, 50]);
+      lines.forEach((l, i) => doc.text(l, VAL_X, y + 8 + i * LH));
+      y += lines.length * LH + 6;
     }
 
-    labelVal("HORÁRIO", s.horario);
-    labelVal("EQUIPAMENTO", s.equip);
-    labelVal("DESCRIÇÃO", s.descr);
-    labelVal("OBSERVAÇÕES COS", s.obs);
+    labelVal("HORÁRIO",          horLines);
+    labelVal("EQUIPAMENTO",      equiLines);
+    labelVal("DESCRIÇÃO",        descLines);
+    labelVal("OBSERVAÇÕES COS",  obsLines);
 
-
-
+    y += 6;
     doc.setDrawColor(220, 220, 220);
-    doc.line(ML, y + 2, W - MR, y + 2);
+    doc.line(ML, y, W - MR, y);
     y += 12;
   }
 
-  ck(40);
-  hr(10, 6);
+  ck(50);
+  y += 14;
+  doc.setDrawColor(200, 200, 200);
+  doc.line(ML, y, W - MR, y);
+  y += 12;
   setFont("bold", 9, [40, 40, 40]);
   doc.text("DETALHAMENTO DOS SERVIÇOS", ML, y);
-  y += 12;
+  y += 16;
 
   if (mainSvcs.length > 0) { detailSectionTitle("Serviços"); mainSvcs.forEach(detailCard); }
   if (mediaSvcs.length > 0) { detailSectionTitle("Acessos de Mídia"); mediaSvcs.forEach(detailCard); }
