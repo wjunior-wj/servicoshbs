@@ -288,45 +288,63 @@ function gerarPDF(jogo, n1, n2, tzKey = "BRT") {
     const statusColor = isReq ? [180, 100, 0] : [22, 163, 74];
     const slots = Math.max(item.qty || 0, item.svc.maxP || 0) + (item.extraQty || 0);
     const pessoasFilled = (item.pessoas || []).filter(Boolean).length;
-    ck(14);
-    if (tableRowIndex % 2 === 0) {
-      doc.setFillColor(246, 246, 246);
-      doc.rect(ML, y - 9, TW, 13, "F");
-    }
-    tableRowIndex++;
-    const cor = hexRgb(item.svc.cor || "#555555");
-    doc.setFillColor(...cor);
-    doc.rect(ML, y - 9, 3, 13, "F");
-    setFont("bold", 7.5, statusColor);
-    doc.text(item.status, COL.status, y);
-    setFont("normal", 8, [60, 60, 60]);
-    const qtyLabel = item.extraQty > 0 ? `×${item.qty}+${item.extraQty}` : item.qty > 1 ? `×${item.qty}` : "1";
-    doc.text(qtyLabel, COL.qty, y);
-    setFont("normal", 8, [20, 20, 20]);
+
+    // ── Pre-calculate all text to know row height before drawing anything ──
     const nomeFull = item.svc.nome + (item.fully && !/fully/i.test(item.svc.nome) ? " (Fully)" : "");
-    doc.text(nomeFull, COL.nome, y);
-    setFont("normal", 8, [100, 100, 100]);
-    doc.text(slots > 0 ? String(slots) : "—", COL.acess, y);
+    const qtyLabel = item.extraQty > 0 ? `×${item.qty}+${item.extraQty}` : item.qty > 1 ? `×${item.qty}` : "1";
     const pessoasStr = pessoasFilled > 0 ? (item.pessoas || []).filter(Boolean).join(", ") : "—";
     const pessoasMaxW = W - MR - COL.pessoas;
     const pessoasWrap = doc.splitTextToSize(pessoasStr, pessoasMaxW);
     const obsEspRow = item.obs ? item.obs.trim() : "";
     const obsEspWrap = obsEspRow ? doc.splitTextToSize(obsEspRow, pessoasMaxW) : [];
-    const extraH = (pessoasWrap.length - 1) * 10 + obsEspWrap.length * 9.5;
-    const rowH2 = 13 + extraH;
-    if (extraH > 0 && (tableRowIndex - 1) % 2 === 0) {
+    const nomeWrap = doc.splitTextToSize(nomeFull, COL.acess - COL.nome - 6);
+
+    // row height = max of left columns vs right pessoas+obs column
+    const leftH = Math.max(nomeWrap.length, 1) * 11;
+    const rightH = pessoasWrap.length * 10 + obsEspWrap.length * 9.5;
+    const rowH2 = Math.max(leftH, rightH, 13) + 4;
+
+    ck(rowH2 + 2);
+
+    // ── 1. Background first ──────────────────────────────────────────────
+    if (tableRowIndex % 2 === 0) {
       doc.setFillColor(246, 246, 246);
       doc.rect(ML, y - 9, TW, rowH2, "F");
-      const rc2 = hexRgb(item.svc.cor || "#555555");
-      doc.setFillColor(...rc2);
-      doc.rect(ML, y - 9, 3, rowH2, "F");
     }
+    tableRowIndex++;
+
+    // ── 2. Colour stripe ─────────────────────────────────────────────────
+    const cor = hexRgb(item.svc.cor || "#555555");
+    doc.setFillColor(...cor);
+    doc.rect(ML, y - 9, 3, rowH2, "F");
+
+    // ── 3. All text on top ────────────────────────────────────────────────
+    // STATUS
+    setFont("bold", 7.5, statusColor);
+    doc.text(item.status, COL.status, y);
+
+    // QTD
+    setFont("normal", 8, [60, 60, 60]);
+    doc.text(qtyLabel, COL.qty, y);
+
+    // SERVIÇO (wraps if long)
+    setFont("normal", 8, [20, 20, 20]);
+    nomeWrap.forEach((l, i) => doc.text(l, COL.nome, y + i * 11));
+
+    // ACESS.
+    setFont("normal", 8, [100, 100, 100]);
+    doc.text(slots > 0 ? String(slots) : "—", COL.acess, y);
+
+    // PESSOAS
     setFont("normal", 7.5, [20, 20, 20]);
     pessoasWrap.forEach((l, i) => doc.text(l, COL.pessoas, y + i * 10));
+
+    // OBS. JOGO em itálico abaixo dos nomes
     if (obsEspRow) {
       setFont("italic", 7, [100, 100, 160]);
       obsEspWrap.forEach((l, i) => doc.text(l, COL.pessoas, y + pessoasWrap.length * 10 + i * 9.5));
     }
+
     y += rowH2;
   }
 
