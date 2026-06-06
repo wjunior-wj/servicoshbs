@@ -90,7 +90,7 @@ let SVC=Object.fromEntries(Object.entries(SVC_META_FALLBACK).map(([k,s])=>[k,{..
 const SELECOES={MEX:"México",RSA:"África do Sul",KOR:"Coreia do Sul",CZE:"Tchéquia",CAN:"Canadá",BIH:"Bósnia-Herzegovina",USA:"Estados Unidos",PAR:"Paraguai",QAT:"Catar",SUI:"Suíça",BRA:"Brasil",MOR:"Marrocos",HAI:"Haiti",SCO:"Escócia",AUS:"Austrália",TUR:"Turquia",GER:"Alemanha",CUW:"Curaçao",NED:"Holanda",JPN:"Japão",CIV:"Costa do Marfim",ECU:"Equador",SWE:"Suécia",TUN:"Tunísia",ESP:"Espanha",CPV:"Cabo Verde",BEL:"Bélgica",EGY:"Egito",KSA:"Arábia Saudita",URU:"Uruguai",IRN:"Irã",NZL:"Nova Zelândia",FRA:"França",SEN:"Senegal",IRQ:"Iraque",NOR:"Noruega",ARG:"Argentina",ALG:"Argélia",AUT:"Áustria",JOR:"Jordânia",POR:"Portugal",COD:"R.D. Congo",ENG:"Inglaterra",CRO:"Croácia",GHA:"Gana",PAN:"Panamá",UZB:"Uzbequistão",COL:"Colômbia",ROU:"Romênia",SVK:"Eslováquia",KOS:"Kosovo",UKR:"Ucrânia",POL:"Polônia",ALB:"Albânia",JAM:"Jamaica",NCL:"Nova Caledônia"};
 const FASE_ORDER=["Rodada 1","Rodada 2","Rodada 3","16 avos","Oitavas","Quartas","Semifinais","3º Lugar","Final"];
 const RC={"Rodada 1":{cor:"#7B2D8B",ct:"#fff"},"Rodada 2":{cor:"#007A99",ct:"#fff"},"Rodada 3":{cor:"#8AA800",ct:"#fff"},"16 avos":{cor:"#E8002D",ct:"#fff"},Oitavas:{cor:"#CC4400",ct:"#fff"},Quartas:{cor:"#1A5FA8",ct:"#fff"},Semifinais:{cor:"#006E51",ct:"#fff"},"3º Lugar":{cor:"#666",ct:"#fff"},Final:{cor:"#111",ct:"#fff"}};
-const PERFIS={D:{label:"Brasil (pacote total)",cor:"#8AA800",bg:"rgba(138,168,0,.1)"},A:{label:"Cobertura completa",cor:"#007A99",bg:"rgba(0,122,153,.1)"},E:{label:"Cobertura média",cor:"#E8002D",bg:"rgba(232,0,45,.08)"},C:{label:"Cobertura leve",cor:"#7B2D8B",bg:"rgba(123,45,139,.1)"},F:{label:"Só Pitch Reporter",cor:"#CC4400",bg:"rgba(204,68,0,.1)"},B:{label:"Sem cobertura",cor:"#AAAAAA",bg:"rgba(0,0,0,.04)"}};
+const PERFIS={D:{label:"Brasil (pacote total)",cor:"#8AA800",bg:"rgba(138,168,0,.1)"},A:{label:"Cobertura completa",cor:"#007A99",bg:"rgba(0,122,153,.1)"},E:{label:"Cobertura média",cor:"#E8002D",bg:"rgba(232,0,45,.08)"},C:{label:"Cobertura leve",cor:"#7B2D8B",bg:"rgba(123,45,139,.1)"},F:{label:"Só Digital",cor:"#CC4400",bg:"rgba(204,68,0,.1)"},G:{label:"Acesso de Mídia",cor:"#555555",bg:"rgba(0,0,0,.05)"},B:{label:"Sem cobertura",cor:"#AAAAAA",bg:"rgba(0,0,0,.04)"}};
 const TZ_OPTIONS=[{key:"BRT",label:"BRT",offset:0},{key:"BRT-1",label:"BRT -1",offset:-1},{key:"BRT-2",label:"BRT -2",offset:-2},{key:"BRT-3",label:"BRT -3",offset:-3},{key:"BRT-4",label:"BRT -4",offset:-4},{key:"POR",label:"POR",offset:3}];
 const SVC_FILTROS=["team_arrival","guest_arrival","presentation","presentation_bg","pitch_reporter","pitch_rep_benches","uniflash","uniflash_fully","digital_reporter","centre_circle","teams_onto","observer_seat","dressing_room","tv_studio","media_pc_journ","media_mz_tv"];
 const {useState,useMemo,useEffect}=React;
@@ -123,7 +123,31 @@ function serviceEntries(jogo,kind){return Object.entries(jogo.servicos||{}).filt
 function svcsLista(jogo){return serviceEntries(jogo,"main").map(x=>({...x,svc:{...x.svc,nome:x.svc.nome+(x.fully&&!/fully/i.test(x.svc.nome)?" (Fully Equipped)":"")}}));}
 function mediaLista(jogo){return serviceEntries(jogo,"media");}
 function getInet(jogo){return serviceEntries(jogo,"inet").map(({svc,booking_actual})=>({booking:booking_actual||svc.booking,nome:svc.nome,descr:svc.descr}));}
-function getPerfil(jogo){const ks=Object.keys(jogo.servicos||{}).filter(k=>{const s=ensureSvc(k);return s&&!s.inet&&!s.media;});if(!ks.length)return"B";const hasUni=ks.includes("uniflash")||ks.includes("uniflash_fully");if(ks.some(k=>k.startsWith("ml_"))||ks.includes("dressing_room"))return"D";if(ks.includes("guest_arrival")&&ks.includes("presentation")&&hasUni&&ks.includes("digital_reporter")&&ks.includes("observer_seat"))return"A";if(ks.includes("pitch_reporter")&&ks.includes("digital_reporter")&&ks.includes("observer_seat")&&!ks.includes("presentation")&&!hasUni)return"C";if(ks.length===1&&ks.includes("pitch_reporter"))return"F";return"E";}
+function getPerfil(jogo){
+  // D: jogo do Brasil (por seleção)
+  if(isBRA(jogo))return"D";
+  // Separar serviços de campo dos de mídia
+  const ks=Object.keys(jogo.servicos||{}).filter(k=>{const s=ensureSvc(k);return s&&!s.inet&&!s.media;});
+  const km=Object.keys(jogo.servicos||{}).filter(k=>{const s=ensureSvc(k);return s&&s.media;});
+  const hasUni=ks.includes("uniflash")||ks.includes("uniflash_fully");
+  const hasPresentation=ks.includes("presentation")||ks.includes("presentation_bg");
+  const hasPitch=ks.includes("pitch_reporter")||ks.includes("pitch_rep_benches");
+  const hasDigital=ks.includes("digital_reporter");
+  // A: tem presentation → cobertura completa
+  if(hasPresentation)return"A";
+  // E: tem pitch reporter e UniFlash → cobertura média
+  if(hasPitch&&hasUni)return"E";
+  // C: tem pitch reporter (sem presentation, sem UniFlash) → cobertura leve
+  if(hasPitch)return"C";
+  // F: não tem presentation nem pitch, mas tem digital → só digital
+  if(hasDigital)return"F";
+  // G: não tem serviços de campo mas tem mídia → acesso de mídia
+  if(!ks.length&&km.length)return"G";
+  // B: nada
+  if(!ks.length)return"B";
+  // Catch-all
+  return"C";
+}
 function bookingToServiceKeyMap(){const m={};for(const[k,s]of Object.entries(SVC||{})){const b=String(s.booking||"").trim();if(b)m[b]=k;}return m;}
 function parseImportPayload(text){const raw=String(text||"").trim();if(!raw)return{updates:[],errors:["Arquivo ou texto vazio."]};let rows=[];try{const parsed=JSON.parse(raw);rows=Array.isArray(parsed)?parsed:Array.isArray(parsed.updates)?parsed.updates:[];if(!rows.length)return{updates:[],errors:["JSON não contém uma lista de updates."]};}catch(e){const csv=parseCSVRows(raw);if(csv.length<2)return{updates:[],errors:["CSV sem linhas de dados."]};const hdr=csv[0].map(h=>String(h||"").trim());const idx=c=>hdr.indexOf(c);rows=csv.slice(1).map(r=>({match_id:r[idx("match_id")]||"",booking:r[idx("booking")]||"",service_key:r[idx("service_key")]||"",status:r[idx("status")]||"",qty:r[idx("qty")]||"",obs:idx("obs")>=0?r[idx("obs")]||"":""}));}const bmap=bookingToServiceKeyMap();const errors=[],grouped={};for(const[i,row]of rows.entries()){const match_id=String(row.match_id||row.matchId||"").trim();const booking=String(row.booking||"").trim();const service_key=String(row.service_key||row.serviceKey||bmap[booking]||"").trim();let status=String(row.status||"CNF").trim().toUpperCase();const qty=Number(row.qty==null||row.qty===""?1:row.qty);const obs=String(row.obs||row.observacao||row.observacao_operacional||"").trim();if(!match_id){errors.push(`Linha ${i+2}: match_id ausente.`);continue;}if(!/^M\d{3}$/.test(match_id)){errors.push(`Linha ${i+2}: match_id inválido (${match_id}).`);continue;}if(!service_key){errors.push(`Linha ${i+2}: service_key ausente e booking não mapeado (${booking||"sem booking"}).`);continue;}if(!SVC[service_key]){errors.push(`Linha ${i+2}: service_key desconhecido (${service_key}).`);continue;}if(!["CNF","REQ"].includes(status)){errors.push(`Linha ${i+2}: status inválido (${status}).`);continue;}if(!Number.isFinite(qty)||qty<0){errors.push(`Linha ${i+2}: qty inválido.`);continue;}const key=`${match_id}|${service_key}`;if(!grouped[key])grouped[key]={match_id,service_key,booking:booking||SVC[service_key].booking,status,qty:0,obs};grouped[key].qty+=qty;if(status==="CNF")grouped[key].status="CNF";if(obs)grouped[key].obs=obs;}return{updates:Object.values(grouped),errors};}
 
@@ -157,7 +181,7 @@ function App(){const[activeChannel,setActiveChannel]=useState(DEFAULT_CHANNEL);c
     }).catch(()=>{});
   },[activeChannel]);
   const rodadasPresentes=useMemo(()=>[...new Set(jogos.map(j=>faseLabel(j.rodada)))].sort((a,b)=>faseIndex(a)-faseIndex(b)||a.localeCompare(b)),[jogos]);
-  const perfisPresentes=useMemo(()=>[...new Set(jogos.map(j=>getPerfil(j)))].sort((a,b)=>["D","A","E","C","F","B"].indexOf(a)-["D","A","E","C","F","B"].indexOf(b)),[jogos,tick,svcVersion]);
+  const perfisPresentes=useMemo(()=>[...new Set(jogos.map(j=>getPerfil(j)))].sort((a,b)=>["D","A","E","C","F","G","B"].indexOf(a)-["D","A","E","C","F","G","B"].indexOf(b)),[jogos,tick,svcVersion]);
   const personSuggestions=useMemo(()=>{const names=[];for(const j of jogos){for(const v of Object.values(j.servicos||{})){for(const name of v.pessoas||[]){const clean=String(name||"").trim();if(clean)names.push(clean);}}}return[...new Set(names)].sort((a,b)=>a.localeCompare(b));},[jogos,tick,activeChannel]);
   const lista=useMemo(()=>{const lq=q.trim().toLowerCase();return jogos.filter(j=>{if(fR!=="todas"&&faseLabel(j.rodada)!==fR)return false;if(fP!=="todos"&&getPerfil(j)!==fP)return false;if(fSvc!=="todos"&&!(j.servicos&&j.servicos[fSvc]))return false;if(lq){const hay=[j.selecao_1,j.selecao_2,j.local,j.dia_semana,nomeSel(j.selecao_1),nomeSel(j.selecao_2)].join(" ").toLowerCase();if(!hay.includes(lq))return false;}return true;});},[jogos,q,fR,fP,fSvc,tick,svcVersion]);
   const porDia=useMemo(()=>{const g={};for(const j of lista){const shifted=shiftGameTime(j.data,j.hora,"BRT-2");const dia=shifted.date||j.data||"9999-99-99";(g[dia]||(g[dia]=[])).push(j);}return Object.keys(g).sort().map(dia=>{const js=g[dia].slice().sort((a,b)=>{const sa=shiftGameTime(a.data,a.hora,"BRT-2"),sb=shiftGameTime(b.data,b.hora,"BRT-2");const ta=String(sa.hora||"").replace(":",""),tb=String(sb.hora||"").replace(":","");return ta.localeCompare(tb)||((a.numero||0)-(b.numero||0));});const fases=[...new Set(js.map(j=>faseLabel(j.rodada)))].sort((a,b)=>faseIndex(a)-faseIndex(b));return{dia,jogos:js,fases};});},[lista,tick,svcVersion]);
