@@ -261,7 +261,8 @@ function PainelLote({jogos=[],onChange,svcVersion}){
   function removeSvc(i){setSvcsLote(prev=>prev.filter((_,idx)=>idx!==i));}
   function updateSvc(i,field,val){setSvcsLote(prev=>prev.map((s,idx)=>idx===i?{...s,[field]:val}:s));}
 
-  const svcOpts=Object.keys(SVC||{}).filter(k=>!SVC[k].inet&&!SVC[k].media).sort(sortSvcKeys);
+  const svcOpts=Object.keys(SVC||{}).sort(sortSvcKeys);
+  const svcGrupos={campo:svcOpts.filter(k=>!SVC[k].media&&!SVC[k].inet),midia:svcOpts.filter(k=>!!SVC[k].media),inet:svcOpts.filter(k=>!!SVC[k].inet)};
 
   async function aplicar(){
     setErr("");setResult(null);
@@ -355,7 +356,15 @@ function PainelLote({jogos=[],onChange,svcVersion}){
           :svcsLote.map((s,i)=>h("div",{key:i,style:{display:"grid",gridTemplateColumns:"1fr 90px 70px auto",gap:8,alignItems:"center"}},
               h("select",{className:"finput",value:s.svcKey,onChange:e=>updateSvc(i,"svcKey",e.target.value)},
                 h("option",{value:""},"Selecione..."),
-                ...svcOpts.map(k=>h("option",{key:k,value:k},`${SVC[k]?.nome||k}`))
+                h("optgroup",{label:"Serviços de campo"},
+                  ...svcGrupos.campo.map(k=>h("option",{key:k,value:k},SVC[k]?.nome||k))
+                ),
+                h("optgroup",{label:"Acessos de mídia"},
+                  ...svcGrupos.midia.map(k=>h("option",{key:k,value:k},SVC[k]?.nome||k))
+                ),
+                h("optgroup",{label:"Internet"},
+                  ...svcGrupos.inet.map(k=>h("option",{key:k,value:k},SVC[k]?.nome||k))
+                )
               ),
               h("select",{className:"finput",value:s.status,onChange:e=>updateSvc(i,"status",e.target.value)},
                 h("option",{value:"CNF"},"CNF"),
