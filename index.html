@@ -46,10 +46,10 @@ button{cursor:pointer}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 <script>
-const SERVICES_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTMzwIlni2IFVZBJfAVnWTCYXuBQgCIx96r0eg4nsinpe48gwX_z3ETxzNKx7yaMGEDJZMfoTCJIbX3/pub?gid=1435955881&single=true&output=csv";
-const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbzcDWxDCmeabHiPPD6rOwOmY8LKT4QiU6qDuM4x1_2aGY3z8okiEBF8lxx9uY7lzb8Arw/exec";
+const SERVICES_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQCF8LaUZWGE11ofw6gTEbJ_SpBtPDlQVZUsU5ZpTyQrvtjb_3xBrJatoj88MV9UPcGFoHVh4S0mzmu/pub?gid=1435955881&single=true&output=csv";
+const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbzhGi98HsrTZf32sM_L-RAZdSlQoaSF1_sQLyLm4vavG6bomlCLypjuWikQ3yzcoMoR3Q/exec";
 const ADMIN_PASS="cazetv2026";
-const CHANNELS={cazetv:{key:"cazetv",label:"CazéTV",logo:"C",title:"CazéTV · Copa 2026",subtitle:"Guia de Serviços FIFA · CazéTV",sheetUrl:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTMzwIlni2IFVZBJfAVnWTCYXuBQgCIx96r0eg4nsinpe48gwX_z3ETxzNKx7yaMGEDJZMfoTCJIbX3/pub?gid=361113040&single=true&output=csv"},lmtv:{key:"lmtv",label:"LiveModePT",logo:"LM",title:"LiveModePT · Copa 2026",subtitle:"Guia de Serviços FIFA · LiveModePT",sheetUrl:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTMzwIlni2IFVZBJfAVnWTCYXuBQgCIx96r0eg4nsinpe48gwX_z3ETxzNKx7yaMGEDJZMfoTCJIbX3/pub?gid=1625175459&single=true&output=csv"}};
+const CHANNELS={cazetv:{key:"cazetv",label:"CazéTV",logo:"C",title:"CazéTV · Copa 2026",subtitle:"Guia de Serviços FIFA · CazéTV",sheetUrl:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQCF8LaUZWGE11ofw6gTEbJ_SpBtPDlQVZUsU5ZpTyQrvtjb_3xBrJatoj88MV9UPcGFoHVh4S0mzmu/pub?gid=361113040&single=true&output=csv"},lmtv:{key:"lmtv",label:"LiveModePT",logo:"LM",title:"LiveModePT · Copa 2026",subtitle:"Guia de Serviços FIFA · LiveModePT",sheetUrl:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQCF8LaUZWGE11ofw6gTEbJ_SpBtPDlQVZUsU5ZpTyQrvtjb_3xBrJatoj88MV9UPcGFoHVh4S0mzmu/pub?gid=1625175459&single=true&output=csv"}};
 const DEFAULT_CHANNEL="cazetv";
 let CURRENT_CHANNEL_KEY=DEFAULT_CHANNEL;
 let ADMIN_UNLOCKED=false;
